@@ -1,0 +1,12 @@
+{
+  "name": "i8-icon",
+  "version": "0.0.1",
+  "repository": {
+    "url": "git://github.com/icons8/i8-icon.git"
+  },
+  "devDependencies": {
+    "dgeni": "^0.4.1",
+    "dgeni-packages": "^0.10.3",
+    "gulp": "^3.6.2"
+  }
+}
