@@ -14,99 +14,110 @@ angular.module('i8.icon', [])
  * @name i8Icon
  * @module i8.icon
  *
- * @restrict E
+ * @restrict EA
  *
  * @description
- * i8Icon
  */
 
 function i8IconDirective($window, $i8Icon) {
   return {
     restrict: 'EA',
-    scope: {
-      icon: '@',
-      src: '@'
+    scope: true,
+    template: function(element, attrs) {
+      return '';
     },
-    link: postLink
-  };
+    link: function (scope, element, attrs) {
+      var
+        attrIconName =  attrs.$attr.icon || attrs.$normalize(attrs.$attr.i8Icon) || '',
+        attrSrcName = attrs.$attr.src
+        ;
 
-  /**
-   * Directive postLink
-   */
-  function postLink(scope, element, attr) {
+      expectAlt(attrs.alt || attrs[attrIconName] || '');
 
-    var ariaLabel = attr.alt || scope.icon;
-    var attrName = attr.$normalize(attr.$attr.icon || attr.$attr.src || '');
-
-    if (attr.alt != '' && !parentsHaveText()) {
-      ariaExpect(element, 'aria-label', ariaLabel);
-      ariaExpect(element, 'role', 'img');
-    } else {
-      ariaExpect(element, 'aria-hidden', 'true');
-    }
-
-    if (attrName) {
-      // Use either pre-configured SVG or URL source, respectively.
-      attr.$observe(attrName, function(attrVal) {
-
-        element.empty();
-        if (attrVal) {
-          $i8Icon(attrVal).then(function(svg) {
-            element.append(svg);
-          });
-        }
-
-      });
-    }
-
-
-    function ariaExpect(element, attrName, defaultValue) {
-      var node = element[0];
-
-      if (!node.hasAttribute(attrName) && !childHasAttribute(node, attrName)) {
-
-        defaultValue = (typeof defaultValue == 'string') ? defaultValue.trim() : '';
-        if (defaultValue.length) {
-          element.attr(attrName, defaultValue);
-        }
-
+      if (attrSrcName) {
+        attrs.$observe(attrSrcName, function(icon) {
+          element.empty();
+          if (icon) {
+            $i8Icon.getIconByUrl(icon).then(function(xml) {
+              element.append(xml);
+            });
+          }
+        });
+      }
+      else if (attrIconName) {
+        attrs.$observe(attrIconName, function(icon) {
+          element.empty();
+          if (icon) {
+            $i8Icon.getIconById(icon).then(function(xml) {
+              element.append(xml);
+            });
+          }
+        });
       }
 
-      function childHasAttribute(node, attrName) {
-        var hasChildren = node.hasChildNodes(),
-          hasAttr = false;
+      function expectAlt(alt) {
+        if (alt != '' && !parentsHaveText()) {
+          expectAria('aria-label', alt);
+          expectAria('role', 'img');
+        } else {
+          expectAria('aria-hidden', 'true');
+        }
+      }
 
-        function isHidden(el) {
-          var style = el.currentStyle ? el.currentStyle : $window.getComputedStyle(el);
-          return (style.display === 'none');
+      function expectAria(attrName, defaultValue) {
+        var
+          node = element[0];
+
+        if (!node.hasAttribute(attrName) && !childHasAttribute(node, attrName)) {
+          defaultValue = (typeof defaultValue == 'string') ? defaultValue.trim() : '';
+          if (defaultValue.length) {
+            element.attr(attrName, defaultValue);
+          }
         }
 
-        if(hasChildren) {
-          var children = node.childNodes;
-          for(var i = 0; i < children.length; i++){
-            var child = children[i];
-            if(child.nodeType === 1 && child.hasAttribute(attrName)) {
-              if(!isHidden(child)){
+        function childHasAttribute(node, attrName) {
+          var
+            hasChildren = node.hasChildNodes(),
+            hasAttr = false,
+            children,
+            i,
+            child;
+
+          function isHidden(el) {
+            var
+              style = el.currentStyle
+                ? el.currentStyle
+                : $window.getComputedStyle(el);
+            return style.display === 'none';
+          }
+
+          if(hasChildren) {
+            children = node.childNodes;
+            for(i = 0; i < children.length; i++){
+              child = children[i];
+              if(child.nodeType === 1 && child.hasAttribute(attrName) && !isHidden(child)) {
                 hasAttr = true;
               }
             }
           }
+          return hasAttr;
         }
-        return hasAttr;
       }
-    }
 
-    function parentsHaveText() {
-      var parent = element.parent();
-      if (parent.attr('aria-label') || parent.text()) {
-        return true;
+      function parentsHaveText() {
+        var parent = element.parent();
+        if (parent.attr('aria-label') || parent.text()) {
+          return true;
+        }
+        else if(parent.parent().attr('aria-label') || parent.parent().text()) {
+          return true;
+        }
+        return false;
       }
-      else if(parent.parent().attr('aria-label') || parent.parent().text()) {
-        return true;
-      }
-      return false;
     }
-  }
+  };
+
+
 
 }
 
