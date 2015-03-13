@@ -8,8 +8,7 @@ var fs = require('fs');
 var path = require('path');
 
 var connectOptions = {
-  port: 3452,
-  root: '.'
+  port: 3452
 };
 var apiIconSetsUrl = '/icon-sets';
 var assetsIconsSvgPath = './assets/icons/svg';
