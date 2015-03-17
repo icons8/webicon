@@ -34,3 +34,5 @@ config.icons8Api = {
   iconManager.registerIconSet(platform, urlResolver, options);
 });
 
+iconManager.setDefaultIconSetId('flat');
+
