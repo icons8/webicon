@@ -27,6 +27,8 @@ function Icon(element, options) {
   element = el(element);
   originNode = element[0];
 
+  element.removeAttr('id');
+
   if (originNode.tagName != 'svg') {
     if (originNode.tagName == 'symbol') {
       svgElement = el('<svg xmlns="http://www.w3.org/2000/svg">');
@@ -40,8 +42,6 @@ function Icon(element, options) {
       element = el('<svg xmlns="http://www.w3.org/2000/svg">').append(element);
     }
   }
-
-  element.removeAttr('id');
 
   if (!element.attr('xmlns')) {
     element.attr('xmlns', "http://www.w3.org/2000/svg");

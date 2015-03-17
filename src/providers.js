@@ -2,23 +2,20 @@
 
 var providers = {
 
-  /**
-   * httpGetProvider
-   */
-
-  /**
-   * logProvider
-   */
   logProvider: function() {
     return log;
-  }
+  },
 
-  /**
-   * PromiseProvider
-   */
+  nodeWrapperProvider: providerAbstractPlaceholder('nodeWrapperProvider'),
 
-  /**
-   * nodeWrapperProvider
-   */
+  PromiseProvider: providerAbstractPlaceholder('PromiseProvider'),
+
+  httpGetProvider: providerAbstractPlaceholder('httpGetProvider')
 
 };
+
+function providerAbstractPlaceholder(name) {
+  return function() {
+    throw new Error('provider "' + name + '" not defined');
+  }
+}

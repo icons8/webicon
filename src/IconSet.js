@@ -59,6 +59,17 @@ IconSet.prototype = {
         self.icons[id] = icons[id];
       });
 
+    return this;
+  },
+
+  mergeByUrl: function(url, iconSize) {
+    var
+      self = this;
+
+    return IconSet.loadByUrl(url, iconSize)
+      .then(function(iconSet) {
+        return self.merge(iconSet);
+      })
   }
 
 };

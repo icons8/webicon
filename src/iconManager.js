@@ -14,19 +14,19 @@ var iconManager = {
 
   _defaultIconSize: config.defaultIconSize,
 
-  registerIcon: function(id, url, iconSize) {
-    this._iconsConfig[id] = {
-      url: url,
-      iconSize: iconSize
-    };
+  registerIcon: function(id, urlResolver, options) {
+    var
+      config = parseEntityConfigFromArguments(id, urlResolver, options);
+
+    this._iconsConfig[config.id] = config;
     return this;
   },
 
-  registerIconSet: function(id, url, iconSize) {
-    this._iconSetsConfig[id] = {
-      url: url,
-      iconSize: iconSize
-    };
+  registerIconSet: function(id, urlResolver, options) {
+    var
+      config = parseEntityConfigFromArguments(id, urlResolver, options);
+
+    this._iconSetsConfig[config.id] = config;
     return this;
   },
 
@@ -73,7 +73,7 @@ var iconManager = {
 
     iconId = id;
     iconSetId = null;
-    delimiterPosition = id.lastIndexOf(':');
+    delimiterPosition = id.indexOf(':');
     if (delimiterPosition != -1) {
       iconSetId = id.slice(0, delimiterPosition);
       iconId = id.slice(delimiterPosition+1);
@@ -116,13 +116,15 @@ var iconManager = {
   },
 
   _getIconFromIconSet: function(iconId, iconSetId) {
+    var
+      Promise = getService('Promise');
     return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId].url)
       .then(function(iconSet) {
         var
           icon = iconSet.getIconById(iconId);
         return icon
           ? icon
-          : getService('Promise').reject();
+          : Promise.reject();
       });
   },
 
@@ -163,12 +165,14 @@ var iconManager = {
 
   _announceIconNotFound: function(iconId, iconSetId) {
     var
-      errorMessage = 'icon "'+id+'" not found';
+      log = getService('log'),
+      Promise = getService('Promise'),
+      errorMessage = 'icon "' + iconId + '" not found';
     if (iconSetId) {
-      errorMessage += ' in "'+iconSetId+'" icon set';
+      errorMessage += ' in "' + iconSetId + '" icon set';
     }
-    getService('log').warn(errorMessage);
-    return getService('Promise').reject(errorMessage);
+    log.warn(errorMessage);
+    return Promise.reject(errorMessage);
   },
 
   _announceIconNotFoundForPromiseCatch: function(iconId, iconSetId) {
@@ -179,6 +183,54 @@ var iconManager = {
     }
   }
 
-
-
 };
+
+
+function parseEntityConfigFromArguments(id, urlResolver, options) {
+  var
+    url,
+    params = null,
+    iconSize,
+    viewBox,
+    config
+    ;
+
+  if (url && typeof url == 'object') {
+    url = urlResolver.url;
+    params = urlResolver.params;
+  }
+  else {
+    url = urlResolver;
+  }
+
+  if (options) {
+    switch(typeof options) {
+      case 'number':
+        iconSize = options;
+        break;
+      case 'string':
+        viewBox = options;
+        break;
+    }
+  }
+  else {
+    options = {};
+  }
+  if (iconSize) {
+    options.iconSize = iconSize;
+  }
+  if (viewBox) {
+    options.viewBox = viewBox;
+  }
+
+  config = {
+    id: id,
+    url: url,
+    options: options
+  };
+  if (params) {
+    config.params = params;
+  }
+
+  return config;
+}

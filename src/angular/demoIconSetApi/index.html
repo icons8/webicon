@@ -14,6 +14,8 @@
   <script type="text/javascript" src="../../IconSet.js"></script>
   <script type="text/javascript" src="../../iconManager.js"></script>
 
+  <script type="text/javascript" src="../../icons8ApiExtension.js"></script>
+
   <script type="text/javascript" src="../../../bower_components/angular/angular.js"></script>
 
   <script type="text/javascript" src="../icon.js"></script>
@@ -27,10 +29,7 @@
       .config([
         '$i8IconProvider',
         function($i8IconProvider) {
-          $i8IconProvider
-            .icon('clock', 'assets/icons/clock.svg')
-            .icon('calendar', 'assets/icons/calendar.svg')
-          ;
+
         }
       ])
     ;
@@ -48,9 +47,10 @@
 </head>
 <body>
 
-<i8-icon icon="calendar"></i8-icon>
-<i8-icon icon="assets/icons/icons8_cup.svg"></i8-icon>
-<i8-icon icon="clock"></i8-icon>
+<i8-icon icon="win8:link"></i8-icon>
+<i8-icon icon="ios8:like"></i8-icon>
+<i8-icon icon="flat:icons8_cup"></i8-icon>
+
 
 </body>
 </html>
