@@ -78,6 +78,16 @@ IconSet.prototype = {
       .then(function(iconSet) {
         return self.merge(iconSet);
       })
+  },
+
+  addIconByUrl: function(id, url) {
+    var
+      self = this;
+    return Icon.loadByUrl(url, { iconSize: this.iconSize, viewBox: this.viewBox })
+      .then(function(icon) {
+        self.icons[id] = icon;
+        return icon;
+      });
   }
 
 };

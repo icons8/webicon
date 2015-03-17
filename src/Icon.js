@@ -70,12 +70,12 @@ Icon.isIcon = function(value) {
   return value instanceof Icon;
 };
 
-Icon.loadByUrl = function(url, iconSize) {
+Icon.loadByUrl = function(url, options) {
   return svgLoader.loadByUrl(url)
     .then(function(element) {
       return new Icon(
         element,
-        iconSize
+        options
       )
     });
 };

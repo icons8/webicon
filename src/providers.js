@@ -2,9 +2,9 @@
 
 var providers = {
 
-  logProvider: function() {
-    return log;
-  },
+  logProvider: providerAbstractPlaceholder('logProvider'),
+
+  timeoutProvider: providerAbstractPlaceholder('timeoutProvider'),
 
   nodeWrapperProvider: providerAbstractPlaceholder('nodeWrapperProvider'),
 

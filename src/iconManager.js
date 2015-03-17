@@ -77,18 +77,24 @@ var iconManager = {
       iconId = id.slice(delimiterPosition+1);
     }
 
-    if (this._hasIconSet(iconSetId)) {
-      return this._getIconFromIconSet(iconId, iconSetId)
-        .catch(this._announceIconNotFoundForPromiseCatch(iconId, iconSetId));
+    if (iconSetId) {
+      if (this._hasIconSet(iconSetId)) {
+        return this._getIconFromIconSet(iconId, iconSetId)
+          .catch(this._announceIconNotFoundForPromiseCatch(iconId, iconSetId));
+      }
     }
-    if (this._hasIcon(iconId)) {
-      return this._getIcon(iconId)
-        .catch(this._announceIconNotFoundForPromiseCatch(iconId));
+    else {
+      if (this._hasIcon(iconId)) {
+        return this._getIcon(iconId)
+          .catch(this._announceIconNotFoundForPromiseCatch(iconId));
+      }
+      if (this._hasDefaultIconSet()){
+        return this._getIconFromDefaultIconSet(iconId)
+          .catch(this._announceIconNotFoundForPromiseCatch(iconId, this._defaultIconSetId));
+      }
     }
-    if (this._hasDefaultIconSet()){
-      return this._getIconFromDefaultIconSet(iconId)
-        .catch(this._announceIconNotFoundForPromiseCatch(iconId, this._defaultIconSetId));
-    }
+
+
 
     return this._announceIconNotFound(id);
   },
@@ -115,15 +121,47 @@ var iconManager = {
 
   _getIconFromIconSet: function(iconId, iconSetId) {
     var
-      Promise = getService('Promise');
-    return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId].urlResolver())
-      .then(function(iconSet) {
-        var
-          icon = iconSet.getIconById(iconId);
-        return icon
-          ? icon
-          : Promise.reject();
-      });
+      self = this,
+      Promise = getService('Promise'),
+      timeout = getService('timeout'),
+      iconSetConfig = this._iconSetsConfig[iconSetId],
+      local = iconSetConfig._local;
+
+    if (iconSetConfig.cumulative) {
+      if (local.wait) {
+        if (local.icons.indexOf(iconId) == -1) {
+          local.icons.push(iconId);
+        }
+        return getIcon(local.wait);
+      }
+      else {
+        local.icons = [iconId];
+        local.wait = timeout(config.defaultDelayForCumulativeIconSet).then(function() {
+          local.wait = null;
+          return loadIconSet(iconSetConfig.urlResolver(local.icons));
+        });
+
+        return getIcon(local.wait);
+      }
+    }
+    else {
+      return getIcon(loadIconSet(iconSetConfig.urlResolver()));
+    }
+
+    function loadIconSet(url) {
+      return self._loadIconSetByUrl(url);
+    }
+    function getIcon(promise) {
+      return promise
+        .then(function(iconSet) {
+          var
+            icon = iconSet.getIconById(iconId);
+          return icon
+            ? icon
+            : Promise.reject();
+        });
+    }
+
   },
 
   _cacheIcon: function(id, promise) {
@@ -195,6 +233,10 @@ function parseEntityConfigFromArguments(id, urlConfig, options) {
     urlResolver
     ;
 
+  config = {
+    id: id
+  };
+
   if (url && typeof url == 'object') {
     url = urlConfig.url;
     params = urlConfig.params;
@@ -220,12 +262,10 @@ function parseEntityConfigFromArguments(id, urlConfig, options) {
   else {
     options = {};
   }
-  if (iconSize) {
-    options.iconSize = iconSize;
-  }
-  if (viewBox) {
-    options.viewBox = viewBox;
-  }
+
+  config.iconSize = iconSize || options.iconSize;
+  config.viewBox = viewBox || options.viewBox;
+  config.cumulative = options.cumulative;
 
   urlResolver = function(/* value[, value[, ...]]] */) {
     var
@@ -244,11 +284,8 @@ function parseEntityConfigFromArguments(id, urlConfig, options) {
     return buildUrl(url, mergeObjects({}, params || {}, _params || {}));
   };
 
-  config = {
-    id: id,
-    urlResolver: urlResolver,
-    options: options
-  };
+  config.urlResolver = urlResolver;
+  config._local = {};
 
   return config;
 }

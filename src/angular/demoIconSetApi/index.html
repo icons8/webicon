@@ -7,7 +7,6 @@
   <script type="text/javascript" src="../../config.js"></script>
   <script type="text/javascript" src="../../providers.js"></script>
   <script type="text/javascript" src="../../getService.js"></script>
-  <script type="text/javascript" src="../../log.js"></script>
   <script type="text/javascript" src="../../mergeObjects.js"></script>
   <script type="text/javascript" src="../../buildUrl.js"></script>
   <script type="text/javascript" src="../../expectAlt.js"></script>
@@ -31,7 +30,7 @@
       .config([
         '$i8IconProvider',
         function($i8IconProvider) {
-
+          $i8IconProvider.defaultIconSetId('flat');
         }
       ])
     ;
@@ -49,9 +48,9 @@
 </head>
 <body>
 
-<i8-icon icon="win8:link"></i8-icon>
-<i8-icon icon="ios8:like"></i8-icon>
-<i8-icon icon="flat:icons8_cup"></i8-icon>
+<i8-icon icon="link"></i8-icon>
+<i8-icon icon="flat:like"></i8-icon>
+<i8-icon icon="icons8_cup"></i8-icon>
 
 
 </body>

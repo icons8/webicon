@@ -25,6 +25,19 @@ function registerProviders($injector) {
 
   providers.PromiseProvider = function() {
     return $injector.get('$q');
-  }
+  };
+
+  providers.timeoutProvider = function() {
+    var
+      $timeout = $injector.get('$timeout');
+
+    return function(fn, delay) {
+      if (typeof fn != 'function') {
+        delay = fn;
+        fn = function() {};
+      }
+      return $timeout(fn, delay);
+    };
+  };
 
 }
