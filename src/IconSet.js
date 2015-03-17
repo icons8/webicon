@@ -11,7 +11,7 @@ function IconSet(iconSetNode, iconSize) {
   nodes = iconSetNode.querySelectorAll('[id]');
   for(index = 0; index < nodes.length; index++) {
     node = nodes[index];
-    this.icons[node.getAttribute('id')] = node;
+    this.icons[node.getAttribute('id')] = new Icon(node, iconSize);
   }
 
   this.iconSize = iconSize;
@@ -50,7 +50,7 @@ IconSet.prototype = {
 
     Object.keys(icons)
       .forEach(function(id) {
-        self.icons[id] = icons[is];
+        self.icons[id] = icons[id];
       });
 
   }

@@ -75,8 +75,8 @@ var iconManager = {
     iconSetId = null;
     delimiterPosition = id.lastIndexOf(':');
     if (delimiterPosition != -1) {
-      iconId = id.slice(0, delimiterPosition);
-      iconSetId = id.slice(delimiterPosition+1);
+      iconSetId = id.slice(0, delimiterPosition);
+      iconId = id.slice(delimiterPosition+1);
     }
 
     if (this._hasIconSet(iconSetId)) {
@@ -108,7 +108,7 @@ var iconManager = {
   },
 
   _getIcon: function(id) {
-    return this._loadIconByUrl(this._iconsConfig[id]);
+    return this._loadIconByUrl(this._iconsConfig[id].url);
   },
 
   _getIconFromDefaultIconSet: function(id) {
@@ -116,13 +116,13 @@ var iconManager = {
   },
 
   _getIconFromIconSet: function(iconId, iconSetId) {
-    return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId])
+    return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId].url)
       .then(function(iconSet) {
         var
-          icon = iconSet.getById(iconId);
-        if (!icon) {
-          return getService('Promise').reject();
-        }
+          icon = iconSet.getIconById(iconId);
+        return icon
+          ? icon
+          : getService('Promise').reject();
       });
   },
 
