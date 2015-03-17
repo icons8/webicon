@@ -1,6 +1,10 @@
 'use strict';
 
 function expectAlt(element, alt) {
+  var
+    el = getService('nodeWrapper');
+
+  element = el(element);
 
   if (alt != '' && !parentsHaveText()) {
     expectAria('aria-label', alt);

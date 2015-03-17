@@ -1,41 +1,68 @@
 'use strict';
 
-function Icon(node, iconSize) {
+function Icon(element, options) {
+  var
+    el = getService('nodeWrapper'),
+    svgElement,
+    attributes,
+    index,
+    originNode,
+    iconSize = null,
+    viewBox = null;
 
-  if (node.tagName != 'svg') {
-    node = getService('nodeWrapper')('<svg xmlns="http://www.w3.org/2000/svg">').append(node)[0];
+  if (options) {
+    switch(typeof options) {
+      case 'number':
+        iconSize = options;
+        break;
+      case 'string':
+        viewBox = options;
+        break;
+      default:
+        iconSize = options.iconSize || iconSize;
+        viewBox = options.viewBox || viewBox;
+    }
   }
 
-  if (!node.getAttribute('xmlns')) {
-    node.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+  element = el(element);
+  originNode = element[0];
+
+  if (originNode.tagName != 'svg') {
+    if (originNode.tagName == 'symbol') {
+      svgElement = el('<svg xmlns="http://www.w3.org/2000/svg">');
+      attributes = originNode.attributes;
+      for (index = 0; index < attributes.length; index++) {
+        svgElement.attr(attributes[index].name, attributes[index].value);
+      }
+      element = svgElement.append(originNode.children);
+    }
+    else {
+      element = el('<svg xmlns="http://www.w3.org/2000/svg">').append(element);
+    }
+  }
+
+  element.removeAttr('id');
+
+  if (!element.attr('xmlns')) {
+    element.attr('xmlns', "http://www.w3.org/2000/svg");
   }
 
   iconSize = iconSize || iconManager._defaultIconSize;
 
-  var
-    attributes = {
-      fit: '',
-      height: '100%',
-      width: '100%',
-      preserveAspectRatio: 'xMidYMid meet',
-      viewBox: node.getAttribute('viewBox') || ('0 0 ' + iconSize + ' ' + iconSize)
-    },
-
-    styles = {
-      "pointer-events": 'none',
-      display: 'block'
-    }
-    ;
-
-  Object.keys(attributes).forEach(function(name) {
-    node.setAttribute(name, attributes[name]);
+  element.attr({
+    fit: '',
+    height: '100%',
+    width: '100%',
+    preserveAspectRatio: 'xMidYMid meet',
+    viewBox: element.attr('viewBox') || viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
   });
 
-  Object.keys(styles).forEach(function(name) {
-    node.style[name] = styles[name];
+  element.css({
+    "pointer-events": 'none',
+    display: 'block'
   });
 
-  this.node = node;
+  this.node = element[0];
   this.iconSize = iconSize;
 }
 
@@ -43,25 +70,13 @@ Icon.isIcon = function(value) {
   return value instanceof Icon;
 };
 
-Icon.create = function(node, iconSize) {
-  return new Icon(node, iconSize);
-};
-
 Icon.loadByUrl = function(url, iconSize) {
-  return getService('httpGet')(url)
-    .then(function(response) {
+  return svgLoader.loadByUrl(url)
+    .then(function(element) {
       return new Icon(
-        getService('nodeWrapper')('<div>').append(response.data).find('svg')[0],
+        element,
         iconSize
       )
-    }, function(response) {
-      var
-        message = typeof response == 'string'
-          ? response
-          : String(response.message || response.data || response.statusText);
-
-      getService('log').warn(message);
-      return getService('Promise').reject(message);
     });
 };
 
