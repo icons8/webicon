@@ -1,11 +1,21 @@
 
-config.icons8Api = {
+config.i8Api = {
   apiGateway: {
     url: '//localhost:3452/icon-sets'
-  }
+  },
+  platforms: [
+    'win8',
+    'ios8',
+    'android',
+    'androidL',
+    'flat'
+  ]
 };
 
-['win8', 'ios8', 'android', 'androidL', 'flat'].forEach(function(platform) {
+var
+  platforms = config.i8Api.platforms;
+
+platforms.forEach(function(platform) {
   var
     urlResolver = function(icons) {
       var
@@ -13,7 +23,7 @@ config.icons8Api = {
           platform: platform
         },
         options = {
-          url: config.icons8Api.apiGateway.url,
+          url: config.i8Api.apiGateway.url,
           params: params
         }
         ;
@@ -35,4 +45,3 @@ config.icons8Api = {
 });
 
 iconManager.setDefaultIconSetId('flat');
-

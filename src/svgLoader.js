@@ -1,15 +1,22 @@
 
 var svgLoader = {
 
-  loadByUrl: function(url) {
+  loadByUrl: function(urlConfig) {
     var
       httpGet = getService('httpGet'),
       log = getService('log'),
       Promise = getService('Promise'),
-      el = getService('nodeWrapper')
+      el = getService('nodeWrapper'),
+      url = urlConfig,
+      params = null
       ;
 
-    return httpGet(url)
+    if (typeof urlConfig == 'object') {
+      url = urlConfig.url;
+      params = urlConfig.params;
+    }
+
+    return httpGet(url, params)
       .then(function(response) {
         var
           element = el('<div>').append(response.data),

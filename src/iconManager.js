@@ -4,27 +4,23 @@ var CHECK_URL_REGEX = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-
 
 var iconManager = {
 
-  _iconsConfig: {},
-  _iconsCache: {},
-
-  _iconSetsConfig: {},
-  _iconSetsCache: {},
+  _iconsScope: {},
+  _iconSetsScope: {},
 
   _defaultIconSetId: null,
-
   _defaultIconSize: config.defaultIconSize,
 
   registerIcon: function(id, urlResolver, options) {
     var
-      config = parseEntityConfigFromArguments(id, urlResolver, options);
-    this._iconsConfig[config.id] = config;
+      config = this._parseEntityConfigFromArguments(id, urlResolver, options);
+    this._iconsScope[config.id] = config;
     return this;
   },
 
   registerIconSet: function(id, urlResolver, options) {
     var
-      config = parseEntityConfigFromArguments(id, urlResolver, options);
-    this._iconSetsConfig[config.id] = config;
+      config = this._parseEntityConfigFromArguments(id, urlResolver, options);
+    this._iconSetsScope[config.id] = config;
     return this;
   },
 
@@ -45,14 +41,16 @@ var iconManager = {
   preloadIcons: function() {
     var
       self = this,
-      iconsConfig = this._iconsConfig,
-      iconSetsConfig = this._iconSetsConfig;
+      iconsScope = this._iconsScope,
+      iconSetsScope = this._iconSetsScope;
 
-    Object.keys(iconsConfig).forEach(function(id) {
-      self._loadIconByUrl(iconsConfig[id].urlResolver());
+    Object.keys(iconsScope).forEach(function(id) {
+      self._getIcon(id);
     });
-    Object.keys(iconSetsConfig).forEach(function(id) {
-      self._loadIconSetByUrl(iconSetsConfig[id].urlResolver());
+    Object.keys(iconSetsScope).forEach(function(id) {
+      if (!iconSetsScope[id].cumulative) {
+        self._getIconSet(id);
+      }
     })
 
   },
@@ -61,12 +59,17 @@ var iconManager = {
     var
       delimiterPosition,
       iconId,
-      iconSetId;
+      iconSetId,
+      compositeId;
 
     id = id || '';
 
     if (CHECK_URL_REGEX.test(id)) {
-      return this._loadIconByUrl(id);
+      if (!this._hasIcon(id)) {
+        this.registerIcon(id, id);
+      }
+      return this._getIcon(id)
+        .catch(this._announceIconNotFoundForPromiseCatch(id));
     }
 
     iconId = id;
@@ -94,29 +97,55 @@ var iconManager = {
       }
     }
 
-
-
     return this._announceIconNotFound(id);
   },
 
   _hasIcon: function(id) {
-    return this._iconsConfig.hasOwnProperty(id);
+    return this._iconsScope.hasOwnProperty(id);
   },
 
   _hasIconSet: function(id) {
-    return this._iconSetsConfig.hasOwnProperty(id);
+    return this._iconSetsScope.hasOwnProperty(id);
   },
 
   _hasDefaultIconSet: function() {
     return this._defaultIconSetId && this._hasIconSet(this._defaultIconSetId);
   },
 
+  _cacheIcon: function(id, promise) {
+    var
+      iconScope = this._iconsScope[id];
+    iconScope._cache = promise;
+    promise.catch(function() {
+      delete iconScope._cache;
+    });
+    return promise;
+  },
+
   _getIcon: function(id) {
-    return this._loadIconByUrl(this._iconsConfig[id].urlResolver());
+    var
+      iconScope = this._iconsScope[id];
+    if (iconScope._cache) {
+      return iconScope._cache;
+    }
+    return this._cacheIcon(
+      id,
+      Icon.loadByUrl(iconScope.urlResolver(), iconScope)
+    );
   },
 
   _getIconFromDefaultIconSet: function(id) {
     return this._getIconFromIconSet(id, this._defaultIconSetId);
+  },
+
+  _cacheIconSet: function(id, promise) {
+    var
+      iconScope = this._iconSetsScope[id];
+    iconScope._cache = promise;
+    promise.catch(function() {
+      delete iconScope._cache;
+    });
+    return promise;
   },
 
   _getIconFromIconSet: function(iconId, iconSetId) {
@@ -124,10 +153,10 @@ var iconManager = {
       self = this,
       Promise = getService('Promise'),
       timeout = getService('timeout'),
-      iconSetConfig = this._iconSetsConfig[iconSetId],
-      local = iconSetConfig._local;
+      iconSetScope = this._iconSetsScope[iconSetId],
+      local = iconSetScope._local;
 
-    if (iconSetConfig.cumulative) {
+    if (iconSetScope.cumulative) {
       if (local.wait) {
         if (local.icons.indexOf(iconId) == -1) {
           local.icons.push(iconId);
@@ -138,19 +167,41 @@ var iconManager = {
         local.icons = [iconId];
         local.wait = timeout(config.defaultDelayForCumulativeIconSet).then(function() {
           local.wait = null;
-          return loadIconSet(iconSetConfig.urlResolver(local.icons));
+          return loadIconSet(local.icons);
         });
 
         return getIcon(local.wait);
       }
     }
     else {
-      return getIcon(loadIconSet(iconSetConfig.urlResolver()));
+      return getIcon(loadIconSet());
     }
 
-    function loadIconSet(url) {
-      return self._loadIconSetByUrl(url);
+    function loadIconSet(iconIdList) {
+      if (!iconIdList) {
+        if (iconSetScope._cache) {
+          return iconSetScope._cache;
+        }
+        return self._cacheIconSet(
+          iconSetId,
+          IconSet.loadByUrl(iconSetScope.urlResolver(), iconSetScope)
+        );
+      }
+      if (!iconSetScope._cache) {
+        return self._cacheIconSet(
+          iconSetId,
+          IconSet.loadByUrl(iconSetScope.urlResolver(iconIdList), iconSetScope)
+        )
+      }
+      return iconSetScope._cache
+        .then(function(iconSet) {
+          return iconSet.mergeByUrl(
+            iconSetScope.urlResolver(iconSet.notExists(iconIdList)),
+            iconSetScope
+          )
+        });
     }
+
     function getIcon(promise) {
       return promise
         .then(function(iconSet) {
@@ -164,38 +215,25 @@ var iconManager = {
 
   },
 
-  _cacheIcon: function(id, promise) {
+  _getIconSet: function(iconSetId) {
     var
-      iconsCache = this._iconsCache;
-    iconsCache[id] = promise;
-    promise.catch(function() {
-      delete iconsCache[id];
-    });
-    return promise;
-  },
+      iconSetScope = this._iconSetsScope[iconSetId],
+      log = getService('log'),
+      Promise = getService('Promise'),
+      errorMessage;
 
-  _loadIconByUrl: function(url) {
-    if (this._iconsCache.hasOwnProperty(url)) {
-      return this._iconsCache[url];
+    if (iconSetScope.cumulative) {
+      errorMessage = 'cannot get "' + iconSetId + '", operation not supported for cumulative iconSet';
+      log.warn(errorMessage);
+      return Promise.reject(errorMessage);
     }
-    return this._cacheIcon(url, Icon.loadByUrl(url));
-  },
-
-  _cacheIconSet: function(id, promise) {
-    var
-      iconSetsCache = this._iconSetsCache;
-    iconSetsCache[id] = promise;
-    promise.catch(function() {
-      delete iconSetsCache[id];
-    });
-    return promise;
-  },
-
-  _loadIconSetByUrl: function(url) {
-    if (this._iconSetsCache.hasOwnProperty(url)) {
-      return this._iconSetsCache[url];
+    if (iconSetScope._cache) {
+      return iconSetScope._cache;
     }
-    return this._cacheIconSet(url, IconSet.loadByUrl(url));
+    return this._cacheIconSet(
+      iconSetId,
+      IconSet.loadByUrl(iconSetScope.urlResolver(), iconSetScope)
+    );
   },
 
 
@@ -204,6 +242,7 @@ var iconManager = {
       log = getService('log'),
       Promise = getService('Promise'),
       errorMessage = 'icon "' + iconId + '" not found';
+
     if (iconSetId) {
       errorMessage += ' in "' + iconSetId + '" icon set';
     }
@@ -217,75 +256,79 @@ var iconManager = {
     return function() {
       return self._announceIconNotFound(iconId, iconSetId);
     }
+  },
+
+  _parseEntityConfigFromArguments: function(id, urlConfig, options) {
+    var
+      url,
+      urlFn,
+      params = null,
+      iconSize,
+      viewBox,
+      config,
+      urlResolver
+      ;
+
+    config = {
+      id: id
+    };
+
+    if (url && typeof url == 'object') {
+      url = urlConfig.url;
+      params = urlConfig.params;
+    }
+    else {
+      url = urlConfig;
+    }
+
+    urlFn = (typeof url == 'function')
+      ? url
+      : function() { return url; };
+
+    if (options) {
+      switch(typeof options) {
+        case 'number':
+          iconSize = options;
+          break;
+        case 'string':
+          viewBox = options;
+          break;
+      }
+    }
+    else {
+      options = {};
+    }
+
+    config.iconSize = iconSize || options.iconSize;
+    config.viewBox = viewBox || options.viewBox;
+    config.cumulative = options.cumulative;
+
+    urlResolver = function(/* value[, value[, ...]]] */) {
+      var
+        urlConfig,
+        _params = null,
+        url
+        ;
+
+      urlConfig = urlFn.apply(null, Array.prototype.slice.call(arguments));
+      url = urlConfig;
+      if (urlConfig && typeof urlConfig == 'object') {
+        url = urlConfig.url;
+        _params = urlConfig.params;
+      }
+
+      return {
+        url: url,
+        params: mergeObjects({}, params || {}, _params || {})
+      }
+    };
+
+    config.urlResolver = urlResolver;
+    config._local = {};
+
+    return config;
   }
 
 };
 
 
-function parseEntityConfigFromArguments(id, urlConfig, options) {
-  var
-    url,
-    urlFn,
-    params = null,
-    iconSize,
-    viewBox,
-    config,
-    urlResolver
-    ;
-
-  config = {
-    id: id
-  };
-
-  if (url && typeof url == 'object') {
-    url = urlConfig.url;
-    params = urlConfig.params;
-  }
-  else {
-    url = urlConfig;
-  }
-
-  urlFn = (typeof url == 'function')
-    ? url
-    : function() { return url; };
-
-  if (options) {
-    switch(typeof options) {
-      case 'number':
-        iconSize = options;
-        break;
-      case 'string':
-        viewBox = options;
-        break;
-    }
-  }
-  else {
-    options = {};
-  }
-
-  config.iconSize = iconSize || options.iconSize;
-  config.viewBox = viewBox || options.viewBox;
-  config.cumulative = options.cumulative;
-
-  urlResolver = function(/* value[, value[, ...]]] */) {
-    var
-      urlConfig,
-      _params = null,
-      url
-      ;
-
-    urlConfig = urlFn.apply(null, Array.prototype.slice.call(arguments));
-    url = urlConfig;
-    if (urlConfig && typeof urlConfig == 'object') {
-      url = urlConfig.url;
-      _params = urlConfig.params;
-    }
-
-    return buildUrl(url, mergeObjects({}, params || {}, _params || {}));
-  };
-
-  config.urlResolver = urlResolver;
-  config._local = {};
-
-  return config;
-}
