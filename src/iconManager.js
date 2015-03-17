@@ -17,7 +17,6 @@ var iconManager = {
   registerIcon: function(id, urlResolver, options) {
     var
       config = parseEntityConfigFromArguments(id, urlResolver, options);
-
     this._iconsConfig[config.id] = config;
     return this;
   },
@@ -25,7 +24,6 @@ var iconManager = {
   registerIconSet: function(id, urlResolver, options) {
     var
       config = parseEntityConfigFromArguments(id, urlResolver, options);
-
     this._iconSetsConfig[config.id] = config;
     return this;
   },
@@ -51,10 +49,10 @@ var iconManager = {
       iconSetsConfig = this._iconSetsConfig;
 
     Object.keys(iconsConfig).forEach(function(id) {
-      self._loadIconByUrl(iconsConfig[id].url);
+      self._loadIconByUrl(iconsConfig[id].urlResolver());
     });
     Object.keys(iconSetsConfig).forEach(function(id) {
-      self._loadIconSetByUrl(iconSetsConfig[id].url);
+      self._loadIconSetByUrl(iconSetsConfig[id].urlResolver());
     })
 
   },
@@ -108,7 +106,7 @@ var iconManager = {
   },
 
   _getIcon: function(id) {
-    return this._loadIconByUrl(this._iconsConfig[id].url);
+    return this._loadIconByUrl(this._iconsConfig[id].urlResolver());
   },
 
   _getIconFromDefaultIconSet: function(id) {
@@ -118,7 +116,7 @@ var iconManager = {
   _getIconFromIconSet: function(iconId, iconSetId) {
     var
       Promise = getService('Promise');
-    return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId].url)
+    return this._loadIconSetByUrl(this._iconSetsConfig[iconSetId].urlResolver())
       .then(function(iconSet) {
         var
           icon = iconSet.getIconById(iconId);
@@ -186,22 +184,28 @@ var iconManager = {
 };
 
 
-function parseEntityConfigFromArguments(id, urlResolver, options) {
+function parseEntityConfigFromArguments(id, urlConfig, options) {
   var
     url,
+    urlFn,
     params = null,
     iconSize,
     viewBox,
-    config
+    config,
+    urlResolver
     ;
 
   if (url && typeof url == 'object') {
-    url = urlResolver.url;
-    params = urlResolver.params;
+    url = urlConfig.url;
+    params = urlConfig.params;
   }
   else {
-    url = urlResolver;
+    url = urlConfig;
   }
+
+  urlFn = (typeof url == 'function')
+    ? url
+    : function() { return url; };
 
   if (options) {
     switch(typeof options) {
@@ -223,14 +227,28 @@ function parseEntityConfigFromArguments(id, urlResolver, options) {
     options.viewBox = viewBox;
   }
 
+  urlResolver = function(/* value[, value[, ...]]] */) {
+    var
+      urlConfig,
+      _params = null,
+      url
+      ;
+
+    urlConfig = urlFn.apply(null, Array.prototype.slice.call(arguments));
+    url = urlConfig;
+    if (urlConfig && typeof urlConfig == 'object') {
+      url = urlConfig.url;
+      _params = urlConfig.params;
+    }
+
+    return buildUrl(url, mergeObjects({}, params || {}, _params || {}));
+  };
+
   config = {
     id: id,
-    url: url,
+    urlResolver: urlResolver,
     options: options
   };
-  if (params) {
-    config.params = params;
-  }
 
   return config;
 }

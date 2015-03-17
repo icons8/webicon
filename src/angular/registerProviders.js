@@ -12,15 +12,8 @@ function registerProviders($injector) {
       $templateCache = $injector.get('$templateCache')
       ;
 
-    return function(url, params) {
-      var
-        options = {
-          cache: $templateCache
-        };
-      if (params) {
-        options.params = params;
-      }
-      return $http.get(url, options);
+    return function(url) {
+      return $http.get(url, { cache: $templateCache });
     }
   };
 

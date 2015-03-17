@@ -43,6 +43,14 @@ IconSet.loadByUrl = function(url, iconSize) {
 
 IconSet.prototype = {
 
+  notExists: function(ids) {
+    var
+      icons = this.icons;
+    return ids.filter(function(id) {
+      return !icons.hasOwnProperty(id);
+    });
+  },
+
   getIconById: function(id) {
     return this.icons.hasOwnProperty(id)
       ? this.icons[id]
