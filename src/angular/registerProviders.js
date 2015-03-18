@@ -1,4 +1,3 @@
-'use strict';
 
 function registerProviders($injector) {
 
@@ -21,12 +20,6 @@ function registerProviders($injector) {
         options.params = params;
       }
       return $http.get(url, options);
-    }
-  };
-
-  providers.nodeWrapperProvider = function() {
-    return function(node) {
-      return angular.element(node);
     }
   };
 

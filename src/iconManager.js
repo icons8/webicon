@@ -260,6 +260,7 @@ var iconManager = {
 
   _parseEntityConfigFromArguments: function(id, urlConfig, options) {
     var
+      mergeObjects = getService('mergeObjects'),
       url,
       urlFn,
       params = null,

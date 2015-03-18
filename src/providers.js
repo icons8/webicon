@@ -10,7 +10,9 @@ var providers = {
 
   PromiseProvider: providerAbstractPlaceholder('PromiseProvider'),
 
-  httpGetProvider: providerAbstractPlaceholder('httpGetProvider')
+  httpGetProvider: providerAbstractPlaceholder('httpGetProvider'),
+
+  mergeObjectsProvider: providerAbstractPlaceholder('mergeObjects')
 
 };
 
