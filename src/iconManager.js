@@ -59,8 +59,7 @@ var iconManager = {
     var
       delimiterPosition,
       iconId,
-      iconSetId,
-      compositeId;
+      iconSetId;
 
     id = id || '';
 
