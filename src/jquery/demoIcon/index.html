@@ -18,25 +18,31 @@
   <script type="text/javascript" src="../log.js"></script>
   <script type="text/javascript" src="../httpGet.js"></script>
   <script type="text/javascript" src="../timeout.js"></script>
+  <script type="text/javascript" src="../Promise.js"></script>
   <script type="text/javascript" src="../mergeObjects.js"></script>
   <script type="text/javascript" src="../providers.js"></script>
-  <script type="text/javascript" src="../icon.js"></script>
-  <script type="text/javascript" src="../icons.js"></script>
+  <script type="text/javascript" src="../iconPlugin.js"></script>
+  <script type="text/javascript" src="../iconsPlugin.js"></script>
   <script type="text/javascript" src="../bootstrap.js"></script>
 
   <script type="text/javascript">
     $(function() {
-      $('body').i8icons({
-        hello: 10
+      $('i8-icon, [i8-icon]').i8icon({
+        icons: {
+          clock: 'assets/icons/clock.svg',
+          calendar: 'assets/icons/calendar.svg',
+          rating: 'assets/icons/rating.svg'
+        }
       });
+      $('.icon-calendar').i8icon('calendar');
     });
   </script>
 
   <style type="text/css">
-    i8-icon, [i8-icon] {
+    i8-icon, [i8-icon], [class*="icon-"] {
       display: inline-block;
     }
-    i8-icon, [i8-icon] {
+    i8-icon, [i8-icon], [class*="icon-"] {
       width: 100px;
       height: 100px;
     }
@@ -44,9 +50,10 @@
 </head>
 <body>
 
-<i8-icon icon="calendar"></i8-icon>
+<div class="icon-calendar"></div>
 <i8-icon icon="assets/icons/icons8_cup.svg"></i8-icon>
 <i8-icon icon="clock"></i8-icon>
+<span i8-icon="rating"></span>
 
 </body>
 </html>

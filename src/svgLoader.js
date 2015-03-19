@@ -29,7 +29,7 @@ var svgLoader = {
         var
           message = typeof response == 'string'
             ? response
-            : String(response.message || response.data || response.statusText);
+            : String(response.message || response.data || response.responseText || response.statusText);
 
         log.warn(message);
         return Promise.reject(message);

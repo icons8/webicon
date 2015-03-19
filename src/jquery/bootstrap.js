@@ -1,6 +1,6 @@
 
 jQuery(function() {
-  console.log('bootstrap');
+  console.log('bootstrap canceled');
   return;
 
   var

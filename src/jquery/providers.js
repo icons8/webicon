@@ -16,11 +16,11 @@ providers.httpGetProvider = function() {
   return httpGet;
 };
 
-providers.mergeObjectProvider = function() {
+providers.mergeObjectsProvider = function() {
   return mergeObjects;
 };
 
 providers.PromiseProvider = function() {
-  throw new Error('not implemented yet');
+  return Promise;
 };
 

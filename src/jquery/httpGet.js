@@ -7,9 +7,8 @@ var httpGet = function(url, params) {
     cache = httpGetCache,
     urlBuilder = [url],
     query,
-    promise,
-    resolve,
-    reject;
+    promise
+    ;
 
   params = params || {};
   query = jQuery.param(params);
@@ -22,15 +21,20 @@ var httpGet = function(url, params) {
     return cache[url];
   }
 
-  cache[url] = promise = new Promise(function(_resolve, _reject) {
-    resolve = _resolve;
-    reject = _reject;
+  cache[url] = promise = new Promise(function(resolve, reject) {
+    jQuery.ajax({
+      url: url,
+      data: params,
+      dataType: 'text'
+    })
+      .done(function(data) {
+        resolve({
+          data: data
+        });
+      })
+      .fail(reject)
+    ;
   });
-
-  jQuery.get(url, params)
-    .done(resolve)
-    .fail(reject)
-  ;
 
   return promise;
 };

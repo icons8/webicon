@@ -65,7 +65,7 @@ var iconManager = {
     id = id || '';
 
     if (CHECK_URL_REGEX.test(id)) {
-      if (!this._hasIcon(id)) {
+      if (!this.hasIcon(id)) {
         this.registerIcon(id, id);
       }
       return this._getIcon(id)
@@ -81,17 +81,17 @@ var iconManager = {
     }
 
     if (iconSetId) {
-      if (this._hasIconSet(iconSetId)) {
+      if (this.hasIconSet(iconSetId)) {
         return this._getIconFromIconSet(iconId, iconSetId)
           .catch(this._announceIconNotFoundForPromiseCatch(iconId, iconSetId));
       }
     }
     else {
-      if (this._hasIcon(iconId)) {
+      if (this.hasIcon(iconId)) {
         return this._getIcon(iconId)
           .catch(this._announceIconNotFoundForPromiseCatch(iconId));
       }
-      if (this._hasDefaultIconSet()){
+      if (this.hasDefaultIconSet()){
         return this._getIconFromDefaultIconSet(iconId)
           .catch(this._announceIconNotFoundForPromiseCatch(iconId, this._defaultIconSetId));
       }
@@ -100,17 +100,20 @@ var iconManager = {
     return this._announceIconNotFound(id);
   },
 
-  _hasIcon: function(id) {
+  hasIcon: function(id) {
     return this._iconsScope.hasOwnProperty(id);
   },
 
-  _hasIconSet: function(id) {
+  hasIconSet: function(id) {
     return this._iconSetsScope.hasOwnProperty(id);
   },
 
-  _hasDefaultIconSet: function() {
-    return this._defaultIconSetId && this._hasIconSet(this._defaultIconSetId);
+  hasDefaultIconSet: function() {
+    return this._defaultIconSetId && this.hasIconSet(this._defaultIconSetId);
   },
+
+
+
 
   _cacheIcon: function(id, promise) {
     var

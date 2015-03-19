@@ -12,10 +12,10 @@ log.debug = log;
 function getConsoleWriteDelegate(type) {
   return function() {
     var
-      logProvider = providers.logProvider || window.console;
+      log = window.console;
 
-    if (logProvider) {
-      logProvider[type].apply(logProvider, Array.prototype.slice.call(arguments));
+    if (log) {
+      log[type].apply(log, Array.prototype.slice.call(arguments));
     }
   }
 }
