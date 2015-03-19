@@ -4,7 +4,7 @@ jQuery.fn.i8icons = i8IconsPlugin;
 function i8IconsPlugin(options) {
   var
     elements = this,
-    selector = 'i8-icon,[i8-icon],[i8icon],.i8icon,.i8-icon',
+    selector = 'i8-icon,[i8-icon],[i8icon],[data-i8-icon],[data-i8icon].i8icon,.i8-icon',
     optionsApplied = false;
 
   if (elements.is(selector)) {

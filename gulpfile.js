@@ -46,11 +46,22 @@ gulp.task('connect', function() {
 
           icons.forEach(function(name) {
             var
-              filename = path.join(assetsIconsSvgPath, name+'.svg');
+              parts,
+              prefixIconName,
+              iconName,
+              filename,
+              virtualIconPath;
 
+            parts = name.split('-');
+            iconName = parts.slice(1).join('-');
+            prefixIconName = parts.slice(0, 1);
+            filename = path.join(assetsIconsSvgPath, iconName + '.svg');
+
+            parts = path.resolve(filename).split(path.sep);
+            virtualIconPath = parts.slice(0, -1).concat(prefixIconName + '-' + parts.slice(-1)).join(path.sep);
             if (fs.existsSync(filename)) {
               spriter.add(
-                path.resolve(filename),
+                virtualIconPath,
                 null,
                 fs.readFileSync(filename, {encoding: 'utf-8'})
               );
