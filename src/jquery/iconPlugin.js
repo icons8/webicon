@@ -1,7 +1,7 @@
 
-jQuery.fn.i8icon = I8IconPlugin;
+jQuery.fn.i8icon = i8IconPlugin;
 
-function I8IconPlugin(config) {
+function i8IconPlugin(config) {
   config = config || {};
 
   if (typeof config == 'string') {
@@ -9,6 +9,33 @@ function I8IconPlugin(config) {
       icon: config
     };
   }
+
+  i8IconPlugin._applyConfig(config);
+
+  if (!i8IconsPlugin.bootstraped) {
+    i8IconsPlugin.cancelBootstrap();
+  }
+
+  return this.each(function() {
+    var
+      I8_ICON_DATA_KEY = '__i8.icon.instance',
+      element = $(this),
+      instance = element.data(I8_ICON_DATA_KEY),
+      options = {
+        icon: config.icon + ''
+      };
+
+    if (instance) {
+      instance.refresh(options);
+    }
+    else {
+      element.data(I8_ICON_DATA_KEY, new I8Icon(element, options));
+    }
+  });
+}
+
+i8IconPlugin._applyConfig = function(config) {
+  config = config || {};
 
   normalizeConfigs(config.icons).forEach(performIconConfig);
   normalizeConfigs(config["icon-sets"] || config.iconSets).forEach(performIconSetConfig);
@@ -59,33 +86,14 @@ function I8IconPlugin(config) {
     }
   }
 
-  return this.each(function() {
-    var
-      I8_ICON_DATA_KEY = '__i8.icon.instance',
-      element = $(this),
-      instance = element.data(I8_ICON_DATA_KEY),
-      options = {
-        icon: config.icon
-      };
-
-    if (instance) {
-      instance.refresh(options);
-    }
-    else {
-      element.data(I8_ICON_DATA_KEY, new I8Icon(element, options));
-    }
-  });
-}
+};
 
 function I8Icon(element, options) {
   options = options || {};
 
   this._element = element;
-
   expectAlt(element, this._getAlt() || options.alt || '');
-
   this._renderIcon(this._getIconId() || options.icon);
-
 }
 
 I8Icon.prototype = {
@@ -102,6 +110,7 @@ I8Icon.prototype = {
       index,
       prefixes,
       prefix,
+      list,
       id = null;
 
     prefixes = ['', 'i8-', 'i8', 'i8:'];
@@ -111,20 +120,32 @@ I8Icon.prototype = {
     }
 
     if (!id) {
-      id = element
+      list = element
         .attr('class')
-        .split(/\s+/)
-        .map(function(className) {
+        .split(/\s+/);
+
+      if (list.indexOf('i8icon') != -1 || list.indexOf('i8-icon') != -1) {
+        list = list.map(function(className) {
+          var
+            match;
+          match = /^icon[-:](.+)$/i.exec(className);
+          return match && match[1];
+        });
+      }
+      else {
+        list = list.map(function(className) {
           var
             match;
           match = /^i8[-:]?icon[-:](.+)$/i.exec(className);
           return match && match[1];
-        })
+        });
+      }
+
+      id = list
         .filter(function(iconId) {
           return iconId;
         })
-        [0]
-      ;
+        [0];
     }
 
     return id;

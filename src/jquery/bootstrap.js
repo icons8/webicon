@@ -1,14 +1,21 @@
 
 jQuery(function() {
-  console.log('bootstrap canceled');
-  return;
-
   var
     ASYNC_DELAY = 5,
     timeout = getService('timeout');
 
+  if (isBootstrapped()) {
+    return;
+  }
+
   timeout(ASYNC_DELAY).then(function() {
-    jQuery('i8-icon, [i8-icon]').i8icon();
+    if (isBootstrapped()) {
+      return;
+    }
+    jQuery(document).i8icons();
   });
 
+  function isBootstrapped() {
+    return jQuery.fn.i8icons.isBootstrapped();
+  }
 });
