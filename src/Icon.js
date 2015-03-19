@@ -4,10 +4,13 @@ function Icon(element, options) {
   var
     el = getService('nodeWrapper'),
     svgElement,
+    svgNode,
     attributes,
+    styles,
     defaultAttributes,
     index,
     originNode,
+    node,
     iconSize = null,
     viewBox = null;
 
@@ -33,9 +36,10 @@ function Icon(element, options) {
   if (originNode.tagName != 'svg') {
     if (originNode.tagName == 'symbol') {
       svgElement = el('<svg xmlns="http://www.w3.org/2000/svg">');
+      svgNode = svgElement[0];
       attributes = originNode.attributes;
       for (index = 0; index < attributes.length; index++) {
-        svgElement.attr(attributes[index].name, attributes[index].value);
+        svgNode.setAttribute(attributes[index].name, attributes[index].value);
       }
       element = svgElement.append(originNode.children);
     }
@@ -43,40 +47,46 @@ function Icon(element, options) {
       element = el('<svg xmlns="http://www.w3.org/2000/svg">').append(element);
     }
   }
+  node = element[0];
 
   defaultAttributes = {
     xmlns: 'http://www.w3.org/2000/svg',
-    "xmlns:xlink": 'http://www.w3.org/1999/xlink',
-    version: '1.0',
-    x: '0px',
-    y: '0px',
-    "xml:space": 'preserve'
+    version: '1.0'
   };
 
   Object.keys(defaultAttributes)
-    .filter(function(name) {
-      return !element.attr(name);
-    })
     .forEach(function(name) {
-      element.attr(name, defaultAttributes[name]);
+      if (!node.getAttribute(name)) {
+        node.setAttribute(name, defaultAttributes[name]);
+      }
     });
 
   iconSize = iconSize || iconManager._defaultIconSize;
 
-  element.attr({
+  attributes = {
     fit: '',
     height: '100%',
     width: '100%',
     preserveAspectRatio: 'xMidYMid meet',
-    viewBox: element.attr('viewBox') || viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
-  });
+    viewBox: node.getAttribute('viewBox') || viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
+  };
 
-  element.css({
+  Object.keys(attributes)
+    .forEach(function(name) {
+      node.setAttribute(name, attributes[name]);
+    });
+
+  styles = {
     "pointer-events": 'none',
     display: 'inline-block'
-  });
+  };
 
-  this.node = element[0];
+  Object.keys(styles)
+    .forEach(function(name) {
+      node.style[name] = styles[name];
+    });
+
+  this.node = node;
   this.iconSize = iconSize;
 }
 

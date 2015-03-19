@@ -113,8 +113,6 @@ var iconManager = {
   },
 
 
-
-
   _cacheIcon: function(id, promise) {
     var
       iconScope = this._iconsScope[id];

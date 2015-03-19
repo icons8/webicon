@@ -1,26 +1,41 @@
 'use strict';
 
-function IconSet(element, iconSize) {
+function IconSet(element, options) {
   var
     log = getService('log'),
     index,
     nodes,
     node,
-    iconOptions = {
-      iconSize: iconSize
-    };
+    iconSize = null,
+    viewBox = null
+    ;
+
+  if (options) {
+    switch(typeof options) {
+      case 'number':
+        iconSize = options;
+        break;
+      case 'string':
+        viewBox = options;
+        break;
+      default:
+        iconSize = options.iconSize || iconSize;
+        viewBox = options.viewBox || viewBox;
+    }
+  }
 
   this.icons = {};
 
-  if (element.attr('viewBox')) {
-    iconOptions.viewBox = element.attr('viewBox');
-  }
+  viewBox = viewBox || element[0].getAttribute('viewBox');
 
   try {
     nodes = element[0].querySelectorAll('[id]');
     for(index = 0; index < nodes.length; index++) {
       node = nodes[index];
-      this.icons[node.getAttribute('id')] = new Icon(node, iconOptions);
+      this.icons[node.getAttribute('id')] = new Icon(node, {
+        iconSize: iconSize,
+        viewBox: viewBox
+      });
     }
   }
   catch(e) {
@@ -28,15 +43,15 @@ function IconSet(element, iconSize) {
   }
 
   this.iconSize = iconSize;
-  this.viewBox = iconOptions.viewBox;
+  this.viewBox = viewBox;
 }
 
-IconSet.loadByUrl = function(url, iconSize) {
+IconSet.loadByUrl = function(url, options) {
   return svgLoader.loadByUrl(url)
     .then(function(element) {
       return new IconSet(
         element,
-        iconSize
+        options
       )
     });
 };
@@ -70,11 +85,11 @@ IconSet.prototype = {
     return this;
   },
 
-  mergeByUrl: function(url, iconSize) {
+  mergeByUrl: function(url, options) {
     var
       self = this;
 
-    return IconSet.loadByUrl(url, iconSize)
+    return IconSet.loadByUrl(url, options)
       .then(function(iconSet) {
         return self.merge(iconSet);
       })
