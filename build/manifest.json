@@ -1,0 +1,61 @@
+{
+  "common": {
+    "build": false,
+    "files": [
+      "config.js",
+      "expectAlt.js",
+      "getService.js",
+      "Icon.js",
+      "iconManager.js",
+      "icons8ApiExtension.js",
+      "IconSet.js",
+      "providers.js",
+      "svgLoader.js"
+    ]
+  },
+  "ng": {
+    "extend": "common",
+    "cd": "angular",
+    "files": [
+      "mergeObjects.js",
+      "providers.js",
+      "iconModule.js",
+      "registerProviders.js",
+      "iconService.js",
+      "iconDirective.js"
+    ],
+    "out": "i8icon-slim-angular.js"
+  },
+  "ng-with-api": {
+    "extend": "ng",
+    "files": [
+      "icons8ApiExtension.js",
+      "icons8ApiExtension.debug.js"
+    ],
+    "out": "i8icon-angular.js"
+  },
+  "jq": {
+    "extend": "common",
+    "cd": "jquery",
+    "files": [
+      "log.js",
+      "httpGet.js",
+      "timeout.js",
+      "Promise.js",
+      "mergeObjects.js",
+      "providers.js",
+      "iconPlugin.js",
+      "iconsPlugin.js",
+      "bootstrap.js"
+    ],
+    "out": "i8icon-slim.js"
+  },
+  "jq-with-api": {
+    "extend": "jq",
+    "files": [
+      "icons8ApiExtension.js",
+      "icons8ApiExtension.debug.js"
+    ],
+    "out": "i8icon.js"
+  }
+}
