@@ -98,9 +98,36 @@ I8Icon.prototype = {
 
   _getIconId: function() {
     var
-      element = this._element;
-    return element.attr('icon') || element.attr('i8-icon')
-      || element.data('icon') || element.data('i8-icon');
+      element = this._element,
+      index,
+      prefixes,
+      prefix,
+      id = null;
+
+    prefixes = ['', 'i8-', 'i8', 'i8:'];
+    for (index = 0; !id && index < prefixes.length; index++) {
+      prefix = prefixes[index];
+      id = element.attr(prefix + 'icon') || element.data(prefix + 'icon');
+    }
+
+    if (!id) {
+      id = element
+        .attr('class')
+        .split(/\s+/)
+        .map(function(className) {
+          var
+            match;
+          match = /^i8[-:]?icon[-:](.+)$/i.exec(className);
+          return match && match[1];
+        })
+        .filter(function(iconId) {
+          return iconId;
+        })
+        [0]
+      ;
+    }
+
+    return id;
   },
 
   _renderIcon: function(iconId) {

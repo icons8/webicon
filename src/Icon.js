@@ -5,6 +5,7 @@ function Icon(element, options) {
     el = getService('nodeWrapper'),
     svgElement,
     attributes,
+    defaultAttributes,
     index,
     originNode,
     iconSize = null,
@@ -43,9 +44,22 @@ function Icon(element, options) {
     }
   }
 
-  if (!element.attr('xmlns')) {
-    element.attr('xmlns', "http://www.w3.org/2000/svg");
-  }
+  defaultAttributes = {
+    xmlns: 'http://www.w3.org/2000/svg',
+    "xmlns:xlink": 'http://www.w3.org/1999/xlink',
+    version: '1.0',
+    x: '0px',
+    y: '0px',
+    "xml:space": 'preserve'
+  };
+
+  Object.keys(defaultAttributes)
+    .filter(function(name) {
+      return !element.attr(name);
+    })
+    .forEach(function(name) {
+      element.attr(name, defaultAttributes[name]);
+    });
 
   iconSize = iconSize || iconManager._defaultIconSize;
 
@@ -59,7 +73,7 @@ function Icon(element, options) {
 
   element.css({
     "pointer-events": 'none',
-    display: 'block'
+    display: 'inline-block'
   });
 
   this.node = element[0];

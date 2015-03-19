@@ -57,11 +57,15 @@ function expectAlt(element, alt) {
     var
       parent = element.parent();
 
-    return parent.attr('aria-label')
-      || parent.text()
-      || parent.parent().attr('aria-label')
-      || parent.parent().text()
-      ;
+    if (parent.attr('aria-label') || parent.text().trim()) {
+      return true;
+    }
+    if (parent.prop('tagName') != 'BODY') {
+      if (parent.parent().attr('aria-label') || parent.parent().text().trim()) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="demo-icon">
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,11 +27,16 @@
 
   <script type="text/javascript">
     $(function() {
-      $('i8-icon, [i8-icon]').i8icon({
+      $('i8-icon, [i8-icon], [class*="i8"]').i8icon({
         icons: {
           clock: 'assets/icons/clock.svg',
           calendar: 'assets/icons/calendar.svg',
-          rating: 'assets/icons/rating.svg'
+          rating: 'assets/icons/rating.svg',
+          like: 'assets/icons/like.svg',
+          _any_unique_key: {
+            id: 'checkmark',
+            url: 'assets/icons/checkmark.svg'
+          }
         }
       });
       $('.icon-calendar').i8icon('calendar');
@@ -39,10 +44,10 @@
   </script>
 
   <style type="text/css">
-    i8-icon, [i8-icon], [class*="icon-"] {
+    i8-icon, [i8-icon], [class*="icon-"], [class*="i8"] {
       display: inline-block;
     }
-    i8-icon, [i8-icon], [class*="icon-"] {
+    i8-icon, [i8-icon], [class*="icon-"], [class*="i8"] {
       width: 100px;
       height: 100px;
     }
@@ -54,6 +59,8 @@
 <i8-icon icon="assets/icons/icons8_cup.svg"></i8-icon>
 <i8-icon icon="clock"></i8-icon>
 <span i8-icon="rating"></span>
+<div class="i8icon-like"></div>
+<div class="i8-icon-checkmark"></div>
 
 </body>
 </html>

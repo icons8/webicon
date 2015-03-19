@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="demo-icon">
+<html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,29 +13,32 @@
   <script type="text/javascript" src="../../IconSet.js"></script>
   <script type="text/javascript" src="../../iconManager.js"></script>
 
-  <script type="text/javascript" src="../../../bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="../../../bower_components/jquery/dist/jquery.js"></script>
 
+  <script type="text/javascript" src="../log.js"></script>
+  <script type="text/javascript" src="../httpGet.js"></script>
+  <script type="text/javascript" src="../timeout.js"></script>
+  <script type="text/javascript" src="../Promise.js"></script>
   <script type="text/javascript" src="../mergeObjects.js"></script>
   <script type="text/javascript" src="../providers.js"></script>
 
   <script type="text/javascript" src="../../icons8ApiExtension.js"></script>
 
-  <script type="text/javascript" src="../iconModule.js"></script>
-  <script type="text/javascript" src="../registerProviders.js"></script>
-  <script type="text/javascript" src="../iconService.js"></script>
-  <script type="text/javascript" src="../iconDirective.js"></script>
+  <script type="text/javascript" src="../iconPlugin.js"></script>
+  <script type="text/javascript" src="../iconsPlugin.js"></script>
+  <script type="text/javascript" src="../bootstrap.js"></script>
 
   <script type="text/javascript">
-    angular
-      .module('demo-icon', ['i8.icon'])
-    ;
+    $(function() {
+      $('i8-icon, [i8-icon], [class*="i8"]').i8icon();
+    });
   </script>
 
   <style type="text/css">
-    i8-icon, [i8-icon] {
+    i8-icon, [i8-icon], [class*="i8"] {
       display: inline-block;
     }
-    i8-icon, [i8-icon] {
+    i8-icon, [i8-icon], [class*="i8"] {
       width: 100px;
       height: 100px;
     }
@@ -43,10 +46,10 @@
 </head>
 <body>
 
-<i8-icon icon="win8:link"></i8-icon>
-<i8-icon icon="flat:like"></i8-icon>
+<i8-icon icon="win8:link" alt="link"></i8-icon>
+<i8-icon icon="flat:like" data-alt="like"></i8-icon>
 <i8-icon icon="icons8_cup"></i8-icon>
-
+<div class="i8-icon-calendar"></div>
 
 </body>
 </html>

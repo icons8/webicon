@@ -6,6 +6,7 @@ var httpGet = function(url, params) {
     Promise = getService('Promise'),
     cache = httpGetCache,
     urlBuilder = [url],
+    compiledUrl,
     query,
     promise
     ;
@@ -15,13 +16,13 @@ var httpGet = function(url, params) {
   if (query) {
     urlBuilder.push(query);
   }
-  url = urlBuilder.join('?');
+  compiledUrl = urlBuilder.join('?');
 
-  if (cache.hasOwnProperty(url)) {
-    return cache[url];
+  if (cache.hasOwnProperty(compiledUrl)) {
+    return cache[compiledUrl];
   }
 
-  cache[url] = promise = new Promise(function(resolve, reject) {
+  cache[compiledUrl] = promise = new Promise(function(resolve, reject) {
     jQuery.ajax({
       url: url,
       data: params,
