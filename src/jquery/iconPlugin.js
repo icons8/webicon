@@ -31,6 +31,7 @@ function i8IconPlugin(config) {
     else {
       element.data(I8_ICON_DATA_KEY, new I8Icon(element, options));
     }
+    element.addClass('i8-icon');
   });
 }
 

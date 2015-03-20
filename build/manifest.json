@@ -1,6 +1,6 @@
 {
   "common": {
-    "build": false,
+    "cd": "src",
     "files": [
       "config.js",
       "expectAlt.js",
@@ -14,7 +14,7 @@
     ]
   },
   "ng": {
-    "extend": "common",
+    "inherit": "common",
     "cd": "angular",
     "files": [
       "mergeObjects.js",
@@ -24,18 +24,18 @@
       "iconService.js",
       "iconDirective.js"
     ],
-    "out": "i8icon-slim-angular.js"
+    "out": "angular-i8icon-core.js"
   },
   "ng-with-api": {
-    "extend": "ng",
+    "inherit": "ng",
     "files": [
       "icons8ApiExtension.js",
       "icons8ApiExtension.debug.js"
     ],
-    "out": "i8icon-angular.js"
+    "out": "angular-i8icon.js"
   },
   "jq": {
-    "extend": "common",
+    "inherit": "common",
     "cd": "jquery",
     "files": [
       "log.js",
@@ -48,10 +48,10 @@
       "iconsPlugin.js",
       "bootstrap.js"
     ],
-    "out": "i8icon-slim.js"
+    "out": "i8icon-core.js"
   },
   "jq-with-api": {
-    "extend": "jq",
+    "inherit": "jq",
     "files": [
       "icons8ApiExtension.js",
       "icons8ApiExtension.debug.js"

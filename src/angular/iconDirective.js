@@ -23,10 +23,12 @@ function i8IconDirective($i8Icon) {
     },
     link: function (scope, element, attrs) {
       var
+        altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
         attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || '')
         ;
 
-      expectAlt(element, attrs.alt || attrs[attrName] || '');
+      expectAlt(element, attrs[altAttrName] || attrs[attrName] || '');
+      element.addClass('i8-icon');
 
       if (attrName) {
         attrs.$observe(attrName, function(icon) {

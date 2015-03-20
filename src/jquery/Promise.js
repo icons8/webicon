@@ -38,7 +38,15 @@ if (!Promise) {
     var
       deferred = new jQuery.Deferred();
     return new Promise(
-      deferred.when.apply(deferred, Array.prototype.slice.call(arguments))
+      deferred.when.apply(
+        deferred,
+        Array.prototype.slice.call(arguments)
+          .map(function(param) {
+            return (param && typeof param == 'object' && param._jqPromise)
+              ? param._jqPromise
+              : param;
+          })
+      )
     );
   };
 

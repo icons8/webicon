@@ -1,17 +1,93 @@
 'use strict';
 
-var gulp = require('gulp');
-var connect = require('gulp-connect');
-var runSequence = require('run-sequence');
-var SVGSpriter = require('svg-sprite');
 var fs = require('fs');
 var path = require('path');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var rename = require('gulp-rename');
+var connect = require('gulp-connect');
+var runSequence = require('run-sequence');
+var merge = require('merge-stream');
+var SVGSpriter = require('svg-sprite');
+var concat = require('gulp-concat');
+var jsmin = require('jsmin').jsmin;
+var uglify = require('gulp-uglify');
+var plumber = require('gulp-plumber');
+var sourcemaps = require('gulp-sourcemaps');
 
 var connectOptions = {
   port: 3452
 };
 var apiIconSetsUrl = '/icon-sets';
 var assetsIconsSvgPath = './assets/icons/svg';
+
+var buildManifestPath = './build/manifest.json';
+var distPath = './dist';
+
+var readJsonFile = function(filename) {
+  try {
+    return fs.existsSync(filename) ? JSON.parse(jsmin(fs.readFileSync(filename) + '')) : undefined;
+  }
+  catch(e) {
+    gutil.log(e);
+    return null;
+  }
+};
+
+gulp.task('scripts', function() {
+  var
+    tasks = [],
+    manifest = readJsonFile(buildManifestPath) || {};
+
+  function getFilesForDist(name, files) {
+    var
+      config = manifest[name],
+      index;
+
+    files = files || [];
+
+    Array.prototype.splice.apply(files, [0, 0].concat(config.files || []));
+    if (config.cd) {
+      for (index = 0; index < files.length; index++) {
+        files[index] = path.join(config.cd, files[index]);
+      }
+    }
+
+    return config.inherit
+      ? getFilesForDist(config.inherit, files)
+      : files
+    ;
+  }
+
+  Object.keys(manifest)
+    .filter(function(name) {
+      return manifest[name].out;
+    })
+    .forEach(function(name) {
+      var
+        config = manifest[name],
+        task;
+
+      task = gulp.src(getFilesForDist(name))
+        .pipe(plumber())
+        .pipe(concat(config.out))
+        .pipe(gulp.dest('.', { cwd: distPath }))
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(sourcemaps.init())
+          .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('.', { cwd: distPath }))
+      ;
+
+      tasks.push(task);
+    });
+
+  if (!tasks.length) {
+    return;
+  }
+
+  return merge(tasks);
+});
 
 gulp.task('connect', function() {
   var options = connectOptions;
@@ -20,8 +96,6 @@ gulp.task('connect', function() {
     var list = [];
     list.push(connect.responseTime());
     list.push(connect.query());
-    list.push(connect.urlencoded());
-    list.push(connect.json());
 
     list.push(
       function(req, res, next) {
@@ -101,9 +175,9 @@ gulp.task('connect', function() {
 });
 
 gulp.task('build', function(done) {
-  runSequence('connect', done);
+  runSequence('scripts', done);
 });
 
 gulp.task('default', function(done) {
-  runSequence('build', done);
+  runSequence('connect', done);
 });
