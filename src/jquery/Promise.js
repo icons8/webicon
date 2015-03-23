@@ -1,9 +1,12 @@
+'use strict';
 
-var Promise = window.Promise;
+service('Promise', function() {
 
-if (!Promise) {
+  if (window.Promise) {
+    return window.Promise;
+  }
 
-  Promise = function(param) {
+  function Promise(param) {
     var
       deferred;
 
@@ -20,7 +23,7 @@ if (!Promise) {
     else {
       this._jqPromise = new jQuery.Deferred().resolve(param);
     }
-  };
+  }
 
   Promise.reject = function(value) {
     return new Promise(
@@ -31,22 +34,6 @@ if (!Promise) {
   Promise.resolve = function(value) {
     return new Promise(
       new jQuery.Deferred().resolve(value)
-    );
-  };
-
-  Promise.all = function() {
-    var
-      deferred = new jQuery.Deferred();
-    return new Promise(
-      deferred.when.apply(
-        deferred,
-        Array.prototype.slice.call(arguments)
-          .map(function(param) {
-            return (param && typeof param == 'object' && param._jqPromise)
-              ? param._jqPromise
-              : param;
-          })
-      )
     );
   };
 
@@ -80,12 +67,10 @@ if (!Promise) {
       );
 
       return new Promise(jqPromise);
-    },
-
-    catch: function(fail) {
-      return this.then(null, fail);
     }
 
   };
 
-}
+  return Promise;
+
+});

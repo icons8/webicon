@@ -3,104 +3,95 @@
 var fs = require('fs');
 var path = require('path');
 var gulp = require('gulp');
-var gutil = require('gulp-util');
 var rename = require('gulp-rename');
 var connect = require('gulp-connect');
 var runSequence = require('run-sequence');
-var merge = require('merge-stream');
 var SVGSpriter = require('svg-sprite');
 var concat = require('gulp-concat');
-var jsmin = require('jsmin').jsmin;
 var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
+var del = require('del');
 
-var connectOptions = {
-  port: 3452
-};
-var apiIconSetsUrl = '/icon-sets';
-var assetsIconsSvgPath = './assets/icons/svg';
 
-var buildManifestPath = './build/manifest.json';
-var distPath = './dist';
-
-var readJsonFile = function(filename) {
-  try {
-    return fs.existsSync(filename) ? JSON.parse(jsmin(fs.readFileSync(filename) + '')) : undefined;
-  }
-  catch(e) {
-    gutil.log(e);
-    return null;
-  }
-};
-
-gulp.task('scripts', function() {
+gulp.task('angular-module', function() {
   var
-    tasks = [],
-    manifest = readJsonFile(buildManifestPath) || {};
+    pattern = [
+      'angular/module/module.prefix',
+      'core/**/*.js',
+      'angular/*.js',
+      'extensions/**/*.js',
+      'angular/module/*.js',
+      'angular/module/module.js',
+      'angular/module/module.suffix'
+    ];
 
-  function getFilesForDist(name, files) {
-    var
-      config = manifest[name],
-      index;
-
-    files = files || [];
-
-    Array.prototype.splice.apply(files, [0, 0].concat(config.files || []));
-    if (config.cd) {
-      for (index = 0; index < files.length; index++) {
-        files[index] = path.join(config.cd, files[index]);
-      }
-    }
-
-    return config.inherit
-      ? getFilesForDist(config.inherit, files)
-      : files
-    ;
-  }
-
-  Object.keys(manifest)
-    .filter(function(name) {
-      return manifest[name].out;
-    })
-    .forEach(function(name) {
-      var
-        config = manifest[name],
-        task;
-
-      task = gulp.src(getFilesForDist(name))
-        .pipe(plumber())
-        .pipe(concat(config.out))
-        .pipe(gulp.dest('.', { cwd: distPath }))
-        .pipe(rename({ suffix: ".min" }))
-        .pipe(sourcemaps.init())
-          .pipe(uglify())
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('.', { cwd: distPath }))
-      ;
-
-      tasks.push(task);
-    });
-
-  if (!tasks.length) {
-    return;
-  }
-
-  return merge(tasks);
+  return gulp.src(pattern, { cwd: 'src' })
+    .pipe(plumber())
+    .pipe(concat('angular-i8icon.js'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }))
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(sourcemaps.init())
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }))
 });
 
-gulp.task('connect', function() {
-  var options = connectOptions;
+gulp.task('jquery-plugin', function() {
+  var
+    pattern = [
+      'jquery/plugin/plugin.prefix',
+      'core/**/*.js',
+      'jquery/*.js',
+      'extensions/**/*.js',
+      'jquery/plugin/*.js',
+      'jquery/plugin/plugin.js',
+      'jquery/plugin/plugin.suffix'
+    ];
+
+  return gulp.src(pattern, { cwd: 'src' })
+    .pipe(plumber())
+    .pipe(concat('jquery-i8icon.js'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }))
+    .pipe(rename({ suffix: ".min" }))
+    .pipe(sourcemaps.init())
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }))
+});
+
+gulp.task('scripts', function(done) {
+  runSequence(['angular-module', 'jquery-plugin'], done);
+});
+
+
+gulp.task('clean', function(done) {
+  var
+    pattern = [
+      'dist/*',
+      '!dist/.git*'
+    ];
+  del(pattern, done);
+});
+
+
+gulp.task('watch', function() {
+  gulp.watch('src/**', ['scripts']);
+});
+
+gulp.task('demo-server', function() {
+  var options = {
+    port: 3452,
+    root: ['demo', '.']
+  };
 
   options.middleware = function(connect, options) {
-    var list = [];
-    list.push(connect.responseTime());
-    list.push(connect.query());
-
-    list.push(
+    return [
+      connect.query(),
       function(req, res, next) {
         var
-          url = apiIconSetsUrl,
+          url = '/icon-sets',
+          iconsAssetsPath = 'assets/icons/svg',
           icons,
           mode,
           spriterConfig,
@@ -129,7 +120,7 @@ gulp.task('connect', function() {
             parts = name.split('-');
             iconName = parts.slice(1).join('-');
             prefixIconName = parts.slice(0, 1);
-            filename = path.join(assetsIconsSvgPath, iconName + '.svg');
+            filename = path.join(iconsAssetsPath, iconName + '.svg');
 
             parts = path.resolve(filename).split(path.sep);
             virtualIconPath = parts.slice(0, -1).concat(prefixIconName + '-' + parts.slice(-1)).join(path.sep);
@@ -166,18 +157,17 @@ gulp.task('connect', function() {
         }
         next();
       }
-    );
+    ];
 
-    return list;
   };
 
   connect.server(options);
 });
 
 gulp.task('build', function(done) {
-  runSequence('scripts', done);
+  runSequence('clean', 'scripts', done);
 });
 
 gulp.task('default', function(done) {
-  runSequence('connect', done);
+  runSequence('clean', 'scripts', ['watch', 'demo-server'], done);
 });

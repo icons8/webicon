@@ -1,27 +1,34 @@
 'use strict';
 
-var timeout = function(fn, delay) {
-  var
-    Promise = getService('Promise'),
-    resolve,
-    promise;
+service('timeout', function(service) {
 
-  if (typeof fn != 'function') {
-    delay = fn;
-    fn = function() {};
+  function timeout(fn, delay) {
+    var
+      Promise = service('Promise'),
+      promise,
+      resolve;
+
+    if (typeof fn != 'function') {
+      delay = fn;
+      fn = function() {};
+    }
+
+    promise = new Promise(function(resolveFn) {
+      resolve = resolveFn;
+    });
+    promise.then(fn);
+    promise._timeoutId = setTimeout(resolve, delay);
+
+    return promise;
   }
 
-  promise = new Promise(function(resolveFn) {
-    resolve = resolveFn;
-  });
-  promise.then(fn);
-  promise._timeoutId = setTimeout(resolve, delay);
+  timeout.cancel = function(timeoutPromise) {
+    if (timeoutPromise._timeoutId) {
+      clearTimeout(timeoutPromise._timeoutId);
+    }
+  };
 
-  return promise;
-};
+  return timeout;
 
-timeout.cancel = function(timeoutPromise) {
-  if (timeoutPromise._timeoutId) {
-    clearTimeout(timeoutPromise._timeoutId);
-  }
-};
+});
+

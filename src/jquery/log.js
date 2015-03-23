@@ -1,32 +1,34 @@
+'use strict';
 
-
-var
-  log = getConsoleWriteDelegateDebug();
-
-log.debug = log;
-
-['log', 'info', 'warn', 'error'].forEach(function(type) {
-  log[type] = getConsoleWriteDelegate(type);
-});
-
-function getConsoleWriteDelegate(type) {
-  return function() {
-    var
-      log = window.console;
-
-    if (log) {
-      log[type].apply(log, Array.prototype.slice.call(arguments));
-    }
-  }
-}
-
-function getConsoleWriteDelegateDebug() {
+service('log', function() {
   var
     noop = function() {};
 
-  if (!config.debugEnabled) {
-    return noop;
+  function log() {
+    if (!log.debugEnabled) {
+      return noop;
+    }
+    return log.debug.apply(log, Array.prototype.slice.call(arguments));
   }
 
-  return getConsoleWriteDelegate('debug');
-}
+  ['log', 'info', 'warn', 'error', 'debug'].forEach(function(type) {
+    log[type] = getConsoleWriteDelegate(type);
+  });
+
+  return log;
+
+  function getConsoleWriteDelegate(type) {
+    return function() {
+      var
+        console = window.console;
+
+      if (console) {
+        console[type].apply(console, Array.prototype.slice.call(arguments));
+      }
+    }
+  }
+
+
+
+});
+
