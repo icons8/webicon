@@ -2,18 +2,20 @@
 
 service('log', function() {
   var
-    noop = function() {};
+    noop = function() {},
+    log = {},
+    logDebug = getConsoleWriteDelegate('debug');
 
-  function log() {
+  ['log', 'info', 'warn', 'error'].forEach(function(type) {
+    log[type] = getConsoleWriteDelegate(type);
+  });
+
+  log.debug = function() {
     if (!log.debugEnabled) {
       return noop;
     }
-    return log.debug.apply(log, Array.prototype.slice.call(arguments));
-  }
-
-  ['log', 'info', 'warn', 'error', 'debug'].forEach(function(type) {
-    log[type] = getConsoleWriteDelegate(type);
-  });
+    return logDebug.apply(null, Array.prototype.slice.call(arguments));
+  };
 
   return log;
 

@@ -4,14 +4,14 @@ function bootstrap() {
 
   jQuery(function() {
     var
-      ASYNC_DELAY = 5,
+      BOOTSTRAP_DELAY = 5,
       timeout = service('timeout');
 
     if (IconsPlugin.bootstraped) {
       return;
     }
 
-    timeout(ASYNC_DELAY).then(function() {
+    timeout(BOOTSTRAP_DELAY).then(function() {
       if (IconsPlugin.bootstraped) {
         return;
       }

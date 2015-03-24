@@ -37,6 +37,20 @@ service('Promise', function() {
     );
   };
 
+  Promise.all = function() {
+    var
+      args = Array.prototype.slice.call(arguments),
+      deferred = new jQuery.Deferred();
+    return new Promise(
+      deferred.when.apply(
+        deferred,
+        args.length <= 1
+          ? args
+          : [args]
+      )
+    );
+  };
+
   Promise.prototype = {
 
     then: function(done, fail) {

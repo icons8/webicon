@@ -1,11 +1,12 @@
 'use strict';
 
-service('Icon', function(service) {
+service('SvgIcon', function(service) {
 
-  function Icon(element, options) {
+  function SvgIcon(element, options) {
     var
       nodeWrapper = service('nodeWrapper'),
       iconManager = service('iconManager'),
+      parseSvgOptions = service('parseSvgOptions'),
       svgElement,
       svgNode,
       attributes,
@@ -14,23 +15,9 @@ service('Icon', function(service) {
       index,
       originNode,
       node,
-      iconSize = null,
-      viewBox = null;
+      iconSize;
 
-    if (options) {
-      switch(typeof options) {
-        case 'number':
-          iconSize = options;
-          break;
-        case 'string':
-          viewBox = options;
-          break;
-        default:
-          iconSize = options.iconSize || iconSize;
-          viewBox = options.viewBox || viewBox;
-      }
-    }
-
+    options = parseSvgOptions(options);
     element = nodeWrapper(element);
     originNode = element[0];
 
@@ -64,14 +51,14 @@ service('Icon', function(service) {
         }
       });
 
-    iconSize = iconSize || iconManager.getDefaultIconSize();
+    iconSize = options.iconSize || iconManager.getDefaultIconSize();
 
     attributes = {
       fit: '',
       height: '100%',
       width: '100%',
       preserveAspectRatio: 'xMidYMid meet',
-      viewBox: node.getAttribute('viewBox') || viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
+      viewBox: node.getAttribute('viewBox') || options.viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
     };
 
     Object.keys(attributes)
@@ -93,20 +80,20 @@ service('Icon', function(service) {
     this.iconSize = iconSize;
   }
 
-  Icon.loadByUrl = function(url, options) {
+  SvgIcon.loadByUrl = function(url, options) {
     var
-      svgLoader = service('svgLoader');
+      loadSvgByUrl = service('loadSvgByUrl');
 
-    return svgLoader.loadByUrl(url)
+    return loadSvgByUrl(url)
       .then(function(element) {
-        return new Icon(
+        return new SvgIcon(
           element,
           options
         )
       });
   };
 
-  Icon.prototype = {
+  SvgIcon.prototype = {
 
     clone: function() {
       return this.node.cloneNode(true);
@@ -114,6 +101,6 @@ service('Icon', function(service) {
 
   };
 
-  return Icon;
+  return SvgIcon;
 
 });

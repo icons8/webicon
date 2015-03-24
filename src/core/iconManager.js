@@ -5,34 +5,56 @@ service('iconManager', function(service) {
   var
     CHECK_URL_REGEX = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i,
     DEFAULT_ICON_SIZE = 24,
-    DELAY_FOM_CUMULATIVE_ICON_SET = 10;
+    SINGLE_ICONS_COLLECTION_ID = '__SINGLE_ICONS_COLLECTION';
 
   function IconManager() {
-    this._iconsScope = {};
-    this._iconSetsScope = {};
-
-    this._defaultIconSetId = null;
+    this._collections = {};
+    this._defaultCollectionId = null;
     this._defaultIconSize = DEFAULT_ICON_SIZE;
   }
 
   IconManager.prototype = {
 
-    registerIcon: function(id, urlResolver, options) {
+    addIcon: function(id, urlResolver, options) {
       var
-        config = parseEntityConfigFromArguments(id, urlResolver, options);
-      this._iconsScope[config.id] = config;
+        SvgIconScope = service('SvgIconScope');
+      this._getSingleIconsCollection().add(new SvgIconScope(id, urlResolver, options));
       return this;
     },
 
-    registerIconSet: function(id, urlResolver, options) {
+    addSvgIconSet: function(id, urlResolver, options) {
       var
-        config = parseEntityConfigFromArguments(id, urlResolver, options);
-      this._iconSetsScope[config.id] = config;
+        SvgCumulativeIconSetScope = service('SvgCumulativeIconSetScope'),
+        SvgIconSetScope = service('SvgIconSetScope'),
+        scope;
+
+      options = options || {};
+
+      scope = options.cumulative
+        ? new SvgCumulativeIconSetScope(id, urlResolver, options)
+        : new SvgIconSetScope(id, urlResolver, options);
+
+      this._getCollection(id).add(scope);
+
       return this;
     },
 
-    setDefaultIconSetId: function(id) {
-      this._defaultIconSetId = id;
+    addFontIconSet: function(id, classResolver) {
+      var
+        FontIconSetScope = service('FontIconSetScope');
+      this._getCollection(id).add(new FontIconSetScope(id, classResolver));
+      return this;
+    },
+
+    addIconSetAlias: function(id, alias) {
+      if (!this._collections.hasOwnProperty(alias)) {
+        this._collections[alias] = this._getCollection(id);
+      }
+      return this;
+    },
+
+    setDefaultIconSet: function(id) {
+      this._defaultCollectionId = id;
       return this;
     },
 
@@ -45,20 +67,13 @@ service('iconManager', function(service) {
       return this._defaultIconSize;
     },
 
-    preload: function() {
+    preLoad: function() {
       var
-        self = this,
-        iconsScope = this._iconsScope,
-        iconSetsScope = this._iconSetsScope;
+        collections = this._collections;
 
-      Object.keys(iconsScope).forEach(function(id) {
-        self._getIcon(id);
+      Object.keys(collections).forEach(function(id) {
+        collections[id].preLoad();
       });
-      Object.keys(iconSetsScope).forEach(function(id) {
-        if (!iconSetsScope[id].cumulative) {
-          self._getIconSet(id);
-        }
-      })
 
     },
 
@@ -71,10 +86,10 @@ service('iconManager', function(service) {
       id = id || '';
 
       if (CHECK_URL_REGEX.test(id)) {
-        if (!this.hasIcon(id)) {
-          this.registerIcon(id, id);
+        if (!this.hasSingleIcon(id)) {
+          this.addIcon(id, id);
         }
-        return this._getIcon(id)
+        return this._getSingleIcon(id)
           .then(null, announceIconNotFoundForPromiseCatch(id));
       }
 
@@ -93,165 +108,62 @@ service('iconManager', function(service) {
         }
       }
       else {
-        if (this.hasIcon(iconId)) {
-          return this._getIcon(iconId)
+        if (this.hasSingleIcon(iconId)) {
+          return this._getSingleIcon(iconId)
             .then(null, announceIconNotFoundForPromiseCatch(iconId));
         }
-        if (this.hasDefaultIconSet()){
+        if (this.hasDefaultIconSet()) {
           return this._getIconFromDefaultIconSet(iconId)
-            .then(null, announceIconNotFoundForPromiseCatch(iconId, this._defaultIconSetId));
+            .then(null, announceIconNotFoundForPromiseCatch(iconId, this._defaultCollectionId));
         }
       }
 
       return announceIconNotFound(id);
     },
 
-    hasIcon: function(id) {
-      return this._iconsScope.hasOwnProperty(id);
+    hasSingleIcon: function(id) {
+      return this._getSingleIconsCollection()
+        .collection
+        .filter(function(scope) {
+          return scope.hasIcon(id);
+        })
+        .length > 0;
     },
 
     hasIconSet: function(id) {
-      return this._iconSetsScope.hasOwnProperty(id);
+      return this._collections.hasOwnProperty(id);
     },
 
     hasDefaultIconSet: function() {
-      return this._defaultIconSetId && this.hasIconSet(this._defaultIconSetId);
+      return this._defaultCollectionId && this.hasIconSet(this._defaultCollectionId);
     },
 
-
-
-    _cacheIcon: function(id, promise) {
+    _getCollection: function(id) {
       var
-        iconScope = this._iconsScope[id];
-      iconScope._cache = promise;
-      promise.then(null, function() {
-        delete iconScope._cache;
-      });
-      return promise;
-    },
-
-    _getIcon: function(id) {
-      var
-        Icon = service('Icon'),
-        iconScope = this._iconsScope[id];
-      if (iconScope._cache) {
-        return iconScope._cache;
+        ScopeCollection = service('ScopeCollection');
+      if (!this._collections.hasOwnProperty(id)) {
+        this._collections[id] = new ScopeCollection();
       }
-      return this._cacheIcon(
-        id,
-        Icon.loadByUrl(iconScope.urlResolver(), iconScope)
-      );
+      return this._collections[id];
+    },
+
+    _getSingleIconsCollection: function() {
+      return this._getCollection(SINGLE_ICONS_COLLECTION_ID);
+    },
+
+    _getSingleIcon: function(id) {
+      return this._getSingleIconsCollection().getIcon(id);
     },
 
     _getIconFromDefaultIconSet: function(id) {
-      return this._getIconFromIconSet(id, this._defaultIconSetId);
-    },
-
-    _cacheIconSet: function(id, promise) {
-      var
-        iconScope = this._iconSetsScope[id];
-      iconScope._cache = promise;
-      promise.then(null, function() {
-        delete iconScope._cache;
-      });
-      return promise;
+      return this._getIconFromIconSet(id, this._defaultCollectionId);
     },
 
     _getIconFromIconSet: function(iconId, iconSetId) {
-      var
-        Promise = service('Promise'),
-        timeout = service('timeout'),
-        IconSet = service('IconSet'),
-        self = this,
-        iconSetScope = this._iconSetsScope[iconSetId],
-        local = iconSetScope._local;
-
-      if (iconSetScope.cumulative) {
-        if (local.wait) {
-          if (local.icons.indexOf(iconId) == -1) {
-            local.icons.push(iconId);
-          }
-          return getIcon(local.wait);
-        }
-        else {
-          local.icons = [iconId];
-          local.wait = timeout(DELAY_FOM_CUMULATIVE_ICON_SET).then(function() {
-            local.wait = null;
-            return loadIconSet(local.icons);
-          });
-
-          return getIcon(local.wait);
-        }
-      }
-      else {
-        return getIcon(loadIconSet());
-      }
-
-      function loadIconSet(iconIdList) {
-        if (!iconIdList) {
-          if (iconSetScope._cache) {
-            return iconSetScope._cache;
-          }
-          return self._cacheIconSet(
-            iconSetId,
-            IconSet.loadByUrl(iconSetScope.urlResolver(), iconSetScope)
-          );
-        }
-        if (!iconSetScope._cache) {
-          return self._cacheIconSet(
-            iconSetId,
-            IconSet.loadByUrl(iconSetScope.urlResolver(iconIdList), iconSetScope)
-          )
-        }
-        return iconSetScope._cache
-          .then(function(iconSet) {
-            return iconSet.mergeByUrl(
-              iconSetScope.urlResolver(iconSet.notExists(iconIdList)),
-              iconSetScope
-            )
-          });
-      }
-
-      function getIcon(promise) {
-        return promise
-          .then(function(iconSet) {
-            var
-              icon = iconSet.getIconById(iconId);
-            return icon
-              ? icon
-              : Promise.reject();
-          });
-      }
-
-    },
-
-    _getIconSet: function(iconSetId) {
-      var
-        log = service('log'),
-        Promise = service('Promise'),
-        IconSet = service('IconSet'),
-        iconSetScope = this._iconSetsScope[iconSetId],
-        errorMessage;
-
-      if (iconSetScope.cumulative) {
-        errorMessage = 'cannot get "' + iconSetId + '", operation not supported for cumulative iconSet';
-        log.warn(errorMessage);
-        return Promise.reject(errorMessage);
-      }
-      if (iconSetScope._cache) {
-        return iconSetScope._cache;
-      }
-      return this._cacheIconSet(
-        iconSetId,
-        IconSet.loadByUrl(iconSetScope.urlResolver(), iconSetScope)
-      );
+      return this._getCollection(iconSetId).getIcon(iconId);
     }
 
   };
-
-
-  return new IconManager;
-
 
 
   function announceIconNotFound(iconId, iconSetId) {
@@ -273,77 +185,10 @@ service('iconManager', function(service) {
     }
   }
 
-  function parseEntityConfigFromArguments(id, urlConfig, options) {
-    var
-      mergeObjects = service('mergeObjects'),
-      url,
-      urlFn,
-      params = null,
-      iconSize,
-      viewBox,
-      config,
-      urlResolver
-      ;
 
-    config = {
-      id: id
-    };
 
-    if (url && typeof url == 'object') {
-      url = urlConfig.url;
-      params = urlConfig.params;
-    }
-    else {
-      url = urlConfig;
-    }
+  return new IconManager;
 
-    urlFn = (typeof url == 'function')
-      ? url
-      : function() { return url; };
-
-    if (options) {
-      switch(typeof options) {
-        case 'number':
-          iconSize = options;
-          break;
-        case 'string':
-          viewBox = options;
-          break;
-      }
-    }
-    else {
-      options = {};
-    }
-
-    config.iconSize = iconSize || options.iconSize;
-    config.viewBox = viewBox || options.viewBox;
-    config.cumulative = options.cumulative;
-
-    urlResolver = function(/* value[, value[, ...]]] */) {
-      var
-        urlConfig,
-        _params = null,
-        url
-        ;
-
-      urlConfig = urlFn.apply(null, Array.prototype.slice.call(arguments));
-      url = urlConfig;
-      if (urlConfig && typeof urlConfig == 'object') {
-        url = urlConfig.url;
-        _params = urlConfig.params;
-      }
-
-      return {
-        url: url,
-        params: mergeObjects({}, params || {}, _params || {})
-      }
-    };
-
-    config.urlResolver = urlResolver;
-    config._local = {};
-
-    return config;
-  }
 
 });
 

@@ -1,41 +1,31 @@
 'use strict';
 
-service('IconSet', function(service) {
+service('SvgIconSet', function(service) {
 
-  function IconSet(element, options) {
+  function SvgIconSet(element, options) {
     var
       log = service('log'),
-      Icon = service('Icon'),
+      parseSvgOptions = service('parseSvgOptions'),
+      SvgIcon = service('SvgIcon'),
       index,
       nodes,
       node,
-      iconSize = null,
-      viewBox = null
+      iconSize,
+      viewBox
       ;
 
-    if (options) {
-      switch(typeof options) {
-        case 'number':
-          iconSize = options;
-          break;
-        case 'string':
-          viewBox = options;
-          break;
-        default:
-          iconSize = options.iconSize || iconSize;
-          viewBox = options.viewBox || viewBox;
-      }
-    }
+    options = parseSvgOptions(options);
 
     this.icons = {};
 
-    viewBox = viewBox || element[0].getAttribute('viewBox');
+    viewBox = options.viewBox || element[0].getAttribute('viewBox');
+    iconSize = options.iconSize;
 
     try {
       nodes = element[0].querySelectorAll('[id]');
       for(index = 0; index < nodes.length; index++) {
         node = nodes[index];
-        this.icons[node.getAttribute('id')] = new Icon(node, {
+        this.icons[node.getAttribute('id')] = new SvgIcon(node, {
           iconSize: iconSize,
           viewBox: viewBox
         });
@@ -49,20 +39,20 @@ service('IconSet', function(service) {
     this.viewBox = viewBox;
   }
 
-  IconSet.loadByUrl = function(url, options) {
+  SvgIconSet.loadByUrl = function(url, options) {
     var
-      svgLoader = service('svgLoader');
+      loadSvgByUrl = service('loadSvgByUrl');
 
-    return svgLoader.loadByUrl(url)
+    return loadSvgByUrl(url)
       .then(function(element) {
-        return new IconSet(
+        return new SvgIconSet(
           element,
           options
         )
       });
   };
 
-  IconSet.prototype = {
+  SvgIconSet.prototype = {
 
     notExists: function(ids) {
       var
@@ -70,6 +60,10 @@ service('IconSet', function(service) {
       return ids.filter(function(id) {
         return !icons.hasOwnProperty(id);
       });
+    },
+
+    exists: function(id) {
+      return this.icons.hasOwnProperty(id);
     },
 
     getIconById: function(id) {
@@ -95,26 +89,15 @@ service('IconSet', function(service) {
       var
         self = this;
 
-      return IconSet.loadByUrl(url, options)
+      return SvgIconSet.loadByUrl(url, options)
         .then(function(iconSet) {
           return self.merge(iconSet);
         })
-    },
-
-    addIconByUrl: function(id, url) {
-      var
-        Icon = service('Icon'),
-        self = this;
-      return Icon.loadByUrl(url, { iconSize: this.iconSize, viewBox: this.viewBox })
-        .then(function(icon) {
-          self.icons[id] = icon;
-          return icon;
-        });
     }
 
   };
 
-  return IconSet;
+  return SvgIconSet;
 
 });
 

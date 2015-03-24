@@ -17,14 +17,14 @@ IconProvider.prototype = {
   icon: function(id, url, iconSize) {
     var
       iconManager = service('iconManager');
-    iconManager.registerIcon(id, url, iconSize);
+    iconManager.addIcon(id, url, iconSize);
     return this;
   },
 
   iconSet: function(id, url, iconSize) {
     var
       iconManager = service('iconManager');
-    iconManager.registerIconSet(id, url, iconSize);
+    iconManager.addSvgIconSet(id, url, iconSize);
     return this;
   },
 
@@ -32,15 +32,15 @@ IconProvider.prototype = {
     var
       iconManager = service('iconManager');
 
-    iconManager.registerIconSet(url, url, iconSize);
-    iconManager.setDefaultIconSetId(url);
+    iconManager.addSvgIconSet(url, url, iconSize);
+    iconManager.setDefaultIconSet(url);
     return this;
   },
 
   defaultIconSetId: function(id) {
     var
       iconManager = service('iconManager');
-    iconManager.setDefaultIconSetId(id);
+    iconManager.setDefaultIconSet(id);
     return this;
   },
 
@@ -54,16 +54,16 @@ IconProvider.prototype = {
   $get: ['$injector', function($injector) {
     var
       iconManager = service('iconManager'),
-      registerProviders = service('registerProviders'),
+      registerDependencies = service('registerDependencies'),
       iconService;
 
-    registerProviders($injector);
+    registerDependencies($injector);
 
     iconService = function(id) {
       return iconManager.getIcon(id);
     };
-    iconService.preload = function() {
-      iconManager.preload();
+    iconService.preLoad = function() {
+      iconManager.preLoad();
     };
 
     return iconService;

@@ -17,7 +17,7 @@ function IconPlugin(config) {
 
   return this.each(function() {
     var
-      I8_ICON_DATA_KEY = '__i8.icon.instance',
+      I8_ICON_DATA_KEY = '__I8_ICON_DATA',
       element = $(this),
       instance = element.data(I8_ICON_DATA_KEY),
       options = {
@@ -77,8 +77,8 @@ IconPlugin._applyConfig = function(config) {
   function performIconConfig(config) {
     var
       iconManager = service('iconManager');
-    if (config && !iconManager.hasIcon(config.id)) {
-      iconManager.registerIcon(config.id, config.url, config);
+    if (config && !iconManager.hasSingleIcon(config.id)) {
+      iconManager.addIcon(config.id, config.url, config);
     }
   }
 
@@ -86,7 +86,7 @@ IconPlugin._applyConfig = function(config) {
     var
       iconManager = service('iconManager');
     if (config && !iconManager.hasIconSet(config.id)) {
-      iconManager.registerIconSet(config.id, config.url, config);
+      iconManager.addSvgIconSet(config.id, config.url, config);
     }
   }
 
@@ -94,12 +94,12 @@ IconPlugin._applyConfig = function(config) {
 
 function IconController(element, options) {
   var
-    elementExpectAlt = service('elementExpectAlt');
+    expectElementAlt = service('expectElementAlt');
 
   options = options || {};
 
   this._element = element;
-  elementExpectAlt(element, this._getAlt() || options.alt || '');
+  expectElementAlt(element, this._getAlt() || options.alt || '');
   this._renderIcon(this._getIconId() || options.icon);
 }
 
@@ -160,6 +160,8 @@ IconController.prototype = {
 
   _renderIcon: function(iconId) {
     var
+      SvgIcon = service('SvgIcon'),
+      FontIcon = service('FontIcon'),
       iconManager = service('iconManager'),
       element = this._element;
 
@@ -172,7 +174,12 @@ IconController.prototype = {
     element.empty();
     if (iconId) {
       iconManager.getIcon(iconId).then(function(icon) {
-        element.append(icon.clone());
+        if (icon instanceof SvgIcon) {
+          element.append(icon.clone());
+        }
+        if (icon instanceof FontIcon) {
+          element.addClass(icon.className);
+        }
       });
     }
 

@@ -1,8 +1,8 @@
 'use strict';
 
 service('iconManager')
-  .setDefaultIconSetId('i8')
-  .registerIconSet(
+  .setDefaultIconSet('i8')
+  .addSvgIconSet(
     'i8',
     function(icons) {
       var

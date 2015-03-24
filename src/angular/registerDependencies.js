@@ -1,8 +1,8 @@
 'use strict';
 
-service('registerProviders', function(service) {
-  return function registerProviders($injector) {
+service('registerDependencies', function(service) {
 
+  return function registerDependencies($injector) {
     service('log', function() {
       return $injector.get('$log');
     });
@@ -26,7 +26,18 @@ service('registerProviders', function(service) {
     });
 
     service('Promise', function() {
-      return $injector.get('$q');
+      var
+        $q = $injector.get('$q');
+
+      function Promise(value) {
+        return $q(value);
+      }
+
+      Promise.reject = $q.reject;
+      Promise.resolve = $q.when;
+      Promise.all = $q.all;
+
+      return Promise;
     });
 
     service('timeout', function() {
@@ -43,5 +54,6 @@ service('registerProviders', function(service) {
     });
 
   }
+
 });
 
