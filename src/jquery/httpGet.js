@@ -7,6 +7,7 @@ di('httpGet', function(di) {
   return function httpGet(url, params) {
     var
       Promise = di('Promise'),
+      buildUrlParams = di('buildUrlParams'),
       urlBuilder = [url],
       compiledUrl,
       query,
@@ -14,7 +15,7 @@ di('httpGet', function(di) {
       ;
 
     params = params || {};
-    query = jQuery.param(params);
+    query = buildUrlParams(params);
     if (query) {
       urlBuilder.push(query);
     }

@@ -27,10 +27,37 @@ di('registerDependencies', function(di) {
 
     di('Promise', function() {
       var
-        $q = $injector.get('$q');
+        $q = $injector.get('$q'),
+        $rootScope = $injector.get('$rootScope');
+
+      function ensureDigestDecorator(fn) {
+        return function() {
+          var
+            args = Array.prototype.slice.call(arguments);
+
+          if (!$rootScope.$$phase) {
+            $rootScope.$apply(function() {
+              fn.apply(this, args);
+            })
+          }
+          else {
+            fn.apply(this, args);
+          }
+        }
+      }
 
       function Promise(value) {
-        return $q(value);
+        var
+          deferred;
+        if (typeof value != 'function') {
+          return Promise.resolve(value);
+        }
+        deferred = $q.defer();
+        value(
+          ensureDigestDecorator(deferred.resolve),
+          ensureDigestDecorator(deferred.reject)
+        );
+        return deferred.promise;
       }
 
       Promise.reject = $q.reject;

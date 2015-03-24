@@ -15,34 +15,54 @@ di('iconManager', function(di) {
 
   IconManager.prototype = {
 
-    addIcon: function(id, urlResolver, options) {
+    addIcon: function(id, urlConfig, options) {
       var
-        SvgIconScope = di('SvgIconScope');
-      this._getSingleIconsCollection().add(new SvgIconScope(id, urlResolver, options));
+        SvgIconScope = di('SvgIconScope'),
+        ImageIconScope = di('ImageIconScope'),
+        ScopeConstructor,
+        url = urlConfig,
+        ext;
+
+      if (typeof urlConfig == 'object') {
+        url = urlConfig.url;
+      }
+      ext = typeof url == 'function'
+        ? getExt(url())
+        : getExt(url + '');
+
+      ScopeConstructor = ext == 'svg'
+        ? SvgIconScope
+        : ImageIconScope;
+
+      this._getSingleIconsCollection().add(new ScopeConstructor(id, urlConfig, options));
       return this;
+
+      function getExt(url) {
+        return ((url.split('?')[0] || '').split('.').slice(-1)[0] || '').toLowerCase();
+      }
     },
 
-    addSvgIconSet: function(id, urlResolver, options) {
+    addSvgIconSet: function(id, urlConfig, options) {
       var
         SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
         SvgIconSetScope = di('SvgIconSetScope'),
-        scope;
+        ScopeConstructor;
 
       options = options || {};
 
-      scope = options.cumulative
-        ? new SvgCumulativeIconSetScope(id, urlResolver, options)
-        : new SvgIconSetScope(id, urlResolver, options);
+      ScopeConstructor = options.cumulative
+        ? SvgCumulativeIconSetScope
+        : SvgIconSetScope;
 
-      this._getCollection(id).add(scope);
+      this._getCollection(id).add(new ScopeConstructor(id, urlConfig, options));
 
       return this;
     },
 
-    addFontIconSet: function(id, classResolver) {
+    addFontIconSet: function(id, classConfig) {
       var
         FontIconSetScope = di('FontIconSetScope');
-      this._getCollection(id).add(new FontIconSetScope(id, classResolver));
+      this._getCollection(id).add(new FontIconSetScope(id, classConfig));
       return this;
     },
 

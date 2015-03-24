@@ -21,6 +21,13 @@ IconProvider.prototype = {
     return this;
   },
 
+  image: function(id, url) {
+    var
+      iconManager = di('iconManager');
+    iconManager.addImageIcon(id, url);
+    return this;
+  },
+
   iconSet: function(id, url, iconSize) {
     var
       iconManager = di('iconManager');
