@@ -15,7 +15,7 @@ di('ImageIconScope', function(di) {
     _loadResource: function() {
       var
         ImageIcon = di('ImageIcon');
-      return ImageIcon.loadByUrl(this.urlResolver());
+      return ImageIcon.loadByUrl(this.urlResolver(), this.imageOptions);
     },
 
     hasIcon: function(iconId) {

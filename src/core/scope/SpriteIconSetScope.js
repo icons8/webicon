@@ -1,21 +1,21 @@
 'use strict';
 
-di('FontIconSetScope', function(di) {
+di('SpriteIconSetScope', function(di) {
   var
     AbstractCssClassIconSetScope = di('AbstractCssClassIconSetScope'),
     inherit = di('inherit')
     ;
 
-  function FontIconSetScope(id, classResolver) {
+  function SpriteIconSetScope(id, classResolver) {
     AbstractCssClassIconSetScope.call(this, id, classResolver);
   }
 
-  return inherit(FontIconSetScope, AbstractCssClassIconSetScope, {
+  return inherit(SpriteIconSetScope, AbstractCssClassIconSetScope, {
 
     getIcon: function(iconId) {
       var
-        FontIcon = di('FontIcon');
-      return new FontIcon(this.classResolver(iconId));
+        SpriteIcon = di('SpriteIcon');
+      return new SpriteIcon(this.classResolver(iconId));
     }
 
   });

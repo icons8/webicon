@@ -2,10 +2,8 @@
 
 di('FontIcon', function() {
 
-  function FontIcon(className) {
+  return function FontIcon(className) {
     this.className = className;
-  }
-
-  return FontIcon;
+  };
 
 });

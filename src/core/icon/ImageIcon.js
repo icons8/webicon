@@ -4,8 +4,15 @@ di('ImageIcon', function(di) {
 
   function ImageIcon(element) {
     var
-      nodeWrapper = di('nodeWrapper');
+      nodeWrapper = di('nodeWrapper')
+      ;
+
     element = nodeWrapper(element);
+    element.attr({
+      width: '100%',
+      height: '100%'
+    });
+
     this.node = element[0];
   }
 

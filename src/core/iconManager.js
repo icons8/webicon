@@ -17,9 +17,6 @@ di('iconManager', function(di) {
 
     addIcon: function(id, urlConfig, options) {
       var
-        SvgIconScope = di('SvgIconScope'),
-        ImageIconScope = di('ImageIconScope'),
-        ScopeConstructor,
         url = urlConfig,
         ext;
 
@@ -30,16 +27,28 @@ di('iconManager', function(di) {
         ? getExt(url())
         : getExt(url + '');
 
-      ScopeConstructor = ext == 'svg'
-        ? SvgIconScope
-        : ImageIconScope;
-
-      this._getSingleIconsCollection().add(new ScopeConstructor(id, urlConfig, options));
-      return this;
+      return ext == 'svg'
+        ? this.addSvgIcon(id, urlConfig, options)
+        : this.addImageIcon(id, urlConfig)
+      ;
 
       function getExt(url) {
         return ((url.split('?')[0] || '').split('.').slice(-1)[0] || '').toLowerCase();
       }
+    },
+
+    addSvgIcon: function(id, urlConfig, options) {
+      var
+        SvgIconScope = di('SvgIconScope');
+      this._getSingleIconsCollection().add(new SvgIconScope(id, urlConfig, options));
+      return this;
+    },
+
+    addImageIcon: function(id, urlConfig, options) {
+      var
+        ImageIconScope = di('ImageIconScope');
+      this._getSingleIconsCollection().add(new ImageIconScope(id, urlConfig, options));
+      return this;
     },
 
     addSvgIconSet: function(id, urlConfig, options) {
@@ -63,6 +72,13 @@ di('iconManager', function(di) {
       var
         FontIconSetScope = di('FontIconSetScope');
       this._getCollection(id).add(new FontIconSetScope(id, classConfig));
+      return this;
+    },
+
+    addSpriteIconSet: function(id, classConfig) {
+      var
+        SpriteIconSetScope = di('SpriteIconSetScope');
+      this._getCollection(id).add(new SpriteIconSetScope(id, classConfig));
       return this;
     },
 

@@ -1,19 +1,19 @@
 'use strict';
 
-di('parseSvgOptions', function(di) {
+di('parseSvgOptions', function() {
 
   return function parseSvgOptions(options) {
-    var
-      iconSize,
-      viewBox;
-
     if (options) {
       switch(typeof options) {
         case 'number':
-          iconSize = options;
+          options = {
+            iconSize: options
+          };
           break;
         case 'string':
-          viewBox = options;
+          options = {
+            viewBox: options
+          };
           break;
       }
     }
@@ -22,8 +22,8 @@ di('parseSvgOptions', function(di) {
     }
 
     return {
-      iconSize: iconSize || options.iconSize,
-      viewBox: viewBox || options.viewBox
+      iconSize: options.iconSize,
+      viewBox: options.viewBox
     }
   }
 
