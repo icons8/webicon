@@ -1,8 +1,8 @@
 'use strict';
 
-ready(function(service) {
+ready(function(di) {
   var
-    iconManager = service('iconManager');
+    iconManager = di('iconManager');
 
   iconManager
     .setDefaultIconSet('i8')
@@ -11,7 +11,7 @@ ready(function(service) {
       function(icons) {
         var
           options = {
-            url: service('i8ApiConfig').gateway.url,
+            url: di('i8ApiConfig').gateway.url,
             params: {}
           };
 

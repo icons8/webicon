@@ -1,10 +1,10 @@
 'use strict';
 
-service('timeout', function(service) {
+di('timeout', function(di) {
 
   function timeout(fn, delay) {
     var
-      Promise = service('Promise'),
+      Promise = di('Promise'),
       promise,
       resolve;
 

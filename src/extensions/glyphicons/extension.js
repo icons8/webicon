@@ -1,8 +1,8 @@
 'use strict';
 
-ready(function(service) {
+ready(function(di) {
   var
-    iconManager = service('iconManager');
+    iconManager = di('iconManager');
 
   iconManager
     .addIconSetAlias('glyphicon', 'gi')

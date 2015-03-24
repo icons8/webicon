@@ -1,12 +1,12 @@
 'use strict';
 
-function service(name, provider) {
+function di(name, provider) {
   var
     providers,
     instances;
 
-  providers = service.providers = service.providers || {};
-  instances = service.instaces = service.instaces || {};
+  providers = di.providers = di.providers || {};
+  instances = di.instaces = di.instaces || {};
 
   if (provider) {
     if (instances.hasOwnProperty(name)) {
@@ -22,7 +22,7 @@ function service(name, provider) {
       throw new Error('Cannot found service provider "' + name + '"');
     }
     if (!instances.hasOwnProperty(name)) {
-      instances[name] = new providers[name](service);
+      instances[name] = new providers[name](di);
     }
     return instances[name];
   }

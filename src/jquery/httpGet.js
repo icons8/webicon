@@ -1,12 +1,12 @@
 'use strict';
 
-service('httpGet', function(service) {
+di('httpGet', function(di) {
 
   var cache = {};
 
   return function httpGet(url, params) {
     var
-      Promise = service('Promise'),
+      Promise = di('Promise'),
       urlBuilder = [url],
       compiledUrl,
       query,

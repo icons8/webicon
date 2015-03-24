@@ -1,12 +1,12 @@
 'use strict';
 
-service('initIconElement', function(service) {
+di('initIconElement', function(di) {
 
   return function initIconElement(element, alt) {
     var
       ICON_CLASS = 'i8-icon',
-      nodeWrapper = service('nodeWrapper'),
-      expectAlt = service('expectAlt');
+      nodeWrapper = di('nodeWrapper'),
+      expectAlt = di('expectAlt');
 
     element = nodeWrapper(element);
 

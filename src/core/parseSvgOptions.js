@@ -1,6 +1,6 @@
 'use strict';
 
-service('parseSvgOptions', function(service) {
+di('parseSvgOptions', function(di) {
 
   return function parseSvgOptions(options) {
     var

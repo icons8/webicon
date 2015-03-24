@@ -1,9 +1,9 @@
 'use strict';
 
-service('SvgCumulativeIconSetScope', function(service) {
+di('SvgCumulativeIconSetScope', function(di) {
   var
-    AbstractRemoteSvgResourceScope = service('AbstractRemoteSvgResourceScope'),
-    inherit = service('inherit')
+    AbstractRemoteSvgResourceScope = di('AbstractRemoteSvgResourceScope'),
+    inherit = di('inherit')
     ;
 
   function SvgCumulativeIconSetScope(id, urlConfig, options) {
@@ -21,7 +21,7 @@ service('SvgCumulativeIconSetScope', function(service) {
 
     _loadResource: function() {
       var
-        SvgIconSet = service('SvgIconSet');
+        SvgIconSet = di('SvgIconSet');
       return SvgIconSet.loadByUrl(this.urlResolver(this.waitIconIds), this.svgOptions);
     },
 
@@ -31,8 +31,8 @@ service('SvgCumulativeIconSetScope', function(service) {
 
     getIcon: function(iconId) {
       var
-        Promise = service('Promise'),
-        timeout = service('timeout'),
+        Promise = di('Promise'),
+        timeout = di('timeout'),
         self = this;
 
       if (this._resource && this._resource.exists(iconId)) {

@@ -1,10 +1,10 @@
 'use strict';
 
-service('expectAlt', function(service) {
+di('expectAlt', function(di) {
 
   return function expectAlt(element, alt) {
     var
-      nodeWrapper = service('nodeWrapper');
+      nodeWrapper = di('nodeWrapper');
 
     element = nodeWrapper(element);
 

@@ -1,6 +1,6 @@
 'use strict';
 
-service('iconManager', function(service) {
+di('iconManager', function(di) {
 
   var
     CHECK_URL_REGEX = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i,
@@ -17,15 +17,15 @@ service('iconManager', function(service) {
 
     addIcon: function(id, urlResolver, options) {
       var
-        SvgIconScope = service('SvgIconScope');
+        SvgIconScope = di('SvgIconScope');
       this._getSingleIconsCollection().add(new SvgIconScope(id, urlResolver, options));
       return this;
     },
 
     addSvgIconSet: function(id, urlResolver, options) {
       var
-        SvgCumulativeIconSetScope = service('SvgCumulativeIconSetScope'),
-        SvgIconSetScope = service('SvgIconSetScope'),
+        SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
+        SvgIconSetScope = di('SvgIconSetScope'),
         scope;
 
       options = options || {};
@@ -41,7 +41,7 @@ service('iconManager', function(service) {
 
     addFontIconSet: function(id, classResolver) {
       var
-        FontIconSetScope = service('FontIconSetScope');
+        FontIconSetScope = di('FontIconSetScope');
       this._getCollection(id).add(new FontIconSetScope(id, classResolver));
       return this;
     },
@@ -140,7 +140,7 @@ service('iconManager', function(service) {
 
     _getCollection: function(id) {
       var
-        ScopeCollection = service('ScopeCollection');
+        ScopeCollection = di('ScopeCollection');
       if (!this._collections.hasOwnProperty(id)) {
         this._collections[id] = new ScopeCollection();
       }
@@ -168,8 +168,8 @@ service('iconManager', function(service) {
 
   function announceIconNotFound(iconId, iconSetId) {
     var
-      log = service('log'),
-      Promise = service('Promise'),
+      log = di('log'),
+      Promise = di('Promise'),
       errorMessage = 'icon "' + iconId + '" not found';
 
     if (iconSetId) {

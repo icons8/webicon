@@ -1,9 +1,9 @@
 'use strict';
 
-service('SvgIconScope', function(service) {
+di('SvgIconScope', function(di) {
   var
-    AbstractRemoteSvgResourceScope = service('AbstractRemoteSvgResourceScope'),
-    inherit = service('inherit')
+    AbstractRemoteSvgResourceScope = di('AbstractRemoteSvgResourceScope'),
+    inherit = di('inherit')
     ;
 
   function SvgIconScope(id, urlConfig, svgOptions) {
@@ -14,7 +14,7 @@ service('SvgIconScope', function(service) {
 
     _loadResource: function() {
       var
-        SvgIcon = service('SvgIcon');
+        SvgIcon = di('SvgIcon');
       return SvgIcon.loadByUrl(this.urlResolver(), this.svgOptions);
     },
 

@@ -1,14 +1,14 @@
 'use strict';
 
-service('renderIcon', function(service) {
+di('renderIcon', function(di) {
 
   return function renderIcon(element, icon, cleaner) {
     var
       SVG_ICON_CLASS = 'i8-svg-icon',
       FONT_ICON_CLASS = 'i8-font-icon',
-      SvgIcon = service('SvgIcon'),
-      FontIcon = service('FontIcon'),
-      nodeWrapper = service('nodeWrapper'),
+      SvgIcon = di('SvgIcon'),
+      FontIcon = di('FontIcon'),
+      nodeWrapper = di('nodeWrapper'),
       classList,
       noop = function() {}
     ;

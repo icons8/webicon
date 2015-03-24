@@ -5,7 +5,7 @@ function bootstrap() {
   jQuery(function() {
     var
       BOOTSTRAP_DELAY = 5,
-      timeout = service('timeout');
+      timeout = di('timeout');
 
     if (IconsPlugin.bootstraped) {
       return;

@@ -1,6 +1,6 @@
 'use strict';
 
-service('ScopeCollection', function(service) {
+di('ScopeCollection', function(di) {
 
   function ScopeCollection() {
     this.collection = [];
@@ -10,8 +10,8 @@ service('ScopeCollection', function(service) {
 
     add: function(scope) {
       var
-        SvgCumulativeIconSetScope = service('SvgCumulativeIconSetScope'),
-        FontIconSetScope = service('FontIconSetScope');
+        SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
+        FontIconSetScope = di('FontIconSetScope');
 
       if (scope instanceof SvgCumulativeIconSetScope || scope instanceof FontIconSetScope) {
         this.collection.push(scope);
@@ -23,7 +23,7 @@ service('ScopeCollection', function(service) {
 
     preLoad: function() {
       var
-        Promise = service('Promise');
+        Promise = di('Promise');
 
       return Promise.all(
         this.collection.map(function(item) {
@@ -42,8 +42,8 @@ service('ScopeCollection', function(service) {
 
     getIconScope: function(iconId) {
       var
-        Promise = service('Promise'),
-        SvgCumulativeIconSetScope = service('SvgCumulativeIconSetScope'),
+        Promise = di('Promise'),
+        SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
         collection = this.collection,
         promise
         ;

@@ -1,13 +1,13 @@
 'use strict';
 
-service('registerDependencies', function(service) {
+di('registerDependencies', function(di) {
 
   return function registerDependencies($injector) {
-    service('log', function() {
+    di('log', function() {
       return $injector.get('$log');
     });
 
-    service('httpGet', function() {
+    di('httpGet', function() {
       var
         $http = $injector.get('$http'),
         $templateCache = $injector.get('$templateCache')
@@ -25,7 +25,7 @@ service('registerDependencies', function(service) {
       }
     });
 
-    service('Promise', function() {
+    di('Promise', function() {
       var
         $q = $injector.get('$q');
 
@@ -40,7 +40,7 @@ service('registerDependencies', function(service) {
       return Promise;
     });
 
-    service('timeout', function() {
+    di('timeout', function() {
       var
         $timeout = $injector.get('$timeout');
 

@@ -1,6 +1,6 @@
 'use strict';
 
-service('log', function() {
+di('log', function() {
   var
     noop = function() {},
     log = {},

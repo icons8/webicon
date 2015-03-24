@@ -1,6 +1,6 @@
 'use strict';
 
-service('FontIcon', function() {
+di('FontIcon', function() {
 
   function FontIcon(className) {
     this.className = className;

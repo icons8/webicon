@@ -1,6 +1,6 @@
 'use strict';
 
-service('inherit', function() {
+di('inherit', function() {
 
   return function inherit(Constructor, Parent, methods, properties) {
     Constructor.prototype = Object.create(Parent.prototype, properties || {});

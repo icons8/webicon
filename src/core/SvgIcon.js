@@ -1,12 +1,12 @@
 'use strict';
 
-service('SvgIcon', function(service) {
+di('SvgIcon', function(di) {
 
   function SvgIcon(element, options) {
     var
-      nodeWrapper = service('nodeWrapper'),
-      iconManager = service('iconManager'),
-      parseSvgOptions = service('parseSvgOptions'),
+      nodeWrapper = di('nodeWrapper'),
+      iconManager = di('iconManager'),
+      parseSvgOptions = di('parseSvgOptions'),
       svgElement,
       svgNode,
       attributes,
@@ -82,7 +82,7 @@ service('SvgIcon', function(service) {
 
   SvgIcon.loadByUrl = function(url, options) {
     var
-      loadSvgByUrl = service('loadSvgByUrl');
+      loadSvgByUrl = di('loadSvgByUrl');
 
     return loadSvgByUrl(url)
       .then(function(element) {

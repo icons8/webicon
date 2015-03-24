@@ -1,6 +1,6 @@
 'use strict';
 
-service('mergeObjects', function() {
+di('mergeObjects', function() {
 
   return function mergeObjects(/* to, from [, from[, ...]]*/) {
     var

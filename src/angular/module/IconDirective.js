@@ -17,8 +17,8 @@ function IconDirective($i8Icon) {
     scope: true,
     link: function (scope, element, attrs) {
       var
-        renderIcon = service('renderIcon'),
-        initIconElement = service('initIconElement'),
+        renderIcon = di('renderIcon'),
+        initIconElement = di('initIconElement'),
         altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
         attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || ''),
         cleaner = null

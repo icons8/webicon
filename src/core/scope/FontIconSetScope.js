@@ -1,9 +1,9 @@
 'use strict';
 
-service('FontIconSetScope', function(service) {
+di('FontIconSetScope', function(di) {
   var
-    AbstractScope = service('AbstractScope'),
-    inherit = service('inherit')
+    AbstractScope = di('AbstractScope'),
+    inherit = di('inherit')
     ;
 
   function FontIconSetScope(id, classResolver) {
@@ -19,7 +19,7 @@ service('FontIconSetScope', function(service) {
 
     getIcon: function(iconId) {
       var
-        FontIcon = service('FontIcon');
+        FontIcon = di('FontIcon');
       return new FontIcon(this.classResolver(iconId));
     }
 

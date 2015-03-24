@@ -1,6 +1,6 @@
 'use strict';
 
-service('Promise', function() {
+di('Promise', function() {
 
   if (window.Promise) {
     return window.Promise;

@@ -75,7 +75,7 @@ IconPlugin._applyConfig = function(config) {
 
   function performIconConfig(config) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     if (config && !iconManager.hasSingleIcon(config.id)) {
       iconManager.addIcon(config.id, config.url, config);
     }
@@ -83,7 +83,7 @@ IconPlugin._applyConfig = function(config) {
 
   function performIconSetConfig(config) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     if (config && !iconManager.hasIconSet(config.id)) {
       iconManager.addSvgIconSet(config.id, config.url, config);
     }
@@ -93,7 +93,7 @@ IconPlugin._applyConfig = function(config) {
 
 function IconController(element, options) {
   var
-    initIconElement = service('initIconElement');
+    initIconElement = di('initIconElement');
 
   options = options || {};
 
@@ -159,8 +159,8 @@ IconController.prototype = {
 
   _renderIcon: function(iconId) {
     var
-      iconManager = service('iconManager'),
-      renderIcon = service('renderIcon'),
+      iconManager = di('iconManager'),
+      renderIcon = di('renderIcon'),
       element = this._element,
       cleaner = this._renderedIconCleaner,
       self = this;

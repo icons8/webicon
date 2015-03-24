@@ -1,5 +1,5 @@
 'use strict';
 
-service('nodeWrapper', function() {
+di('nodeWrapper', function() {
   return jQuery;
 });

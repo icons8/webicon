@@ -16,21 +16,21 @@ function IconProvider() {
 IconProvider.prototype = {
   icon: function(id, url, iconSize) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     iconManager.addIcon(id, url, iconSize);
     return this;
   },
 
   iconSet: function(id, url, iconSize) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     iconManager.addSvgIconSet(id, url, iconSize);
     return this;
   },
 
   defaultIconSetUrl: function(url, iconSize) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
 
     iconManager.addSvgIconSet(url, url, iconSize);
     iconManager.setDefaultIconSet(url);
@@ -39,22 +39,22 @@ IconProvider.prototype = {
 
   defaultIconSetId: function(id) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     iconManager.setDefaultIconSet(id);
     return this;
   },
 
   defaultIconSize: function(iconSize) {
     var
-      iconManager = service('iconManager');
+      iconManager = di('iconManager');
     iconManager.setDefaultIconSize(iconSize);
     return this;
   },
 
   $get: ['$injector', function($injector) {
     var
-      iconManager = service('iconManager'),
-      registerDependencies = service('registerDependencies'),
+      iconManager = di('iconManager'),
+      registerDependencies = di('registerDependencies'),
       iconService;
 
     registerDependencies($injector);

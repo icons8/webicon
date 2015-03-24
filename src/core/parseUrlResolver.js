@@ -1,10 +1,10 @@
 'use strict';
 
-service('parseUrlResolver', function(service) {
+di('parseUrlResolver', function(di) {
 
   return function parseUrlResolver(urlConfig) {
     var
-      mergeObjects = service('mergeObjects'),
+      mergeObjects = di('mergeObjects'),
       url,
       urlFn,
       params = null;

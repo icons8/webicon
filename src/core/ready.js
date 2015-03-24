@@ -11,7 +11,7 @@ function ready(fn) {
   }
   else {
     functions.forEach(function(fn) {
-      fn(service);
+      fn(di);
     });
   }
 }

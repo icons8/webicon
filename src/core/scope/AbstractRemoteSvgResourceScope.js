@@ -1,15 +1,15 @@
 'use strict';
 
-service('AbstractRemoteSvgResourceScope', function(service) {
+di('AbstractRemoteSvgResourceScope', function(di) {
   var
-    AbstractScope = service('AbstractScope'),
-    inherit = service('inherit')
+    AbstractScope = di('AbstractScope'),
+    inherit = di('inherit')
   ;
 
   function AbstractRemoteSvgResourceScope(id, urlConfig, svgOptions) {
     var
-      parseUrlResolver = service('parseUrlResolver'),
-      parseSvgOptions = service('parseSvgOptions');
+      parseUrlResolver = di('parseUrlResolver'),
+      parseSvgOptions = di('parseSvgOptions');
 
     AbstractScope.call(this, id);
 
@@ -48,7 +48,7 @@ service('AbstractRemoteSvgResourceScope', function(service) {
 
     _loadResource: function() {
       var
-        Promise = service('Promise');
+        Promise = di('Promise');
       return Promise.reject();
     }
 
