@@ -12,6 +12,10 @@ di('ImageIcon', function(di) {
       width: '100%',
       height: '100%'
     });
+    element.css({
+      "pointer-events": 'none',
+      display: 'inline-block'
+    });
 
     this.node = element[0];
   }
