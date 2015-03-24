@@ -17,37 +17,27 @@ function IconDirective($i8Icon) {
     scope: true,
     link: function (scope, element, attrs) {
       var
-        FontIcon = service('FontIcon'),
-        SvgIcon = service('SvgIcon'),
-        expectElementAlt = service('expectElementAlt'),
+        renderIcon = service('renderIcon'),
+        initIconElement = service('initIconElement'),
         altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
-        attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || '')
+        attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || ''),
+        cleaner = null
         ;
 
-      expectElementAlt(element, attrs[altAttrName] || attrs[attrName] || '');
-      element.addClass('i8-icon');
+      initIconElement(element, attrs[altAttrName] || attrs[attrName]);
 
       if (attrName) {
         attrs.$observe(attrName, function(icon) {
-          elementEmpty();
+          cleaner && cleaner();
+          cleaner = null;
           if (icon) {
             $i8Icon(icon).then(function(icon) {
-              if (icon instanceof SvgIcon) {
-                element.append(icon.clone());
-              }
-              if (icon instanceof FontIcon) {
-                element.addClass(icon.className);
-              }
+              cleaner = renderIcon(element, icon);
             });
           }
         });
       }
 
-      function elementEmpty() {
-        while (element.firstChild) {
-          element.removeChild(element.firstChild);
-        }
-      }
     }
   };
 }

@@ -13,7 +13,6 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
 
-
 gulp.task('angular-module', function() {
   var
     pattern = [
@@ -64,6 +63,10 @@ gulp.task('scripts', function(done) {
   runSequence(['angular-module', 'jquery-plugin'], done);
 });
 
+gulp.task('styles', function() {
+  return gulp.src('**/*.css', { cwd: 'src' })
+    .pipe(gulp.dest('.', { cwd: 'dist' }))
+});
 
 gulp.task('clean', function(done) {
   var
@@ -76,7 +79,7 @@ gulp.task('clean', function(done) {
 
 
 gulp.task('watch', function() {
-  gulp.watch('src/**', ['scripts']);
+  gulp.watch('src/**', ['scripts', 'styles']);
 });
 
 gulp.task('demo-server', function() {
@@ -165,9 +168,9 @@ gulp.task('demo-server', function() {
 });
 
 gulp.task('build', function(done) {
-  runSequence('clean', 'scripts', done);
+  runSequence('clean', 'scripts', 'styles', done);
 });
 
 gulp.task('default', function(done) {
-  runSequence('clean', 'scripts', ['watch', 'demo-server'], done);
+  runSequence('clean', 'scripts', 'styles', ['watch', 'demo-server'], done);
 });

@@ -18,7 +18,7 @@ function IconPlugin(config) {
   return this.each(function() {
     var
       I8_ICON_DATA_KEY = '__I8_ICON_DATA',
-      element = $(this),
+      element = jQuery(this),
       instance = element.data(I8_ICON_DATA_KEY),
       options = {
         icon: config.icon + ''
@@ -30,7 +30,6 @@ function IconPlugin(config) {
     else {
       element.data(I8_ICON_DATA_KEY, new IconController(element, options));
     }
-    element.addClass('i8-icon');
   });
 }
 
@@ -94,12 +93,12 @@ IconPlugin._applyConfig = function(config) {
 
 function IconController(element, options) {
   var
-    expectElementAlt = service('expectElementAlt');
+    initIconElement = service('initIconElement');
 
   options = options || {};
 
   this._element = element;
-  expectElementAlt(element, this._getAlt() || options.alt || '');
+  initIconElement(element, this._getAlt() || options.alt);
   this._renderIcon(this._getIconId() || options.icon);
 }
 
@@ -160,10 +159,11 @@ IconController.prototype = {
 
   _renderIcon: function(iconId) {
     var
-      SvgIcon = service('SvgIcon'),
-      FontIcon = service('FontIcon'),
       iconManager = service('iconManager'),
-      element = this._element;
+      renderIcon = service('renderIcon'),
+      element = this._element,
+      cleaner = this._renderedIconCleaner,
+      self = this;
 
     iconId = iconId || this._getIconId();
 
@@ -171,15 +171,11 @@ IconController.prototype = {
       return;
     }
 
-    element.empty();
+    cleaner && cleaner();
+    this._renderedIconCleaner = null;
     if (iconId) {
       iconManager.getIcon(iconId).then(function(icon) {
-        if (icon instanceof SvgIcon) {
-          element.append(icon.clone());
-        }
-        if (icon instanceof FontIcon) {
-          element.addClass(icon.className);
-        }
+        self._renderedIconCleaner = renderIcon(element, icon);
       });
     }
 

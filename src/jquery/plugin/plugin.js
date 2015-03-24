@@ -3,4 +3,5 @@
 jQuery.fn.i8icon = IconPlugin;
 jQuery.fn.i8icons = IconsPlugin;
 
+ready();
 bootstrap();

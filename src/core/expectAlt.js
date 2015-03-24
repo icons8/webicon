@@ -1,8 +1,8 @@
 'use strict';
 
-service('expectElementAlt', function(service) {
+service('expectAlt', function(service) {
 
-  return function expectElementAlt(element, alt) {
+  return function expectAlt(element, alt) {
     var
       nodeWrapper = service('nodeWrapper');
 

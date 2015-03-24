@@ -9,10 +9,18 @@
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.2.3/jquery.min.js"></script>
   <script type="text/javascript" src="/dist/jquery-i8icon.min.js"></script>
 
+  <script>
+    $(function() {
+      setTimeout(function() {
+        $('#qq').attr('icon', 'fa:child').i8icon();
+      }, 2000);
+    });
+  </script>
+
 </head>
 <body>
 
-<i8-icon icon="fa:qq"></i8-icon>
+<i8-icon icon="fa:qq" id="qq"></i8-icon>
 <i8-icon icon="fa:home"></i8-icon>
 <i8-icon icon="fa:heart" style="color: red;"></i8-icon>
 

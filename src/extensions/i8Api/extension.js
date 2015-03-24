@@ -1,26 +1,32 @@
 'use strict';
 
-service('iconManager')
-  .setDefaultIconSet('i8')
-  .addSvgIconSet(
-    'i8',
-    function(icons) {
-      var
-        options = {
-          url: service('i8ApiConfig').gateway.url,
-          params: {}
-        };
+ready(function(service) {
+  var
+    iconManager = service('iconManager');
 
-      if (icons) {
-        if (!Array.isArray(icons)) {
-          icons = [icons];
+  iconManager
+    .setDefaultIconSet('i8')
+    .addSvgIconSet(
+      'i8',
+      function(icons) {
+        var
+          options = {
+            url: service('i8ApiConfig').gateway.url,
+            params: {}
+          };
+
+        if (icons) {
+          if (!Array.isArray(icons)) {
+            icons = [icons];
+          }
+          options.params.icons = icons.join(',');
         }
-        options.params.icons = icons.join(',');
+        return options;
+      },
+      {
+        cumulative: true
       }
-      return options;
-    },
-    {
-      cumulative: true
-    }
-  );
+    );
+
+});
 

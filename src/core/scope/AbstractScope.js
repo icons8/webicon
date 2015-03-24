@@ -1,6 +1,6 @@
 'use strict';
 
-service('AbstractScope', function(service) {
+service('AbstractScope', function() {
 
   function AbstractScope(id) {
     this.id = id;

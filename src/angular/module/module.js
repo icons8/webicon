@@ -10,3 +10,5 @@ angular.module('i8.icon', [])
   .provider('$i8Icon', IconProvider)
   .directive('i8Icon', IconDirective)
 ;
+
+ready();
