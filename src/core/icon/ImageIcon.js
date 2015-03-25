@@ -1,23 +1,26 @@
 'use strict';
 
 di('ImageIcon', function(di) {
+  var
+    AbstractElementIcon = di('AbstractElementIcon'),
+    inherit = di('inherit')
+    ;
 
   function ImageIcon(element) {
     var
-      nodeWrapper = di('nodeWrapper')
-      ;
+      IMAGE_ICON_CLASS = 'i8-image-icon';
 
-    element = nodeWrapper(element);
     element.attr({
       width: '100%',
       height: '100%'
     });
+
     element.css({
       "pointer-events": 'none',
       display: 'inline-block'
     });
 
-    this.node = element[0];
+    AbstractElementIcon.call(this, IMAGE_ICON_CLASS, element);
   }
 
   ImageIcon.loadByUrl = function(urlConfig) {
@@ -49,15 +52,6 @@ di('ImageIcon', function(di) {
 
   };
 
-  ImageIcon.prototype = {
-
-    clone: function() {
-      return this.node.cloneNode(true);
-    }
-
-  };
-
-  return ImageIcon;
-
+  return inherit(ImageIcon, AbstractElementIcon);
 
 });

@@ -1,9 +1,14 @@
 'use strict';
 
 di('SvgIcon', function(di) {
+  var
+    AbstractElementIcon = di('AbstractElementIcon'),
+    inherit = di('inherit')
+    ;
 
   function SvgIcon(element, options) {
     var
+      SVG_ICON_CLASS = 'i8-svg-icon',
       nodeWrapper = di('nodeWrapper'),
       iconManager = di('iconManager'),
       parseSvgOptions = di('parseSvgOptions'),
@@ -13,25 +18,23 @@ di('SvgIcon', function(di) {
       styles,
       defaultAttributes,
       index,
-      originNode,
       node,
       iconSize;
 
     options = parseSvgOptions(options);
-    element = nodeWrapper(element);
-    originNode = element[0];
 
     element.removeAttr('id');
 
-    if (originNode.tagName != 'svg') {
-      if (originNode.tagName == 'symbol') {
+    node = element[0];
+    if (node.tagName != 'svg') {
+      if (node.tagName == 'symbol') {
         svgElement = nodeWrapper('<svg xmlns="http://www.w3.org/2000/svg">');
         svgNode = svgElement[0];
-        attributes = originNode.attributes;
+        attributes = node.attributes;
         for (index = 0; index < attributes.length; index++) {
           svgNode.setAttribute(attributes[index].name, attributes[index].value);
         }
-        element = svgElement.append(originNode.children);
+        element = svgElement.append(node.children);
       }
       else {
         element = nodeWrapper('<svg xmlns="http://www.w3.org/2000/svg">').append(element);
@@ -76,8 +79,9 @@ di('SvgIcon', function(di) {
         node.style[name] = styles[name];
       });
 
-    this.node = node;
     this.iconSize = iconSize;
+
+    AbstractElementIcon.call(this, SVG_ICON_CLASS, element);
   }
 
   SvgIcon.loadByUrl = function(url, options) {
@@ -93,14 +97,6 @@ di('SvgIcon', function(di) {
       });
   };
 
-  SvgIcon.prototype = {
-
-    clone: function() {
-      return this.node.cloneNode(true);
-    }
-
-  };
-
-  return SvgIcon;
+  return inherit(SvgIcon, AbstractElementIcon);
 
 });

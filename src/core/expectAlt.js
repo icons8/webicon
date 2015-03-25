@@ -3,10 +3,6 @@
 di('expectAlt', function(di) {
 
   return function expectAlt(element, alt) {
-    var
-      nodeWrapper = di('nodeWrapper');
-
-    element = nodeWrapper(element);
 
     if (alt != '' && !parentsHaveText()) {
       expectAria('aria-label', alt);

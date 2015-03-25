@@ -160,7 +160,6 @@ IconController.prototype = {
   _renderIcon: function(iconId) {
     var
       iconManager = di('iconManager'),
-      renderIcon = di('renderIcon'),
       element = this._element,
       cleaner = this._renderedIconCleaner,
       self = this;
@@ -175,7 +174,7 @@ IconController.prototype = {
     this._renderedIconCleaner = null;
     if (iconId) {
       iconManager.getIcon(iconId).then(function(icon) {
-        self._renderedIconCleaner = renderIcon(element, icon);
+        self._renderedIconCleaner = icon.render(element);
       });
     }
 

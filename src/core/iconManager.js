@@ -128,7 +128,6 @@ di('iconManager', function(di) {
         return this._getSingleIcon(id)
           .then(null, announceIconNotFoundForPromiseCatch(id));
       }
-
       iconId = id;
       iconSetId = null;
       delimiterPosition = id.indexOf(':');

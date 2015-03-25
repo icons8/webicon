@@ -2,6 +2,7 @@
 
 function di(name, provider) {
   var
+    error,
     providers,
     instances;
 
@@ -10,19 +11,31 @@ function di(name, provider) {
 
   if (provider) {
     if (instances.hasOwnProperty(name)) {
-      throw new Error('Cannot override instantiated service "' + name + '"');
+      error = new Error('Cannot override instantiated service "' + name + '"');
+      console.error(error);
+      throw error;
     }
     if (!(provider instanceof Function)) {
-      throw new Error('Incorrect provider function "' + name + '"');
+      error = new Error('Incorrect provider function "' + name + '"');
+      console.error(error);
+      throw error;
     }
     providers[name] = provider;
   }
   else {
     if (!providers[name]) {
-      throw new Error('Cannot found service provider "' + name + '"');
+      error = new Error('Cannot found service provider "' + name + '"');
+      console.error(error);
+      throw error;
     }
     if (!instances.hasOwnProperty(name)) {
-      instances[name] = new providers[name](di);
+      try {
+        instances[name] = new providers[name](di);
+      }
+      catch(error) {
+        console.error(error);
+        throw error;
+      }
     }
     return instances[name];
   }

@@ -7,6 +7,7 @@ di('SvgIconSet', function(di) {
       log = di('log'),
       parseSvgOptions = di('parseSvgOptions'),
       SvgIcon = di('SvgIcon'),
+      nodeWrapper = di('nodeWrapper'),
       index,
       nodes,
       node,
@@ -25,7 +26,7 @@ di('SvgIconSet', function(di) {
       nodes = element[0].querySelectorAll('[id]');
       for(index = 0; index < nodes.length; index++) {
         node = nodes[index];
-        this.icons[node.getAttribute('id')] = new SvgIcon(node, {
+        this.icons[node.getAttribute('id')] = new SvgIcon(nodeWrapper(node), {
           iconSize: iconSize,
           viewBox: viewBox
         });

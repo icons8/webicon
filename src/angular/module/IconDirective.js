@@ -17,7 +17,6 @@ function IconDirective($i8Icon) {
     scope: true,
     link: function (scope, element, attrs) {
       var
-        renderIcon = di('renderIcon'),
         initIconElement = di('initIconElement'),
         altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
         attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || ''),
@@ -32,7 +31,7 @@ function IconDirective($i8Icon) {
           cleaner = null;
           if (icon) {
             $i8Icon(icon).then(function(icon) {
-              cleaner = renderIcon(element, icon);
+              cleaner = icon.render(element);
             });
           }
         });
