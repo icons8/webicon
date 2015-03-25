@@ -29,14 +29,14 @@ di('httpGet', function(di) {
       jQuery.ajax({
         url: url,
         data: params,
-        dataType: 'text'
-      })
-        .done(function(data) {
+        dataType: 'text',
+        success: function(data) {
           resolve({
             data: data
           });
-        })
-        .fail(reject)
+        },
+        error: reject
+      })
       ;
     });
 

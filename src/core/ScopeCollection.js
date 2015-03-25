@@ -73,10 +73,10 @@ di('ScopeCollection', function(di) {
       });
     },
 
-    getIcon: function(iconId) {
+    getIcon: function(iconId, params) {
       return this.getIconScope(iconId)
         .then(function(scope) {
-          return scope.getIcon(iconId);
+          return scope.getIcon(iconId, params);
         });
     }
 

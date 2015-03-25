@@ -113,19 +113,28 @@ di('iconManager', function(di) {
 
     },
 
-    getIcon: function(id) {
+    getIcon: function(id, params) {
       var
+        parts,
         delimiterPosition,
         iconId,
         iconSetId;
 
       id = id || '';
+      params = params || [];
+      parts = id
+        .split(/\s+/)
+        .filter(function(value) {
+          return value;
+        });
+      id = parts[0];
+      Array.prototype.push.apply(params, parts.slice(1));
 
       if (CHECK_URL_REGEX.test(id)) {
         if (!this.hasSingleIcon(id)) {
           this.addIcon(id, id);
         }
-        return this._getSingleIcon(id)
+        return this._getSingleIconsCollection().getIcon(id, params)
           .then(null, announceIconNotFoundForPromiseCatch(id));
       }
       iconId = id;
@@ -138,17 +147,17 @@ di('iconManager', function(di) {
 
       if (iconSetId) {
         if (this.hasIconSet(iconSetId)) {
-          return this._getIconFromIconSet(iconId, iconSetId)
+          return this._getCollection(iconSetId).getIcon(iconId, params)
             .then(null, announceIconNotFoundForPromiseCatch(iconId, iconSetId));
         }
       }
       else {
         if (this.hasSingleIcon(iconId)) {
-          return this._getSingleIcon(iconId)
+          return this._getSingleIconsCollection().getIcon(iconId, params)
             .then(null, announceIconNotFoundForPromiseCatch(iconId));
         }
         if (this.hasDefaultIconSet()) {
-          return this._getIconFromDefaultIconSet(iconId)
+          return this._getCollection(this._defaultCollectionId).getIcon(iconId, params)
             .then(null, announceIconNotFoundForPromiseCatch(iconId, this._defaultCollectionId));
         }
       }
@@ -184,18 +193,6 @@ di('iconManager', function(di) {
 
     _getSingleIconsCollection: function() {
       return this._getCollection(SINGLE_ICONS_COLLECTION_ID);
-    },
-
-    _getSingleIcon: function(id) {
-      return this._getSingleIconsCollection().getIcon(id);
-    },
-
-    _getIconFromDefaultIconSet: function(id) {
-      return this._getIconFromIconSet(id, this._defaultCollectionId);
-    },
-
-    _getIconFromIconSet: function(iconId, iconSetId) {
-      return this._getCollection(iconSetId).getIcon(iconId);
     }
 
   };

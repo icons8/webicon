@@ -37,7 +37,7 @@ IconPlugin._applyConfig = function(config) {
   config = config || {};
 
   normalizeConfigs(config.icons).forEach(performIconConfig);
-  normalizeConfigs(config["icon-sets"] || config.iconSets).forEach(performIconSetConfig);
+  normalizeConfigs(config["icon-sets"] || config.iconSets).forEach(performSvgIconSetConfig);
 
   function normalizeConfigs(configs) {
     if (configs && typeof configs == 'object') {
@@ -81,7 +81,7 @@ IconPlugin._applyConfig = function(config) {
     }
   }
 
-  function performIconSetConfig(config) {
+  function performSvgIconSetConfig(config) {
     var
       iconManager = di('iconManager');
     if (config && !iconManager.hasIconSet(config.id)) {
@@ -116,7 +116,6 @@ IconController.prototype = {
       index,
       prefixes,
       prefix,
-      list,
       id = null;
 
     prefixes = ['', 'i8-', 'i8', 'i8:'];
@@ -126,28 +125,23 @@ IconController.prototype = {
     }
 
     if (!id) {
-      list = element
+      id = element
         .attr('class')
-        .split(/\s+/);
-
-      if (list.indexOf('i8icon') != -1 || list.indexOf('i8-icon') != -1) {
-        list = list.map(function(className) {
+        .split(/\s+/)
+        .map(function(className) {
           var
-            match;
-          match = /^icon[-:](.+)$/i.exec(className);
-          return match && match[1];
-        });
-      }
-      else {
-        list = list.map(function(className) {
-          var
-            match;
-          match = /^i8[-:]?icon[-:](.+)$/i.exec(className);
-          return match && match[1];
-        });
-      }
-
-      id = list
+            match,
+            parts;
+          match = /^i8[-:]?icon[-:]([^;|,]+)[;|,]?(.*)$/i.exec(className);
+          if (!match || !match[1]) {
+            return null;
+          }
+          parts = [match[1]];
+          if (match[2]) {
+            Array.prototype.push.apply(parts, match[2].split(/[;|,]/));
+          }
+          return parts.join(' ');
+        })
         .filter(function(iconId) {
           return iconId;
         })

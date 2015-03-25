@@ -12,10 +12,10 @@ di('FontIconSetScope', function(di) {
 
   return inherit(FontIconSetScope, AbstractCssClassIconSetScope, {
 
-    getIcon: function(iconId) {
+    getIcon: function(iconId, params) {
       var
         FontIcon = di('FontIcon');
-      return new FontIcon(this.classResolver(iconId));
+      return new FontIcon(this.classResolver(iconId, params));
     }
 
   });
