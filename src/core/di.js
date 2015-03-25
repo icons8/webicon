@@ -3,6 +3,7 @@
 function di(name, provider) {
   var
     error,
+    baseProvider,
     providers,
     instances;
 
@@ -20,7 +21,16 @@ function di(name, provider) {
       console.error(error);
       throw error;
     }
-    providers[name] = provider;
+
+    if (providers.hasOwnProperty(name)) {
+      baseProvider = providers[name];
+      providers[name] = function(di) {
+        return new provider(di, new baseProvider(di));
+      };
+    }
+    else {
+      providers[name] = provider;
+    }
   }
   else {
     if (!providers[name]) {

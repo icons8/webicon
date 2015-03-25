@@ -21,13 +21,13 @@ di('ScopeCollection', function(di) {
       }
     },
 
-    preLoad: function() {
+    preload: function() {
       var
         Promise = di('Promise');
 
       return Promise.all(
         this.collection.map(function(item) {
-          return Promise.resolve(item.preLoad(iconId))
+          return Promise.resolve(item.preload(iconId))
             .then(null, function() {
               return false;
             })

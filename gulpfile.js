@@ -18,8 +18,8 @@ gulp.task('angular-module', function() {
     pattern = [
       'angular/module/module.prefix',
       'core/**/*.js',
-      'angular/*.js',
       'extensions/**/*.js',
+      'angular/*.js',
       'angular/module/*.js',
       'angular/module/module.js',
       'angular/module/module.suffix'
@@ -41,8 +41,8 @@ gulp.task('jquery-plugin', function() {
     pattern = [
       'jquery/plugin/plugin.prefix',
       'core/**/*.js',
-      'jquery/*.js',
       'extensions/**/*.js',
+      'jquery/*.js',
       'jquery/plugin/*.js',
       'jquery/plugin/plugin.js',
       'jquery/plugin/plugin.suffix'

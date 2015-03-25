@@ -103,12 +103,12 @@ di('iconManager', function(di) {
       return this._defaultIconSize;
     },
 
-    preLoad: function() {
+    preload: function() {
       var
         collections = this._collections;
 
       Object.keys(collections).forEach(function(id) {
-        collections[id].preLoad();
+        collections[id].preload();
       });
 
     },

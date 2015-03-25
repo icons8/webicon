@@ -16,7 +16,7 @@ di('AbstractRemoteResourceScope', function(di) {
 
   return inherit(AbstractRemoteResourceScope, AbstractScope, {
 
-    preLoad: function() {
+    preload: function() {
       return this._getResource();
     },
 

@@ -25,7 +25,7 @@ di('SvgCumulativeIconSetScope', function(di) {
       return SvgIconSet.loadByUrl(this.urlResolver(this.waitIconIds), this.svgOptions);
     },
 
-    preLoad: function() {
+    preload: function() {
       return true;
     },
 

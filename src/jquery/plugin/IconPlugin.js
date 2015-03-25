@@ -34,15 +34,37 @@ function IconPlugin(config) {
 }
 
 IconPlugin._applyConfig = function(config) {
+  var
+    publicApi = di('publicApi'),
+    iconManager = di('iconManager');
+
+  if (typeof config == 'function') {
+    config = config(publicApi);
+  }
   config = config || {};
 
-  normalizeConfigs(config.icons).forEach(performIconConfig);
-  normalizeConfigs(config["icon-sets"] || config.iconSets).forEach(performSvgIconSetConfig);
+  normalizeConfigs(config.icons, normalizeUrlBasedConfig).forEach(function(config) {
+    if (!iconManager.hasSingleIcon(config.id)) {
+      iconManager.addIcon(config.id, config.url, config);
+    }
+  });
+  normalizeConfigs(config["icon-sets"] || config.iconSets, normalizeUrlBasedConfig).forEach(function(config) {
+    if (!iconManager.hasIconSet(config.id)) {
+      iconManager.addSvgIconSet(config.id, config.url, config);
+    }
+  });
+  normalizeConfigs(config.fonts, normalizeClassNameBasedConfig).forEach(function(config) {
+    if (!iconManager.hasIconSet(config.id)) {
+      iconManager.addFontIconSet(config.id, config.className);
+    }
+  });
+  normalizeConfigs(config.sprites, normalizeClassNameBasedConfig).forEach(function(config) {
+    if (!iconManager.hasIconSet(config.id)) {
+      iconManager.addSpriteIconSet(config.id, config.className);
+    }
+  });
 
-  //config.fonts --> classResolver
-  //config.sprites --> classResolver
-
-  function normalizeConfigs(configs) {
+  function normalizeConfigs(configs, normalizeConfigFilter) {
     if (configs && typeof configs == 'object') {
       if (Array.isArray(configs)) {
         configs = configs.map(normalizeConfig);
@@ -58,17 +80,24 @@ IconPlugin._applyConfig = function(config) {
       });
     }
     return [];
+
+    function normalizeConfig(config, id) {
+      config = config || {};
+      if (typeof config != 'string') {
+        if (!config.id && config.id !== 0) {
+          config.id = id;
+        }
+      }
+      return normalizeConfigFilter && normalizeConfigFilter(config, id);
+    }
   }
 
-  function normalizeConfig(config, id) {
-    config = config || {};
+  function normalizeUrlBasedConfig(config, id) {
     if (typeof config == 'string') {
       config = {
-        url: config
+        url: config,
+        id: id
       }
-    }
-    if (!config.id && config.id !== 0) {
-      config.id = id;
     }
     config.url = config.url || config.uri;
     return config.id && config.url
@@ -76,20 +105,17 @@ IconPlugin._applyConfig = function(config) {
       : null;
   }
 
-  function performIconConfig(config) {
-    var
-      iconManager = di('iconManager');
-    if (config && !iconManager.hasSingleIcon(config.id)) {
-      iconManager.addIcon(config.id, config.url, config);
+  function normalizeClassNameBasedConfig(config, id) {
+    if (typeof config == 'string') {
+      config = {
+        className: config,
+        id: id
+      }
     }
-  }
-
-  function performSvgIconSetConfig(config) {
-    var
-      iconManager = di('iconManager');
-    if (config && !iconManager.hasIconSet(config.id)) {
-      iconManager.addSvgIconSet(config.id, config.url, config);
-    }
+    config.className = config.className || config["class"];
+    return config.id && config.className
+      ? config
+      : null;
   }
 
 };

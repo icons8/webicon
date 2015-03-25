@@ -8,7 +8,7 @@ di('AbstractScope', function() {
 
   AbstractScope.prototype = {
 
-    preLoad: function() {
+    preload: function() {
       return true;
     },
 
