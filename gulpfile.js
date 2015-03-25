@@ -12,55 +12,156 @@ var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var del = require('del');
+var yargs = require('yargs');
+
+var argv = yargs
+  .usage('Usage: $0 ' +
+  '[--debug] ' +
+  '')
+  .argv;
+
+var isDebug = function () {
+  return typeof argv.debug == 'undefined' || argv.debug;
+};
+
+var getCommonPattern = function(i8ApiExcluded) {
+  var
+    pattern = [
+      'core/**/*([!.]).js',
+      'extensions/**/*([!.]).js'
+    ];
+  if (isDebug()) {
+    pattern.push(
+      'core/**/*.debug.js',
+      'extensions/**/*.debug.js'
+    )
+  }
+  if (i8ApiExcluded) {
+    pattern.push(
+      '!extensions/i8Api/**/*.js'
+    )
+  }
+  return pattern;
+};
 
 gulp.task('angular-module', function() {
   var
-    pattern = [
+    stream,
+    pattern = [].concat(
       'angular/module/module.prefix',
-      'core/**/*.js',
-      'extensions/**/*.js',
+      getCommonPattern(),
       'angular/*.js',
       'angular/module/*.js',
       'angular/module/module.js',
       'angular/module/module.suffix'
-    ];
+    );
 
-  return gulp.src(pattern, { cwd: 'src' })
+  stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
     .pipe(concat('angular-i8icon.js'))
-    .pipe(gulp.dest('.', { cwd: 'dist' }))
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('.', { cwd: 'dist' }))
+    .pipe(gulp.dest('.', { cwd: 'dist' }));
+
+  if (!isDebug()) {
+    stream = stream
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('.', { cwd: 'dist' }))
+  }
+
+  return stream;
+});
+
+gulp.task('angular-module-core', function() {
+  var
+    stream,
+    pattern = [].concat(
+      'angular/module/module.prefix',
+      getCommonPattern(true),
+      'angular/*.js',
+      'angular/module/*.js',
+      'angular/module/module.js',
+      'angular/module/module.suffix'
+    );
+
+  stream = gulp.src(pattern, { cwd: 'src' })
+    .pipe(plumber())
+    .pipe(concat('angular-i8icon-core.js'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }));
+
+  if (!isDebug()) {
+    stream = stream
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('.', { cwd: 'dist' }))
+  }
+
+  return stream;
 });
 
 gulp.task('jquery-plugin', function() {
   var
-    pattern = [
+    stream,
+    pattern = [].concat(
       'jquery/plugin/plugin.prefix',
-      'core/**/*.js',
-      'extensions/**/*.js',
+      getCommonPattern(),
       'jquery/*.js',
       'jquery/plugin/*.js',
       'jquery/plugin/plugin.js',
       'jquery/plugin/plugin.suffix'
-    ];
+    );
 
-  return gulp.src(pattern, { cwd: 'src' })
+  stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
     .pipe(concat('jquery-i8icon.js'))
-    .pipe(gulp.dest('.', { cwd: 'dist' }))
-    .pipe(rename({ suffix: ".min" }))
-    .pipe(sourcemaps.init())
-    .pipe(uglify())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('.', { cwd: 'dist' }))
+    .pipe(gulp.dest('.', { cwd: 'dist' }));
+
+  if (!isDebug()) {
+    stream = stream
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('.', { cwd: 'dist' }))
+  }
+
+  return stream;
+});
+
+gulp.task('jquery-plugin-core', function() {
+  var
+    stream,
+    pattern = [].concat(
+      'jquery/plugin/plugin.prefix',
+      getCommonPattern(true),
+      'jquery/*.js',
+      'jquery/plugin/*.js',
+      'jquery/plugin/plugin.js',
+      'jquery/plugin/plugin.suffix'
+    );
+
+  stream = gulp.src(pattern, { cwd: 'src' })
+    .pipe(plumber())
+    .pipe(concat('jquery-i8icon-core.js'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }));
+
+  if (!isDebug()) {
+    stream = stream
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('.', { cwd: 'dist' }))
+  }
+
+  return stream;
 });
 
 gulp.task('scripts', function(done) {
-  runSequence(['angular-module', 'jquery-plugin'], done);
+  runSequence(['angular-module', 'angular-module-core', 'jquery-plugin', 'jquery-plugin-core'], done);
 });
 
 gulp.task('styles', function() {

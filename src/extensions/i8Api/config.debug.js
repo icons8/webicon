@@ -3,7 +3,7 @@
 di('i8ApiConfig', function() {
   return {
     gateway: {
-      url: '//api.icons8.com/icon-sets'
+      url: '//localhost:3452/icon-sets'
     }
   };
 });

@@ -37,18 +37,32 @@ di('Promise', function() {
     );
   };
 
-  Promise.all = function() {
+  Promise.all = function(promises) {
     var
-      args = Array.prototype.slice.call(arguments),
-      deferred = new jQuery.Deferred();
-    return new Promise(
-      deferred.when.apply(
-        deferred,
-        args.length <= 1
-          ? args
-          : [args]
-      )
-    );
+      jqPromises,
+      result = [];
+
+    if (!Array.isArray(promises)) {
+      return Promise.reject();
+    }
+
+    jqPromises = promises.map(function(value) {
+      if (value && typeof value == 'object' && value._jqPromise) {
+        value = value._jqPromise;
+      }
+      return value;
+    });
+    jqPromises.forEach(function(promise, index) {
+      promise.then(function(value) {
+        result[index] = value;
+      });
+    });
+
+    return new Promise(jQuery.when.apply(jQuery, jqPromises))
+      .then(function() {
+        return result;
+      })
+      ;
   };
 
   Promise.prototype = {
