@@ -45,6 +45,11 @@ di('publicApi', function(di) {
     defaultIconSize: function(iconSize) {
       iconManager.setDefaultIconSize(iconSize);
       return this;
+    },
+
+    preload: function() {
+      iconManager.preload();
+      return this;
     }
 
   };
