@@ -9,12 +9,23 @@ di('AbstractCssClassIconSetScope', function(di) {
   function AbstractCssClassIconSetScope(id, classResolver) {
 
     AbstractScope.call(this, id);
-
-    this.classResolver = typeof classResolver == 'function'
-      ? classResolver
-      : function() { return classResolver; };
+    this.classResolver = parseClassResolver(classResolver);
   }
 
   return inherit(AbstractCssClassIconSetScope, AbstractScope);
+
+  function parseClassResolver(classResolver) {
+    var
+      parts;
+    if (typeof classResolver == 'function') {
+      return classResolver;
+    }
+    classResolver = (classResolver || '') + '';
+
+    parts = classResolver.split(/[?%]/);
+    return function(id) {
+      return parts.join(id);
+    }
+  }
 
 });

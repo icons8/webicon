@@ -21,17 +21,31 @@ IconProvider.prototype = {
     return this;
   },
 
-  image: function(id, url) {
-    var
-      iconManager = di('iconManager');
-    iconManager.addImageIcon(id, url);
-    return this;
-  },
-
   iconSet: function(id, url, iconSize) {
     var
       iconManager = di('iconManager');
     iconManager.addSvgIconSet(id, url, iconSize);
+    return this;
+  },
+
+  font: function(id, classConfig) {
+    var
+      iconManager = di('iconManager');
+    iconManager.addFontIconSet(id, classConfig);
+    return this;
+  },
+
+  sprite: function(id, classConfig) {
+    var
+      iconManager = di('iconManager');
+    iconManager.addSpriteIconSet(id, classConfig);
+    return this;
+  },
+
+  sourceAlias: function(id, alias) {
+    var
+      iconManager = di('iconManager');
+    iconManager.addIconSetAlias(id, alias);
     return this;
   },
 
@@ -44,7 +58,7 @@ IconProvider.prototype = {
     return this;
   },
 
-  defaultIconSetId: function(id) {
+  defaultSource: function(id) {
     var
       iconManager = di('iconManager');
     iconManager.setDefaultIconSet(id);

@@ -39,6 +39,9 @@ IconPlugin._applyConfig = function(config) {
   normalizeConfigs(config.icons).forEach(performIconConfig);
   normalizeConfigs(config["icon-sets"] || config.iconSets).forEach(performSvgIconSetConfig);
 
+  //config.fonts --> classResolver
+  //config.sprites --> classResolver
+
   function normalizeConfigs(configs) {
     if (configs && typeof configs == 'object') {
       if (Array.isArray(configs)) {
