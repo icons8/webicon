@@ -10,7 +10,8 @@ ready(function(di) {
       androidL: ['android-l', 'al', 'a-l', 'l'],
       colored: ['color', 'c']
     },
-    platformsMap;
+    platformsMap,
+    possiblePrefixes;
 
   platformsMap = {};
   Object.keys(platforms).forEach(function(platform) {
@@ -19,6 +20,14 @@ ready(function(di) {
       platformsMap[alias] = platform;
     });
   });
+
+  possiblePrefixes = Object.keys(platforms)
+    .map(function(platform) {
+      return platform.toLowerCase();
+    });
+  possiblePrefixes.push(
+    'ios7'
+  );
 
   iconManager
     .setDefaultIconSet('i8')
@@ -43,10 +52,12 @@ ready(function(di) {
         cumulative: true,
         iconIdResolver: function(id, params) {
           var
-            index;
-
+            index,
+            position,
+            prefix;
+          id = String(id || '');
           if (!Array.isArray(params)) {
-            return id;
+            params = [];
           }
           params = params.map(function(param) {
             return String(param).toLowerCase();
@@ -56,7 +67,14 @@ ready(function(di) {
               return [platformsMap[params[index]], id].join('-');
             }
           }
-          return id;
+          position = id.indexOf('-');
+          if (position > 0) {
+            prefix = id.slice(0, position).toLowerCase();
+            if (possiblePrefixes.indexOf(prefix)) {
+              return [platformsMap[prefix], id.slice(position + 1)].join('-');
+            }
+          }
+          return [platformsMap['c'], id].join('-');
         }
       }
     );
