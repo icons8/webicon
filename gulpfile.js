@@ -58,7 +58,7 @@ gulp.task('angular-module', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('angular-i8icon.js'))
+    .pipe(concat('angular-i8-icon.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -87,7 +87,7 @@ gulp.task('angular-module-core', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('angular-i8icon-core.js'))
+    .pipe(concat('angular-i8-icon-core.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -116,7 +116,7 @@ gulp.task('jquery-plugin', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('jquery-i8icon.js'))
+    .pipe(concat('jquery-i8-icon.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -145,7 +145,7 @@ gulp.task('jquery-plugin-core', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('jquery-i8icon-core.js'))
+    .pipe(concat('jquery-i8-icon-core.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
