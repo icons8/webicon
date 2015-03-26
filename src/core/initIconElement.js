@@ -1,6 +1,6 @@
 'use strict';
 
-di('initIconElement', function(di) {
+di('initIconElement', function() {
 
   return function initIconElement(element, alt) {
     var
