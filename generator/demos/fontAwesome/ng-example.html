@@ -1,0 +1,24 @@
+<i8-icon icon="fa:heart 3x" class="heart"></i8-icon>
+<span i8-icon="fa:home 3x"></span>
+<i8-icon icon="{{spinner}} spin 2x"></i8-icon>
+
+<script>
+  angular
+    .module('app', ['i8.icon'])
+    .run(function($rootScope, $interval) {
+      var
+        spinners = ['fa:circle-o-notch', 'fa:cog', 'fa:refresh', 'fa:spinner'],
+        index = 0;
+      $rootScope.spinner = spinners[0];
+      $interval(function() {
+        $rootScope.spinner = spinners[++index % spinners.length];
+      }, 1500);
+    });
+</script>
+
+<style>
+  .heart {
+    color: #F44336;
+  }
+</style>
+

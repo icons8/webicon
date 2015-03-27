@@ -1,0 +1,32 @@
+
+<style type="text/css">
+  #font-awesome-demo-angular .heart {
+    color: #F44336;
+  }
+</style>
+
+<div class="pull-left" id="font-awesome-demo-angular">
+  <i8-icon icon="fa:heart 3x" class="heart"></i8-icon>
+  <span i8-icon="fa:home 3x"></span>
+  <i8-icon icon="{{spinner}} spin 2x"></i8-icon>
+</div>
+
+<script type="text/javascript">
+  angular
+    .module('font-awesome-demo-angular', ['i8.icon'])
+    .run([
+      '$rootScope',
+      '$interval',
+      function($rootScope, $interval) {
+        var
+          spinners = ['fa:circle-o-notch', 'fa:cog', 'fa:refresh', 'fa:spinner'],
+          index = 0;
+        $rootScope.spinner = spinners[0];
+        $interval(function() {
+          $rootScope.spinner = spinners[++index % spinners.length];
+        }, 1500);
+      }
+    ]);
+  angular
+    .bootstrap(document.getElementById('font-awesome-demo-angular'), ['font-awesome-demo-angular']);
+</script>

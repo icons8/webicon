@@ -1,0 +1,24 @@
+<i8-icon icon="fa:heart 3x" class="heart"></i8-icon>
+<span class="i8-icon i8-icon-fa:home|3x"></span>
+<i8-icon icon="fa:circle-o-notch spin 2x" id="spin"></i8-icon>
+
+<script>
+  $(function() {
+    var
+      spinners = ['circle-o-notch', 'cog', 'refresh', 'spinner'],
+      index = 0;
+    setInterval(function() {
+      $('#spin')
+        .attr('icon', 'fa:' + spinners[++index % spinners.length] + ' spin 2x')
+        .i8icon();
+    }, 1500)
+  });
+</script>
+
+<style>
+  .heart {
+    color: #F44336;
+  }
+</style>
+
+

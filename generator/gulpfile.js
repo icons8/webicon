@@ -7,10 +7,13 @@ var yargs = require('yargs');
 var argv = yargs.argv;
 
 var getDist = function() {
-  return argv.dist || 'dist';
+  return argv.dist || '..';
+};
+var isWatch = function() {
+  return typeof argv.watch == 'undefined' || argv.watch
 };
 
-gulp.task('default', function() {
+gulp.task('build', function() {
 
   function readDemoFile(demoName, fileName) {
     try {
@@ -37,5 +40,12 @@ gulp.task('default', function() {
       }
     }))
     .pipe(gulp.dest(getDist()))
-  ;
+    ;
+
+});
+
+gulp.task('default', ['build'], function() {
+  if (isWatch()) {
+    gulp.watch(['template/**', 'demos/**'], ['build']);
+  }
 });

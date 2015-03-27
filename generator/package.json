@@ -10,6 +10,6 @@
     "yargs": "^3.6.0"
   },
   "scripts": {
-    "build": "./node_modules/.bin/gulp --dist .."
+    "build": "./node_modules/.bin/gulp --no-watch"
   }
 }

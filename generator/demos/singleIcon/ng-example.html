@@ -1,15 +1,17 @@
+<i8-icon icon="clock"></i8-icon>
+<span i8-icon="calendar"></span>
+<div data-i8-icon="checkmark"></div>
+<i8-icon icon="assets/icons/svg/search.svg"></i8-icon>
+
 <script>
   angular
     .module('app', ['i8.icon'])
-    .config([
-      '$i8IconProvider',
-      function($i8IconProvider) {
-        $i8IconProvider
-          .icon('clock', 'assets/icons/svg/clock.svg')
-          .icon('calendar', 'assets/icons/svg/calendar.svg')
-          .icon('checkmark', 'assets/icons/svg/checkmark.svg');
-      }
-    ]);
+    .config(function($i8IconProvider) {
+      $i8IconProvider
+        .icon('clock', 'assets/icons/svg/clock.svg')
+        .icon('calendar', 'assets/icons/svg/calendar.svg')
+        .icon('checkmark', 'assets/icons/svg/checkmark.svg');
+    });
 </script>
 
 <style>
@@ -19,7 +21,3 @@
   }
 </style>
 
-<i8-icon icon="clock"></i8-icon>
-<span i8-icon="calendar"></span>
-<div data-i8-icon="checkmark"></div>
-<i8-icon icon="assets/icons/svg/search.svg"></i8-icon>
