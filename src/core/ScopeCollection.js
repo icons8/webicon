@@ -27,7 +27,7 @@ di('ScopeCollection', function(di) {
 
       return Promise.all(
         this.collection.map(function(item) {
-          return Promise.resolve(item.preload(iconId))
+          return Promise.resolve(item.preload())
             .then(null, function() {
               return false;
             })
