@@ -1,0 +1,66 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title i8-icon by Icons8
+
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css")
+
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js")
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js")
+    script(type="text/javascript", src="//rawgit.com/icons8/i8-icon-bower/master/jquery-i8-icon.min.js")
+    script(type="text/javascript", src="//rawgit.com/icons8/i8-icon-bower/master/angular-i8-icon.min.js")
+
+    link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css")
+    script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js")
+
+    script(type="text/javascript").
+      hljs.initHighlightingOnLoad();
+
+    script(type="text/javascript").
+      $(function() {
+        $('x-i8-icon').i8icon({
+          icons: {
+            logo: '//cdn.rawgit.com/icons8/i8-icon/v0.0.1/assets/icons/svg/icons8_cup.svg',
+            "jquery-logo": 'images/jquery-logo.png',
+            "angular-logo": 'images/angular-logo.png'
+          }
+        });
+      });
+
+    style(type="text/css").
+      .navbar-brand x-i8-icon {
+        width: 40px;
+        height: 40px;
+        margin: -10px 5px 0 -10px;
+        float: left;
+      }
+      .vendor-logo {
+        width: 25px;
+        height: 25px;
+      }
+body
+
+  nav.navbar.navbar-default
+    .container-fluid
+      .navbar-header
+        a.navbar-brand(href="https://github.com/icons8/i8-icon")
+          x-i8-icon(icon="logo")
+          | i8-icon
+      ul.nav.navbar-nav.navbar-right
+        li
+          a(href="https://github.com/icons8/i8-icon-bower/zipball/master")
+            | Download <strong>ZIP File</strong>
+        li
+          a(href="https://github.com/icons8/i8-icon-bower/tarball/master")
+            | Download <strong>TAR Ball</strong>
+        li
+          a(href="https://github.com/icons8/i8-icon")
+            | View On <strong>GitHub</strong>
+
+  .container(role="main")
+    block content
+      

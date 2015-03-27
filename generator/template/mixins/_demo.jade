@@ -1,0 +1,22 @@
+mixin demo(title, demo)
+  section
+    h3= title
+    br
+    .row
+      .col-md-6
+        .clearfix
+          x-i8-icon.vendor-logo.pull-right(icon="jquery-logo")
+          != jqDemo(demo)
+        br
+        pre
+          code
+            = jqExample(demo)
+
+      .col-md-6
+        .clearfix
+          x-i8-icon.vendor-logo.pull-right(icon="angular-logo")
+          != ngDemo(demo)
+        br
+        pre
+          code
+            = ngExample(demo)
