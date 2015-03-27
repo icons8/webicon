@@ -15,10 +15,10 @@ function IconProvider() {
   this.$get = ['$injector', function($injector) {
     var
       iconManager = di('iconManager'),
-      registerDependencies = di('registerDependencies'),
+      ensureDependenciesRegistered = di('ensureDependenciesRegistered'),
       iconService;
 
-    registerDependencies($injector);
+    ensureDependenciesRegistered($injector);
 
     iconService = function(id) {
       return iconManager.getIcon(id);

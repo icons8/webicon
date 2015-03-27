@@ -167,7 +167,7 @@ IconController.prototype = {
           }
           parts = [match[1]];
           if (match[2]) {
-            Array.prototype.push.apply(parts, match[2].split(/[;|,]/));
+            Array.prototype.push.apply(parts, match[2].split(/[;|,:]/));
           }
           return parts.join(' ');
         })

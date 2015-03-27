@@ -1,8 +1,14 @@
 'use strict';
 
-di('registerDependencies', function(di) {
+di('ensureDependenciesRegistered', function(di) {
+  var
+    registered = false;
 
-  return function registerDependencies($injector) {
+  return function ensureDependenciesRegistered($injector) {
+    if (registered) {
+      return;
+    }
+
     di('log', function() {
       return $injector.get('$log');
     });
@@ -80,6 +86,7 @@ di('registerDependencies', function(di) {
       };
     });
 
+    registered = true;
   }
 
 });
