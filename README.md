@@ -29,7 +29,7 @@ bower update
 ```
 
 > Please note that i8-icon requires **Angular 1.1.x** or higher for use as Angular module.
-> Please note that i8-icon requires **jQuery 1.4.x** or higher for use as jQuery plugin.
+> Please note that i8-icon requires **jQuery 1.8.x** or higher for use as jQuery plugin.
 
 
 ## Using the i8-icon Library
