@@ -1,5 +1,7 @@
 # Icon for Icons8 icons
 
+![Preview of Flat Icons from Icons8](http://cdnd.icons8.com/download/mail/color-icons-preview.png)
+
 ## Installing Icons8 icons
 
 You can install this package locally either with `npm`, `bower`, or `jspm`.
