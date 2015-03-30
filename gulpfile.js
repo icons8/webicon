@@ -205,7 +205,8 @@ gulp.task('demo-server', function() {
           icons = (req.query.icons || req.query.i || '').split(/[,|;]/g);
           mode = (req.query.mode || req.query.m || 'symbol').split(/[,|;]/g);
           spriterConfig = {
-            mode: {}
+            mode: {},
+            transform: []
           };
           mode.forEach(function(m) {
             spriterConfig.mode[m] = true;
