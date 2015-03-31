@@ -122,13 +122,15 @@ IconPlugin._applyConfig = function(config) {
 
 function IconController(element, options) {
   var
-    initIconElement = di('initIconElement');
+    initIconElement = di('initIconElement'),
+    id;
 
   options = options || {};
-
   this._element = element;
-  initIconElement(element, this._getAlt() || options.alt);
-  this._renderIcon(this._getIconId() || options.icon);
+
+  id = this._getIconId() || options.icon;
+  initIconElement(element, this._getAlt() || options.alt || id);
+  this._renderIcon(id);
 }
 
 IconController.prototype = {
