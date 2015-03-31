@@ -27,13 +27,13 @@ di('iconManager', function(di) {
         ? getExt(url())
         : getExt(url + '');
 
-      return ext == 'svg'
+      return ext == 'svg' || !ext
         ? this.addSvgIcon(id, urlConfig, options)
         : this.addImageIcon(id, urlConfig)
       ;
 
       function getExt(url) {
-        return ((url.split('?')[0] || '').split('.').slice(-1)[0] || '').toLowerCase();
+        return (((url.split('?')[0] || '').split(/[/\\]/).slice(-1)[0] || '').split('.').slice(-1)[0] || '').toLowerCase();
       }
     },
 

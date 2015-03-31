@@ -34,7 +34,7 @@ di('SvgIcon', function(di) {
         for (index = 0; index < attributes.length; index++) {
           svgNode.setAttribute(attributes[index].name, attributes[index].value);
         }
-        element = svgElement.append(node.children);
+        element = svgElement.append(nodeWrapper(node).children());
       }
       else {
         element = nodeWrapper('<svg xmlns="http://www.w3.org/2000/svg">').append(element);
@@ -80,7 +80,6 @@ di('SvgIcon', function(di) {
       });
 
     this.iconSize = iconSize;
-
     AbstractElementIcon.call(this, SVG_ICON_CLASS, element);
   }
 
