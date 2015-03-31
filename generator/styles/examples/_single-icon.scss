@@ -1,0 +1,28 @@
+
+.single-icon {
+  .i8-icon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: block;
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:after {
+      content: attr(aria-label);
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      font-size: 14px;
+      line-height: 1;
+      margin-top: -7px;
+      margin-left: 10px;
+    }
+
+  }
+
+}
+
+

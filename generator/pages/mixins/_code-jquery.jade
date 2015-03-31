@@ -1,0 +1,16 @@
+mixin code-jquery(name)
+  case name
+    when 'single-icon'
+      +code
+        include:code ../codes/jquery/single-icon.html
+      block
+      +code
+        include:code ../codes/jquery/single-icon.js
+
+    when 'font-icons'
+      +code
+        include:code ../codes/jquery/font-icons.html
+      block
+      +code
+        include:code ../codes/jquery/font-icons.js
+

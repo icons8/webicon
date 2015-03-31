@@ -1,0 +1,48 @@
+.c-example {
+  margin-bottom: 40px;
+
+  .b-title {
+    h2 {
+      font-size: 2em;
+      line-height: 1;
+      margin-bottom: -1.1em;
+    }
+  }
+
+  ul.b-tabs {
+    margin-bottom: 10px;
+    > li {
+      &:not(.active) {
+        > a {
+          border-radius: 0;
+          color: rgba(0, 0, 0, .4);
+          &:hover {
+            color: rgba(0, 0, 0, .5);
+            background: rgba(0, 0, 0, .02);
+            border-color: transparent transparent #ddd;
+          }
+        }
+      }
+      &.active {
+        > a {
+          border-radius: 0;
+          color: rgba(0, 0, 0, .7);
+          &:hover {
+            color: rgba(0, 0, 0, .7);
+          }
+        }
+      }
+    }
+  }
+
+  .b-text {
+    font-size: 1.3em;
+    color: rgba(0, 0, 0, .5);
+    margin: 10px 0 20px;
+  }
+
+  .p-panel {
+
+  }
+}
+

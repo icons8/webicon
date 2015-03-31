@@ -1,0 +1,28 @@
+mixin example(name, title)
+  section.c-example(scope ng-init="active = 'jquery'")
+    .b-title
+      h2= title || name
+
+    ul.nav.nav-tabs.b-tabs
+      li.pull-right(ng-click="active = 'angular'" ng-class="{active: active == 'angular'}")
+        a AngularJS
+      li.pull-right(ng-click="active = 'jquery'" ng-class="{active: active == 'jquery'}")
+        a jQuery
+
+    .row.b-panel(ng-show="active == 'jquery'")
+      .col-md-4
+        +example-jquery(name)
+      .col-md-8
+        if block
+          .b-text
+            block
+        +code-jquery(name)
+
+    .row.b-panel(ng-show="active == 'angular'")
+      .col-md-4
+        +example-angular(name)
+      .col-md-8
+        if block
+          .b-text
+            block
+        +code-angular(name)

@@ -1,9 +1,13 @@
 
+var jadeInstance = require('jade');
 var gulp = require('gulp');
+var gif = require('gulp-if');
 var jade = require('gulp-jade');
-var path = require('path');
-var fs = require('fs');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var plumber = require('gulp-plumber');
 var yargs = require('yargs');
+
 var argv = yargs.argv;
 
 var getDist = function() {
@@ -13,39 +17,43 @@ var isWatch = function() {
   return typeof argv.watch == 'undefined' || argv.watch
 };
 
-gulp.task('build', function() {
+jadeInstance.filters.code = function(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/#/g, '&#35;')
+    .replace(/\n/g, '<br/>');
+};
 
-  function readDemoFile(demoName, fileName) {
-    try {
-      return fs.readFileSync(path.join('demos', demoName, fileName));
-    }
-    catch(e) {
-      return ''
-    }
-  }
-
-  function readDemoFileDecorator(fileName) {
-    return function(demoName) {
-      return readDemoFile(demoName, fileName);
-    }
-  }
-
-  return gulp.src(['template/**/*.jade', '!template/**/_*.jade'])
-    .pipe(jade({
-      locals: {
-        jqDemo: readDemoFileDecorator('jq-demo.html'),
-        jqExample: readDemoFileDecorator('jq-example.html'),
-        ngDemo: readDemoFileDecorator('ng-demo.html'),
-        ngExample: readDemoFileDecorator('ng-example.html')
-      }
-    }))
+gulp.task('styles', function() {
+  return gulp.src(['styles/**/*.scss', '!styles/**/_*.scss'])
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(autoprefixer())
     .pipe(gulp.dest(getDist()))
-    ;
-
+  ;
 });
 
-gulp.task('default', ['build'], function() {
+gulp.task('scripts', function() {
+  return gulp.src('scripts/**/*.js')
+    .pipe(gulp.dest(getDist()))
+    ;
+});
+
+gulp.task('pages', function() {
+  return gulp.src(['pages/**/*.jade', '!pages/**/_*.jade'])
+    .pipe(plumber())
+    .pipe(jade({ jade: jadeInstance }))
+    .pipe(gulp.dest(getDist()))
+  ;
+});
+
+gulp.task('default', ['pages', 'styles', 'scripts'], function() {
   if (isWatch()) {
-    gulp.watch(['template/**', 'demos/**'], ['build']);
+    gulp.watch(['pages/**'], ['pages']);
+    gulp.watch(['styles/**'], ['styles']);
+    gulp.watch(['scripts/**/*.js'], ['scripts']);
   }
 });

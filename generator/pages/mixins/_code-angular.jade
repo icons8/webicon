@@ -1,0 +1,16 @@
+mixin code-angular(name)
+  case name
+    when 'single-icon'
+      +code
+        include:code ../codes/angular/single-icon.html
+      block
+      +code
+        include:code ../codes/angular/single-icon.js
+
+    when 'font-icons'
+      +code
+        include:code ../codes/angular/font-icons.html
+      block
+      +code
+        include:code ../codes/angular/font-icons.js
+

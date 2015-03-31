@@ -1,0 +1,45 @@
+a {
+  cursor: pointer; }
+
+pre {
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  border-color: rgba(0, 0, 0, 0.1); }
+
+code.hljs {
+  padding: 1em; }
+
+.navbar-brand i8-icon {
+  width: 40px;
+  height: 40px;
+  margin: -10px 5px 0 -10px;
+  float: left; }
+
+iframe {
+  border: none; }
+
+.c-example {
+  margin-bottom: 40px; }
+  .c-example .b-title h2 {
+    font-size: 2em;
+    line-height: 1;
+    margin-bottom: -1.1em; }
+  .c-example ul.b-tabs {
+    margin-bottom: 10px; }
+    .c-example ul.b-tabs > li:not(.active) > a {
+      border-radius: 0;
+      color: rgba(0, 0, 0, 0.4); }
+      .c-example ul.b-tabs > li:not(.active) > a:hover {
+        color: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.02);
+        border-color: transparent transparent #ddd; }
+    .c-example ul.b-tabs > li.active > a {
+      border-radius: 0;
+      color: rgba(0, 0, 0, 0.7); }
+      .c-example ul.b-tabs > li.active > a:hover {
+        color: rgba(0, 0, 0, 0.7); }
+  .c-example .b-text {
+    font-size: 1.3em;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 10px 0 20px; }
