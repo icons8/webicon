@@ -5,7 +5,6 @@
 Insert the icons in 30 seconds using the new Icon Sets technology by Google.
 
 Features:
-
 - The icons are stored on our CDN server (which is free forever).
 - You insert the icons right into your code.
 
