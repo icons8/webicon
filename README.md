@@ -1,5 +1,13 @@
 # Icon for Icons8 icons
 
+**Icon Sets Technology by Google**
+
+Insert the icons in 30 seconds using the new Icon Sets technology by Google.
+
+Features:
+- The icons are stored on our CDN server (which is free forever).
+- You insert the icons right into your code.
+
 ![Preview of Flat Icons from Icons8](http://cdnd.icons8.com/download/mail/color-icons-preview.png)
 
 ## Installing Icons8 icons
