@@ -8,7 +8,7 @@ ready(function(di) {
       win8: ['win', 'w'],
       android: ['kitkat', 'ak', 'a-k', 'k'],
       androidL: ['android-l', 'al', 'a-l', 'l'],
-      colored: ['color', 'c']
+      flat_color: ['color', 'c', 'colored']
     },
     platformsMap,
     possiblePrefixes;

@@ -1,30 +1,42 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var gulp = require('gulp');
-var rename = require('gulp-rename');
-var connect = require('gulp-connect');
-var runSequence = require('run-sequence');
-var SVGSpriter = require('svg-sprite');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var plumber = require('gulp-plumber');
-var sourcemaps = require('gulp-sourcemaps');
-var del = require('del');
-var yargs = require('yargs');
+var
+  fs = require('fs'),
+  path = require('path'),
+  gulp = require('gulp'),
+  rename = require('gulp-rename'),
+  connect = require('gulp-connect'),
+  runSequence = require('run-sequence'),
+  SVGSpriter = require('svg-sprite'),
+  concat = require('gulp-concat'),
+  uglify = require('gulp-uglify'),
+  plumber = require('gulp-plumber'),
+  sourcemaps = require('gulp-sourcemaps'),
+  del = require('del'),
+  yargs = require('yargs'),
+  karma = require('karma').server;
 
-var argv = yargs
+var
+  argv = yargs
   .usage('Usage: $0 ' +
   '[--debug] ' +
   '')
   .argv;
 
-var isDebug = function () {
+function isDebug() {
   return typeof argv.debug == 'undefined' || argv.debug;
-};
+}
 
-var getCommonPattern = function(i8ApiExcluded) {
+function getTestBrowsers() {
+  var
+    browsers = argv.browsers || argv.browser;
+
+  return browsers
+    ? browsers.trim().split(',')
+    : ['PhantomJS'];
+}
+
+function getCommonPattern(i8ApiExcluded) {
   var
     pattern = [
       'core/**/*([!.]).js',
@@ -42,7 +54,7 @@ var getCommonPattern = function(i8ApiExcluded) {
     )
   }
   return pattern;
-};
+}
 
 gulp.task('angular-module', function() {
   var
@@ -164,6 +176,55 @@ gulp.task('scripts', function(done) {
   runSequence(['angular-module', 'angular-module-core', 'jquery-plugin', 'jquery-plugin-core'], done);
 });
 
+gulp.task('test-jquery', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-jquery.conf.js'
+    };
+
+  karma.start(karmaConfig, function() {
+    done();
+  });
+
+});
+
+gulp.task('test-angular', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-angular.conf.js'
+    };
+
+  karma.start(karmaConfig, function() {
+    done()
+  });
+});
+
+gulp.task('test-angular-with-jquery', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-angular.conf.js'
+    };
+
+  process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = true;
+  karma.start(karmaConfig, function() {
+    process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = undefined;
+    done();
+  });
+});
+
+gulp.task('test', function(done) {
+  runSequence('test-jquery', 'test-angular', 'test-angular-with-jquery', done);
+});
+
 gulp.task('styles', function() {
   return gulp.src('**/*.css', { cwd: 'src' })
     .pipe(gulp.dest('.', { cwd: 'dist' }))
@@ -184,10 +245,11 @@ gulp.task('watch', function() {
 });
 
 gulp.task('demo-server', function() {
-  var options = {
-    port: 3452,
-    root: ['demo', '.']
-  };
+  var
+    options = {
+      port: 3452,
+      root: ['demo', '.']
+    };
 
   options.middleware = function(connect, options) {
     return [
@@ -270,7 +332,7 @@ gulp.task('demo-server', function() {
 });
 
 gulp.task('build', function(done) {
-  runSequence('clean', 'scripts', 'styles', done);
+  runSequence('clean', 'scripts', 'styles', 'test', done);
 });
 
 gulp.task('default', function(done) {
