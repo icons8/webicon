@@ -20,3 +20,10 @@ mixin code-angular(name)
       block
       +code
         include:code ../codes/angular/icon-set.js
+
+    when 'single-icon-image'
+      +code
+        include:code ../codes/angular/single-icon-image.html
+      block
+      +code
+        include:code ../codes/angular/single-icon-image.js

@@ -20,3 +20,10 @@ mixin code-jquery(name)
       block
       +code
         include:code ../codes/jquery/icon-set.js
+
+    when 'single-icon-image'
+      +code
+        include:code ../codes/jquery/single-icon-image.html
+      block
+      +code
+        include:code ../codes/jquery/single-icon-image.js
