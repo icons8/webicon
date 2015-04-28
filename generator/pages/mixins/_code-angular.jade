@@ -14,3 +14,9 @@ mixin code-angular(name)
       +code
         include:code ../codes/angular/font-icons.js
 
+    when 'icon-set'
+      +code
+        include:code ../codes/angular/icon-set.html
+      block
+      +code
+        include:code ../codes/angular/icon-set.js

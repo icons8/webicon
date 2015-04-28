@@ -14,3 +14,9 @@ mixin code-jquery(name)
       +code
         include:code ../codes/jquery/font-icons.js
 
+    when 'icon-set'
+      +code
+        include:code ../codes/jquery/icon-set.html
+      block
+      +code
+        include:code ../codes/jquery/icon-set.js

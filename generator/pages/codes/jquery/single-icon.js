@@ -1,8 +1,8 @@
 $(function() {
   $(document).i8icons({
     icons: {
-      like: 'assets/icons/svg/like.svg',
-      department: 'assets/icons/svg/department.svg'
+      department: 'assets/icons/svg/department.svg',
+      iLoveIcons8: 'assets/icons/svg/i-love-icons8.svg'
     }
   });
 });
