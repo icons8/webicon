@@ -27,3 +27,10 @@ mixin code-angular(name)
       block
       +code
         include:code ../codes/angular/single-icon-image.js
+
+    when 'sprite-icons'
+      +code
+        include:code ../codes/angular/sprite-icons.html
+      block
+      +code
+        include:code ../codes/angular/sprite-icons.js

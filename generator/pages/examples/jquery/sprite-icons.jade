@@ -1,0 +1,12 @@
+extends ../../layouts/example/_jquery
+
+block append styles
+  link(rel="stylesheet" href="assets/sprites/custom/sprite.css")
+
+block append scripts
+  script(type="text/javascript")
+    include ../../codes/jquery/sprite-icons.js
+
+block content
+  .font-icons
+    include ../../codes/jquery/sprite-icons.html

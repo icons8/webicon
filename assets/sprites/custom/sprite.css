@@ -1,0 +1,18 @@
+
+.sprite {
+  background-image: url("sprite.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.sprite-idea {
+  background-position: -0px -100px;
+}
+.sprite-key {
+  background-position: -0px -50px;
+}
+.sprite-full-trash {
+  background-position: -0px -0px;
+}

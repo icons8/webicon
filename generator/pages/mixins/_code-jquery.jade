@@ -27,3 +27,10 @@ mixin code-jquery(name)
       block
       +code
         include:code ../codes/jquery/single-icon-image.js
+
+    when 'sprite-icons'
+      +code
+        include:code ../codes/jquery/sprite-icons.html
+      block
+      +code
+        include:code ../codes/jquery/sprite-icons.js
