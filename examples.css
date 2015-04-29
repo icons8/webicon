@@ -1,12 +1,12 @@
-.single-icon .i8-icon {
+.normal-icon .i8-icon {
   width: 40px;
   height: 40px;
   position: relative;
   display: block;
   margin-bottom: 10px; }
-  .single-icon .i8-icon:last-child {
+  .normal-icon .i8-icon:last-child {
     margin-bottom: 0; }
-  .single-icon .i8-icon:after {
+  .normal-icon .i8-icon:after {
     content: attr(aria-label);
     position: absolute;
     left: 100%;
@@ -14,7 +14,8 @@
     font-size: 14px;
     line-height: 1;
     margin-top: -7px;
-    margin-left: 10px; }
+    margin-left: 10px;
+    white-space: nowrap; }
 
 .font-icons .i8-icon {
   font-size: 40px;
@@ -33,4 +34,5 @@
     font-size: 14px;
     line-height: 1;
     margin-top: -7px;
-    margin-left: 10px; }
+    margin-left: 10px;
+    white-space: nowrap; }

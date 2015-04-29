@@ -1,5 +1,5 @@
 mixin example(name, title)
-  section.c-example(scope ng-init="active = 'jquery'")
+  section.c-example
     .b-title
       h2= title || name
 
@@ -10,18 +10,18 @@ mixin example(name, title)
         a jQuery
 
     .row.b-panel(ng-show="active == 'jquery'")
-      .col-md-4
+      .col-md-3
         +example-jquery(name)
-      .col-md-8
+      .col-md-9
         if block
           .b-text
             block
         +code-jquery(name)
 
     .row.b-panel(ng-show="active == 'angular'")
-      .col-md-4
+      .col-md-3
         +example-angular(name)
-      .col-md-8
+      .col-md-9
         if block
           .b-text
             block

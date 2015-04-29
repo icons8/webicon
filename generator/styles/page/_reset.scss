@@ -1,9 +1,16 @@
+
+body {
+  font-family: "Open Sans", HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue", Arial, sans-serif;
+}
+
 a {
   cursor: pointer;
 }
+
 pre {
   border-radius: 0;
   background: transparent;
   padding: 0;
-  border-color: rgba(0, 0, 0, .1);
+  border-color: transparent;
 }
+

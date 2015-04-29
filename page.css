@@ -1,3 +1,6 @@
+body {
+  font-family: "Open Sans", HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue", Arial, sans-serif; }
+
 a {
   cursor: pointer; }
 
@@ -5,16 +8,40 @@ pre {
   border-radius: 0;
   background: transparent;
   padding: 0;
-  border-color: rgba(0, 0, 0, 0.1); }
+  border-color: transparent; }
 
 code.hljs {
   padding: 1em; }
 
-.navbar-brand i8-icon {
-  width: 40px;
-  height: 40px;
-  margin: -10px 5px 0 -10px;
-  float: left; }
+.navbar {
+  background: #32c24d;
+  color: #fff;
+  border: none;
+  border-radius: 0; }
+  .navbar .nav > li > a {
+    padding: 0 15px;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 48px; }
+    .navbar .nav > li > a:hover, .navbar .nav > li > a:focus {
+      background: #32c24d; }
+    .navbar .nav > li > a b, .navbar .nav > li > a strong {
+      font-weight: 600; }
+  .navbar a, .navbar a:hover, .navbar a:focus {
+    color: #fff; }
+
+.navbar-brand {
+  height: auto;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 48px; }
+  .navbar-brand i8-icon {
+    width: 32px;
+    height: 32px;
+    float: left;
+    padding: 8px 10px 8px 15px;
+    box-sizing: content-box; }
 
 iframe {
   border: none; }
@@ -22,9 +49,12 @@ iframe {
 .c-example {
   margin-bottom: 40px; }
   .c-example .b-title h2 {
-    font-size: 2em;
+    font-size: 30px;
     line-height: 1;
-    margin-bottom: -1.1em; }
+    margin-bottom: -1.1em;
+    font-family: Sanchez, "Open Sans", HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    color: #000; }
   .c-example ul.b-tabs {
     margin-bottom: 10px; }
     .c-example ul.b-tabs > li:not(.active) > a {
@@ -32,7 +62,7 @@ iframe {
       color: rgba(0, 0, 0, 0.4); }
       .c-example ul.b-tabs > li:not(.active) > a:hover {
         color: rgba(0, 0, 0, 0.5);
-        background: rgba(0, 0, 0, 0.02);
+        background: transparent;
         border-color: transparent transparent #ddd; }
     .c-example ul.b-tabs > li.active > a {
       border-radius: 0;
@@ -43,3 +73,7 @@ iframe {
     font-size: 1.3em;
     color: rgba(0, 0, 0, 0.5);
     margin: 10px 0 20px; }
+  .c-example .b-panel iframe {
+    border: 0;
+    width: 100%;
+    min-height: 150px; }

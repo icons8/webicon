@@ -3,9 +3,12 @@
 
   .b-title {
     h2 {
-      font-size: 2em;
+      font-size: 30px;
       line-height: 1;
       margin-bottom: -1.1em;
+      font-family: Sanchez, "Open Sans", HelveticaNeue-Light, "Helvetica Neue Light", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      color: #000;
     }
   }
 
@@ -18,7 +21,7 @@
           color: rgba(0, 0, 0, .4);
           &:hover {
             color: rgba(0, 0, 0, .5);
-            background: rgba(0, 0, 0, .02);
+            background: transparent;
             border-color: transparent transparent #ddd;
           }
         }
@@ -41,8 +44,12 @@
     margin: 10px 0 20px;
   }
 
-  .p-panel {
-
+  .b-panel {
+    iframe {
+      border: 0;
+      width: 100%;
+      min-height: 150px;
+    }
   }
 }
 
