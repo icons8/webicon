@@ -58,6 +58,7 @@ iframe {
   .c-example ul.b-tabs {
     margin-bottom: 10px; }
     .c-example ul.b-tabs > li:not(.active) > a {
+      border-bottom: 1px;
       border-radius: 0;
       color: rgba(0, 0, 0, 0.4); }
       .c-example ul.b-tabs > li:not(.active) > a:hover {
@@ -69,6 +70,8 @@ iframe {
       color: rgba(0, 0, 0, 0.7); }
       .c-example ul.b-tabs > li.active > a:hover {
         color: rgba(0, 0, 0, 0.7); }
+    .c-example ul.b-tabs > li > a {
+      background: #fff; }
   .c-example .b-text {
     font-size: 1.3em;
     color: rgba(0, 0, 0, 0.5);
@@ -76,4 +79,4 @@ iframe {
   .c-example .b-panel iframe {
     border: 0;
     width: 100%;
-    min-height: 150px; }
+    height: 60px; }

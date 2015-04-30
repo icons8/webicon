@@ -1,0 +1,19 @@
+.green {
+  color: #27ae60;
+}
+.iridescent {
+  -webkit-animation: iridescent 5s infinite;
+  animation: iridescent 5s infinite;
+}
+@-webkit-keyframes iridescent {
+  0% { color: #e74c3c; }
+  25% { color: #f1c40f; }
+  75% { color: #9b59b6; }
+  100% { color: #e74c3c; }
+}
+@keyframes iridescent {
+  0% { color: #e74c3c; }
+  25% { color: #f1c40f; }
+  75% { color: #9b59b6; }
+  100% { color: #e74c3c; }
+}

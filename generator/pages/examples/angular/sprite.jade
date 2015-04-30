@@ -1,0 +1,12 @@
+extends ../../layouts/example/_angular
+
+block append styles
+  link(rel="stylesheet" href="assets/sprites/custom/sprite.css")
+
+block append scripts
+  script(type="text/javascript")
+    include ../../codes/angular/sprite.js
+
+block content
+  .normal-icon
+    include ../../codes/angular/sprite.html

@@ -1,43 +1,51 @@
 mixin code-angular(name)
   case name
-    when 'single-icon'
+    when 'single'
       +code
-        include:code ../codes/angular/single-icon.html
-      block
+        include:code ../codes/angular/single.html
       +code
-        include:code ../codes/angular/single-icon.js
+        include:code ../codes/angular/single.js
 
-    when 'font-icons'
+    when 'font'
       +code
-        include:code ../codes/angular/font-icons.html
-      block
+        include:code ../codes/angular/font.html
       +code
-        include:code ../codes/angular/font-icons.js
+        include:code ../codes/angular/font.js
 
     when 'icon-set'
       +code
         include:code ../codes/angular/icon-set.html
-      block
       +code
         include:code ../codes/angular/icon-set.js
 
-    when 'single-icon-image'
+    when 'image'
       +code
-        include:code ../codes/angular/single-icon-image.html
-      block
+        include:code ../codes/angular/image.html
       +code
-        include:code ../codes/angular/single-icon-image.js
+        include:code ../codes/angular/image.js
 
-    when 'sprite-icons'
+    when 'sprite'
       +code
-        include:code ../codes/angular/sprite-icons.html
-      block
+        include:code ../codes/angular/sprite.html
       +code
-        include:code ../codes/angular/sprite-icons.js
+        include:code ../codes/angular/sprite.js
 
-    when 'icons8-icon'
+    when 'icons8-api'
       +code
-        include:code ../codes/angular/icons8-icon.html
-      block
+        include:code ../codes/angular/icons8-api.html
       +code
-        include:code ../codes/angular/icons8-icon.js
+        include:code ../codes/angular/icons8-api.js
+
+    when 'coloring'
+      +code
+        include:code ../codes/angular/coloring.html
+      +code
+        include:code ../codes/angular/coloring.js
+      +code
+        include:code ../codes/angular/coloring.css
+
+    when 'fa'
+      +code
+        include:code ../codes/angular/fa.html
+      +code
+        include:code ../codes/angular/fa.js

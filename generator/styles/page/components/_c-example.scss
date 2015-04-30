@@ -17,6 +17,7 @@
     > li {
       &:not(.active) {
         > a {
+          border-bottom: 1px;
           border-radius: 0;
           color: rgba(0, 0, 0, .4);
           &:hover {
@@ -35,6 +36,9 @@
           }
         }
       }
+      > a {
+        background: #fff;
+      }
     }
   }
 
@@ -48,7 +52,7 @@
     iframe {
       border: 0;
       width: 100%;
-      min-height: 150px;
+      height: 60px;
     }
   }
 }
