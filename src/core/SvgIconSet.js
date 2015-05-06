@@ -12,21 +12,28 @@ di('SvgIconSet', function(di) {
       nodes,
       node,
       iconSize,
-      viewBox
+      viewBox,
+      iconIdResolver,
+      svgOptions
       ;
 
-    options = parseSvgOptions(options);
+    iconIdResolver = typeof options.iconIdResolver == 'function'
+      ? options.iconIdResolver
+      : function(value) {
+        return value;
+      };
+    svgOptions = parseSvgOptions(options);
 
     this.icons = {};
 
-    viewBox = options.viewBox || element[0].getAttribute('viewBox');
-    iconSize = options.iconSize;
+    viewBox = svgOptions.viewBox || element[0].getAttribute('viewBox');
+    iconSize = svgOptions.iconSize;
 
     try {
       nodes = element[0].querySelectorAll('[id]');
       for(index = 0; index < nodes.length; index++) {
         node = nodes[index];
-        this.icons[node.getAttribute('id')] = new SvgIcon(nodeWrapper(node), {
+        this.icons[iconIdResolver(node.getAttribute('id'))] = new SvgIcon(nodeWrapper(node), {
           iconSize: iconSize,
           viewBox: viewBox
         });
@@ -35,9 +42,9 @@ di('SvgIconSet', function(di) {
     catch(e) {
       log.warn(e);
     }
-
     this.iconSize = iconSize;
     this.viewBox = viewBox;
+    this.iconIdResolver = iconIdResolver;
   }
 
   SvgIconSet.loadByUrl = function(url, options) {

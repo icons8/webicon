@@ -10,6 +10,16 @@
   <script type="text/javascript">
     angular
       .module('demo-icon', ['i8.icon'])
+      .config([
+        '$i8IconProvider',
+        function($i8IconProvider) {
+          $i8IconProvider
+            .iconSet('md', '//cdn.rawgit.com/google/material-design-icons/1.0.1/sprites/svg-sprite/svg-sprite-action.svg')
+            .iconSet('md', '//cdn.rawgit.com/google/material-design-icons/1.0.1/sprites/svg-sprite/svg-sprite-image.svg')
+            .defaultSource('md')
+          ;
+        }
+      ])
     ;
   </script>
 
@@ -22,11 +32,8 @@
 </head>
 <body>
 
-<i8-icon icon="link win"></i8-icon>
-<i8-icon icon="like c"></i8-icon>
-<i8-icon icon="icons8_cup colored"></i8-icon>
-<i8-icon icon="icons8_cup"></i8-icon>
-<i8-icon icon="binoculars ios7"></i8-icon>
+<i8-icon icon="ic_3d_rotation_24px"></i8-icon>
+<i8-icon icon="ic_add_to_photos_24px"></i8-icon>
 
 </body>
 </html>

@@ -40,7 +40,7 @@ di('ScopeCollection', function(di) {
         });
     },
 
-    getIconScope: function(iconId) {
+    getIconScope: function(iconId, params) {
       var
         Promise = di('Promise'),
         SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
@@ -50,7 +50,7 @@ di('ScopeCollection', function(di) {
 
       promise = Promise.all(
         collection.map(function(scope) {
-          return Promise.resolve(scope.hasIcon(iconId))
+          return Promise.resolve(scope.hasIcon(iconId, params))
             .then(function(value) {
               return value
                 ? scope
@@ -74,7 +74,7 @@ di('ScopeCollection', function(di) {
     },
 
     getIcon: function(iconId, params) {
-      return this.getIconScope(iconId)
+      return this.getIconScope(iconId, params)
         .then(function(scope) {
           return scope.getIcon(iconId, params);
         });

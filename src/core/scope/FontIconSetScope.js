@@ -6,8 +6,8 @@ di('FontIconSetScope', function(di) {
     inherit = di('inherit')
     ;
 
-  function FontIconSetScope(id, classResolver) {
-    AbstractCssClassIconSetScope.call(this, id, classResolver);
+  function FontIconSetScope(id, cssClassResolver, options) {
+    AbstractCssClassIconSetScope.call(this, id, cssClassResolver, options);
   }
 
   return inherit(FontIconSetScope, AbstractCssClassIconSetScope, {
@@ -15,7 +15,7 @@ di('FontIconSetScope', function(di) {
     getIcon: function(iconId, params) {
       var
         FontIcon = di('FontIcon');
-      return new FontIcon(this.classResolver(iconId, params));
+      return new FontIcon(this._resolveCssClass(this._parseIconId(iconId, params), params));
     }
 
   });

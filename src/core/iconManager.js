@@ -68,17 +68,17 @@ di('iconManager', function(di) {
       return this;
     },
 
-    addFontIconSet: function(id, classConfig) {
+    addFontIconSet: function(id, cssClassConfig, options) {
       var
         FontIconSetScope = di('FontIconSetScope');
-      this._getCollection(id).add(new FontIconSetScope(id, classConfig));
+      this._getCollection(id).add(new FontIconSetScope(id, cssClassConfig, options));
       return this;
     },
 
-    addSpriteIconSet: function(id, classConfig) {
+    addSpriteIconSet: function(id, cssClassConfig, options) {
       var
         SpriteIconSetScope = di('SpriteIconSetScope');
-      this._getCollection(id).add(new SpriteIconSetScope(id, classConfig));
+      this._getCollection(id).add(new SpriteIconSetScope(id, cssClassConfig, options));
       return this;
     },
 
@@ -152,7 +152,7 @@ di('iconManager', function(di) {
         }
       }
       else {
-        if (this.hasSingleIcon(iconId)) {
+        if (this.hasSingleIcon(iconId, params)) {
           return this._getSingleIconsCollection().getIcon(iconId, params)
             .then(null, announceIconNotFoundForPromiseCatch(iconId));
         }
@@ -165,11 +165,11 @@ di('iconManager', function(di) {
       return announceIconNotFound(id);
     },
 
-    hasSingleIcon: function(id) {
+    hasSingleIcon: function(id, params) {
       return this._getSingleIconsCollection()
         .collection
         .filter(function(scope) {
-          return scope.hasIcon(id);
+          return scope.hasIcon(id, params);
         })
         .length > 0;
     },

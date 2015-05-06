@@ -9,7 +9,15 @@
 
   <script type="text/javascript">
     $(function() {
-      $('i8-icon, [i8-icon], [class*="i8"]').i8icon();
+      $('i8-icon').i8icon({
+        iconSets: {
+          md: [
+            '//cdn.rawgit.com/google/material-design-icons/1.0.1/sprites/svg-sprite/svg-sprite-action.svg',
+            '//cdn.rawgit.com/google/material-design-icons/1.0.1/sprites/svg-sprite/svg-sprite-image.svg'
+          ]
+        },
+        defaultSource: 'md'
+      });
     });
   </script>
 
@@ -22,12 +30,8 @@
 </head>
 <body>
 
-<i8-icon icon="link w" alt="link"></i8-icon>
-<i8-icon icon="like colored" data-alt="like"></i8-icon>
-<i8-icon icon="like" data-alt="like"></i8-icon>
-<i8-icon icon="icons8_cup c"></i8-icon>
-<i8-icon icon="icons8_cup colored"></i8-icon>
-<div class="i8-icon-calendar|c"></div>
+<i8-icon icon="md:ic_3d_rotation_24px"></i8-icon>
+<i8-icon icon="md:ic_add_to_photos_24px"></i8-icon>
 
 </body>
 </html>

@@ -24,7 +24,7 @@ di('ensureDependenciesRegistered', function(di) {
           options = {
             cache: $templateCache
           };
-        if (params) {
+        if (params && typeof params == 'object' && Object.keys(params).length > 0) {
           options.params = params;
         }
         return $http.get(url, options);

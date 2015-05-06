@@ -6,10 +6,10 @@ di('AbstractRemoteResourceScope', function(di) {
     inherit = di('inherit')
   ;
 
-  function AbstractRemoteResourceScope(id, urlConfig) {
-    AbstractScope.call(this, id);
+  function AbstractRemoteResourceScope(id, urlConfig, options) {
+    AbstractScope.call(this, id, options);
 
-    this.urlResolver = parseUrlResolver(urlConfig);
+    this._urlResolver = parseUrlResolver(urlConfig);
     this._cache = null;
     this._resource = null;
   }
@@ -18,6 +18,10 @@ di('AbstractRemoteResourceScope', function(di) {
 
     preload: function() {
       return this._getResource();
+    },
+
+    _resolveUrl: function(url) {
+      return this._urlResolver(url);
     },
 
     _getResource: function() {

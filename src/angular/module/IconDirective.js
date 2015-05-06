@@ -19,11 +19,16 @@ function IconDirective($i8Icon) {
       var
         initIconElement = di('initIconElement'),
         altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
+        alt,
         attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || ''),
         cleaner = null
         ;
 
-      initIconElement(element, attrs[altAttrName] || attrs[attrName]);
+      alt = altAttrName
+        ? attrs[altAttrName]
+        : null;
+
+      initIconElement(element, alt, attrs[attrName]);
 
       if (attrName) {
         attrs.$observe(attrName, function(icon) {

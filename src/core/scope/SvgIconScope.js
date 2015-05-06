@@ -6,8 +6,8 @@ di('SvgIconScope', function(di) {
     inherit = di('inherit')
     ;
 
-  function SvgIconScope(id, urlConfig, svgOptions) {
-    AbstractRemoteSvgResourceScope.call(this, id, urlConfig, svgOptions);
+  function SvgIconScope(id, urlConfig, options) {
+    AbstractRemoteSvgResourceScope.call(this, id, urlConfig, options);
   }
 
   return inherit(SvgIconScope, AbstractRemoteSvgResourceScope, {
@@ -15,11 +15,11 @@ di('SvgIconScope', function(di) {
     _loadResource: function() {
       var
         SvgIcon = di('SvgIcon');
-      return SvgIcon.loadByUrl(this.urlResolver(), this.svgOptions);
+      return SvgIcon.loadByUrl(this._resolveUrl(), this.options);
     },
 
-    hasIcon: function(iconId) {
-      return iconId == this.id;
+    hasIcon: function(iconId, params) {
+      return this._parseIconId(iconId, params) == this._resolveIconId(this.id);
     },
 
     getIcon: function() {

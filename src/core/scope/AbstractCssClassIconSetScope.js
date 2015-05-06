@@ -6,15 +6,21 @@ di('AbstractCssClassIconSetScope', function(di) {
     inherit = di('inherit')
     ;
 
-  function AbstractCssClassIconSetScope(id, classResolver) {
+  function AbstractCssClassIconSetScope(id, cssClassResolver, options) {
+    AbstractScope.call(this, id, options);
 
-    AbstractScope.call(this, id);
-    this.classResolver = parseClassResolver(classResolver);
+    this._classResolver = parseCssClassResolver(cssClassResolver);
   }
 
-  return inherit(AbstractCssClassIconSetScope, AbstractScope);
+  return inherit(AbstractCssClassIconSetScope, AbstractScope, {
 
-  function parseClassResolver(classResolver) {
+    _resolveCssClass: function(className) {
+      return this._classResolver(className);
+    }
+
+  });
+
+  function parseCssClassResolver(classResolver) {
     var
       parts;
     if (typeof classResolver == 'function') {

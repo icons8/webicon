@@ -2,26 +2,27 @@
 
 di('publicApi', function(di) {
   var 
-    iconManager = di('iconManager');
-  
-  return {
-    icon: function(id, urlConfig, iconSize) {
-      iconManager.addIcon(id, urlConfig, iconSize);
+    iconManager = di('iconManager'),
+    api;
+
+  api = {
+    icon: function(id, urlConfig, options) {
+      iconManager.addIcon(id, urlConfig, options);
       return this;
     },
 
-    iconSet: function(id, urlConfig, iconSize) {
-      iconManager.addSvgIconSet(id, urlConfig, iconSize);
+    svgSet: function(id, urlConfig, options) {
+      iconManager.addSvgIconSet(id, urlConfig, options);
       return this;
     },
 
-    font: function(id, classConfig) {
-      iconManager.addFontIconSet(id, classConfig);
+    font: function(id, cssClassConfig, options) {
+      iconManager.addFontIconSet(id, cssClassConfig, options);
       return this;
     },
 
-    sprite: function(id, classConfig) {
-      iconManager.addSpriteIconSet(id, classConfig);
+    sprite: function(id, cssClassConfig, options) {
+      iconManager.addSpriteIconSet(id, cssClassConfig, options);
       return this;
     },
 
@@ -30,9 +31,9 @@ di('publicApi', function(di) {
       return this;
     },
 
-    defaultIconSetUrl: function(url, iconSize) {
+    defaultSvgIconSetUrl: function(url, options) {
       iconManager
-        .addSvgIconSet(url, url, iconSize)
+        .addSvgIconSet(url, url, options)
         .setDefaultIconSet(url);
       return this;
     },
@@ -42,7 +43,7 @@ di('publicApi', function(di) {
       return this;
     },
 
-    defaultIconSize: function(iconSize) {
+    defaultSvgIconSize: function(iconSize) {
       iconManager.setDefaultIconSize(iconSize);
       return this;
     },
@@ -53,5 +54,12 @@ di('publicApi', function(di) {
     }
 
   };
+
+  api.iconSet = api.svgSet;
+  api.defaultIconSetUrl = api.defaultSvgIconSetUrl;
+  api.alias = api.sourceAlias;
+  api.default = api.defaultSource;
+
+  return api;
 
 });

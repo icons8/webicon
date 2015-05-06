@@ -3,6 +3,7 @@
 ready(function(di) {
   var
     iconManager = di('iconManager'),
+    config = di('i8ApiConfig'),
     platforms = {
       ios8: ['ios', 'ios7', 'i'],
       win8: ['win', 'w'],
@@ -10,8 +11,7 @@ ready(function(di) {
       androidL: ['android-l', 'al', 'a-l', 'l'],
       flat_color: ['color', 'c', 'colored']
     },
-    platformsMap,
-    possiblePrefixes;
+    platformsMap;
 
   platformsMap = {};
   Object.keys(platforms).forEach(function(platform) {
@@ -21,14 +21,6 @@ ready(function(di) {
     });
   });
 
-  possiblePrefixes = Object.keys(platforms)
-    .map(function(platform) {
-      return platform.toLowerCase();
-    });
-  possiblePrefixes.push(
-    'ios7'
-  );
-
   iconManager
     .setDefaultIconSet('i8')
     .addSvgIconSet(
@@ -36,7 +28,7 @@ ready(function(di) {
       function(icons) {
         var
           options = {
-            url: di('i8ApiConfig').gateway.url,
+            url: config.gateway.url,
             params: {}
           };
 
@@ -50,11 +42,9 @@ ready(function(di) {
       },
       {
         cumulative: true,
-        iconIdResolver: function(id, params) {
+        iconIdParser: function(id, params) {
           var
-            index,
-            position,
-            prefix;
+            index;
           id = String(id || '');
           if (!Array.isArray(params)) {
             params = [];
@@ -67,13 +57,7 @@ ready(function(di) {
               return [platformsMap[params[index]], id].join('-');
             }
           }
-          position = id.indexOf('-');
-          if (position > 0) {
-            prefix = id.slice(0, position).toLowerCase();
-            if (possiblePrefixes.indexOf(prefix)) {
-              return [platformsMap[prefix], id.slice(position + 1)].join('-');
-            }
-          }
+
           return [platformsMap['c'], id].join('-');
         }
       }

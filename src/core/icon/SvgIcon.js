@@ -23,7 +23,13 @@ di('SvgIcon', function(di) {
 
     options = parseSvgOptions(options);
 
-    element.removeAttr('id');
+    [
+      'id',
+      'x',
+      'y'
+    ].forEach(function(attr) {
+        element.removeAttr(attr);
+      });
 
     node = element[0];
     if (node.tagName != 'svg') {

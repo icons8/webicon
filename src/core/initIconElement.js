@@ -2,10 +2,38 @@
 
 di('initIconElement', function() {
 
-  return function initIconElement(element, alt) {
+  return function initIconElement(element, alt, icon) {
     var
-      ICON_CLASS = 'i8-icon'
+      ICON_CLASS = 'i8-icon',
+      pieces
       ;
+
+    if (!alt && typeof alt != 'string') {
+      icon = String(icon || '')
+        .split(':')
+        .slice(-1)[0]
+        .trim();
+
+      if (/[/\\.]/.test(icon)) {
+        pieces = icon
+          .split(/[/\\]/)
+          .slice(-1)[0]
+          .split('.');
+
+        if (pieces.length > 1) {
+          pieces = pieces
+            .slice(0, -1);
+        }
+        alt = pieces
+          .join('.');
+      }
+      else {
+        alt = icon
+          .split(/\s/)
+          [0];
+      }
+
+    }
 
     expectAlt(element, alt || '');
     if (!element.hasClass(ICON_CLASS)) {

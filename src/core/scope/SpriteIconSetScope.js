@@ -6,16 +6,16 @@ di('SpriteIconSetScope', function(di) {
     inherit = di('inherit')
     ;
 
-  function SpriteIconSetScope(id, classResolver) {
-    AbstractCssClassIconSetScope.call(this, id, classResolver);
+  function SpriteIconSetScope(id, classResolver, options) {
+    AbstractCssClassIconSetScope.call(this, id, classResolver, options);
   }
 
   return inherit(SpriteIconSetScope, AbstractCssClassIconSetScope, {
 
-    getIcon: function(iconId) {
+    getIcon: function(iconId, params) {
       var
         SpriteIcon = di('SpriteIcon');
-      return new SpriteIcon(this.classResolver(iconId));
+      return new SpriteIcon(this._resolveCssClass(this._parseIconId(iconId, params), params));
     }
 
   });

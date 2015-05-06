@@ -11,15 +11,8 @@ di('SvgCumulativeIconSetScope', function(di) {
       DEFAULT_WAIT_DURATION = 10;
 
     AbstractRemoteSvgResourceScope.call(this, id, urlConfig, options);
-    options = options && typeof options == 'object'
-      ? options
-      : {};
 
-    this.iconIdResolver = typeof options.iconIdResolver == 'function'
-      ? options.iconIdResolver
-      : null;
-
-    this.waitDuration = options.waitDuration || DEFAULT_WAIT_DURATION;
+    this.waitDuration = this.options.waitDuration || DEFAULT_WAIT_DURATION;
     this.waitPromise = null;
     this.waitIconIds = [];
   }
@@ -29,7 +22,7 @@ di('SvgCumulativeIconSetScope', function(di) {
     _loadResource: function() {
       var
         SvgIconSet = di('SvgIconSet');
-      return SvgIconSet.loadByUrl(this.urlResolver(this.waitIconIds), this.svgOptions);
+      return SvgIconSet.loadByUrl(this._resolveUrl(this.waitIconIds), this.options);
     },
 
     preload: function() {
@@ -42,9 +35,7 @@ di('SvgCumulativeIconSetScope', function(di) {
         timeout = di('timeout'),
         self = this;
 
-      if (this.iconIdResolver) {
-        iconId = this.iconIdResolver(iconId, params);
-      }
+      iconId = this._parseIconId(iconId, params);
 
       if (this._resource && this._resource.exists(iconId)) {
         return Promise.resolve(this._resource.getIconById(iconId));
@@ -63,8 +54,8 @@ di('SvgCumulativeIconSetScope', function(di) {
             return self._getResource();
           }
           return self._resource.mergeByUrl(
-            self.urlResolver(self._resource.notExists(self.waitIconIds)),
-            self.svgOptions
+            self._resolveUrl(self._resource.notExists(self.waitIconIds)),
+            self.options
           );
         });
       }
