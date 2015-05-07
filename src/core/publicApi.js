@@ -44,7 +44,7 @@ di('publicApi', function(di) {
     },
 
     defaultSvgIconSize: function(iconSize) {
-      iconManager.setDefaultIconSize(iconSize);
+      iconManager.setDefaultSvgIconSize(iconSize);
       return this;
     },
 

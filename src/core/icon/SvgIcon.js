@@ -60,7 +60,7 @@ di('SvgIcon', function(di) {
         }
       });
 
-    iconSize = options.iconSize || iconManager.getDefaultIconSize();
+    iconSize = options.iconSize || iconManager.getDefaultSvgIconSize();
 
     attributes = {
       fit: '',

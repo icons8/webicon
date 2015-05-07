@@ -125,6 +125,88 @@ IconPlugin._applyConfig = function(config) {
     });
   });
 
+  parseConfigs(
+    config.defaultSvgIconSetUrl,
+    config.defaultIconSetUrl,
+    config["default-svg-icon-set-url"],
+    config["default-icon-set-url"],
+    function (config) {
+      if (typeof config != 'object') {
+        config = {
+          url: config
+        }
+      }
+      config.url = config.url || config.uri;
+      return config.url
+        ? config
+        : null;
+    }
+  ).forEach(function(config) {
+      if (!iconManager.hasIconSet(config.id)) {
+        publicApi.defaultSvgIconSize(config.id, config.url);
+      }
+    });
+
+  parseConfigs(
+    config.alias,
+    config.sourceAlias,
+    config["source-alias"],
+    function (config, id) {
+      if (typeof config != 'object') {
+        config = {
+          alias: config,
+          id: id
+        }
+      }
+      config.alias = config.alias || config.sourceAlias;
+      return config.url
+        ? config
+        : null;
+    }
+  ).forEach(function(config) {
+      if (!iconManager.hasIconSet(config.id)) {
+        publicApi.sourceAlias(config.id, config.alias);
+      }
+    });
+
+  parseConfigs(
+    config.default,
+    config.defaultSource,
+    config["default-source"],
+    function (config) {
+      if (typeof config != 'object') {
+        config = {
+          id: config
+        }
+      }
+      return config.id
+        ? config
+        : null;
+    }
+  ).forEach(function(config) {
+      publicApi.defaultSource(config.id);
+    });
+
+  parseConfigs(
+    config.defaultSvgIconSize,
+    config["default-svg-icon-size"],
+    function (config) {
+      if (typeof config != 'object') {
+        config = {
+          size: config
+        }
+      }
+      config.size = config.size || config.iconSize || config.svgIconSize || config["icon-size"] || config["svg-icon-size"];
+      return config.size
+        ? config
+        : null;
+    }
+  ).forEach(function(config) {
+      if (!iconManager.hasIconSet(config.id)) {
+        publicApi.defaultSvgIconSize(config.id, config.url);
+      }
+    });
+
 
   function parseConfigs(/*...configs, configParserFn*/) {
     var
@@ -153,11 +235,18 @@ IconPlugin._applyConfig = function(config) {
           })
         );
       }
-      return configs.filter(function(config) {
-        return config;
-      });
     }
-    return [];
+    else if (typeof configs == 'string' || typeof configs == 'number') {
+      configs = [
+        parseConfig(configs)
+      ];
+    }
+    else {
+      configs = [];
+    }
+    return configs.filter(function(config) {
+      return config;
+    });
 
     function parseConfig(config, id) {
       config = config || {};
@@ -166,7 +255,7 @@ IconPlugin._applyConfig = function(config) {
           return parseConfig(config, id);
         });
       }
-      else if (typeof config != 'string') {
+      else if (typeof config == 'object') {
         if (!config.id && config.id !== 0) {
           config.id = id;
         }
@@ -176,7 +265,7 @@ IconPlugin._applyConfig = function(config) {
   }
 
   function parseUrlBasedConfig(config, id) {
-    if (typeof config == 'string') {
+    if (typeof config != 'object') {
       config = {
         url: config,
         id: id
@@ -189,7 +278,7 @@ IconPlugin._applyConfig = function(config) {
   }
 
   function parseCssClassNameBasedConfig(config, id) {
-    if (typeof config == 'string') {
+    if (typeof config != 'object') {
       config = {
         className: config,
         id: id

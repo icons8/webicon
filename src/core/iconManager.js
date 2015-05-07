@@ -4,13 +4,13 @@ di('iconManager', function(di) {
 
   var
     CHECK_URL_REGEX = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i,
-    DEFAULT_ICON_SIZE = 24,
+    DEFAULT_SVG_ICON_SIZE = 24,
     SINGLE_ICONS_COLLECTION_ID = '__SINGLE_ICONS_COLLECTION';
 
   function IconManager() {
     this._collections = {};
     this._defaultCollectionId = null;
-    this._defaultIconSize = DEFAULT_ICON_SIZE;
+    this._defaultSvgIconSize = DEFAULT_SVG_ICON_SIZE;
   }
 
   IconManager.prototype = {
@@ -33,7 +33,13 @@ di('iconManager', function(di) {
       ;
 
       function getExt(url) {
-        return (((url.split('?')[0] || '').split(/[/\\]/).slice(-1)[0] || '').split('.').slice(-1)[0] || '').toLowerCase();
+        return url
+            .split('?')[0]
+            .split(/[/\\]/)
+            .slice(-1)[0]
+            .split('.')
+            .slice(-1)[0]
+            .toLowerCase();
       }
     },
 
@@ -94,13 +100,13 @@ di('iconManager', function(di) {
       return this;
     },
 
-    setDefaultIconSize: function(iconSize) {
-      this._defaultIconSize = iconSize;
+    setDefaultSvgIconSize: function(iconSize) {
+      this._defaultSvgIconSize = iconSize;
       return this;
     },
 
-    getDefaultIconSize: function() {
-      return this._defaultIconSize;
+    getDefaultSvgIconSize: function() {
+      return this._defaultSvgIconSize;
     },
 
     preload: function() {
