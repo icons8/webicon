@@ -14,8 +14,8 @@ di('AbstractCssClassIconSetScope', function(di) {
 
   return inherit(AbstractCssClassIconSetScope, AbstractScope, {
 
-    _resolveCssClass: function(className) {
-      return this._classResolver(className);
+    _resolveCssClass: function(className, params) {
+      return this._classResolver(className, params);
     }
 
   });
