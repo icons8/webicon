@@ -68,24 +68,24 @@ IconPlugin._applyConfig = function(config) {
   parseConfigs(
     config.icons,
     config.icon,
-    parseUrlBasedConfig).forEach(addConfigDecorator('icon'));
+    parseUrlConfig).forEach(addConfigDecorator('icon'));
 
   parseConfigs(
     config.svgSets,
     config.svgSet,
     config.iconSets,
     config.iconSet,
-    parseUrlBasedConfig).forEach(addConfigDecorator('svgSet'));
+    parseUrlConfig).forEach(addConfigDecorator('svgSet'));
 
   parseConfigs(
     config.fonts,
     config.font,
-    parseCssClassNameBasedConfig).forEach(addConfigDecorator('font'));
+    parseCssClassConfig).forEach(addConfigDecorator('font'));
 
   parseConfigs(
     config.sprites,
     config.sprite,
-    parseCssClassNameBasedConfig).forEach(addConfigDecorator('sprite'));
+    parseCssClassConfig).forEach(addConfigDecorator('sprite'));
 
   ['svgSet', 'font', 'sprite'].forEach(function(entity) {
     Object.keys(parsedConfig[entity] || {}).forEach(function(id) {
@@ -98,18 +98,26 @@ IconPlugin._applyConfig = function(config) {
   configStrategies = {
     icon: function(entity, config) {
       if (!iconManager.hasSingleIcon(config.id)) {
+        parseSvgIconSizeConfig(config);
         publicApi.icon(config.id, config.url, config);
       }
     },
     svgSet: function(entity, config) {
       if (!iconSetsExistenceMap[config.id]) {
+        parseSvgIconSizeConfig(config);
         publicApi.svgSet(config.id, config.url, config);
+        if (config.default || config.defaultSource) {
+          publicApi.defaultSource(config.id);
+        }
       }
     }
   };
   configStrategies.font = configStrategies.sprite = function(entity, config) {
     if (!iconSetsExistenceMap[config.id]) {
       publicApi[entity](config.id, config.className, config);
+      if (config.default || config.defaultSource) {
+        publicApi.defaultSource(config.id);
+      }
     }
   };
 
@@ -138,7 +146,8 @@ IconPlugin._applyConfig = function(config) {
     }
   ).forEach(function(config) {
       if (!iconManager.hasIconSet(config.url)) {
-        publicApi.defaultSvgSetUrl(config.url);
+        parseSvgIconSizeConfig(config);
+        publicApi.defaultSvgSetUrl(config.url, config);
       }
     });
 
@@ -182,21 +191,9 @@ IconPlugin._applyConfig = function(config) {
 
   parseConfigs(
     config.defaultSvgIconSize,
-    function(config) {
-      if (typeof config != 'object') {
-        config = {
-          size: config
-        }
-      }
-      config.size = config.size || config.iconSize || config.svgIconSize || config["icon-size"] || config["svg-icon-size"];
-      return config.size
-        ? config
-        : null;
-    }
+    parseSvgIconSizeConfig
   ).forEach(function(config) {
-      if (!iconManager.hasIconSet(config.id)) {
-        publicApi.defaultSvgIconSize(config.id, config.url);
-      }
+      publicApi.defaultSvgIconSize(config.iconSize);
     });
 
   if (config.preload) {
@@ -260,7 +257,7 @@ IconPlugin._applyConfig = function(config) {
     }
   }
 
-  function parseUrlBasedConfig(config, id) {
+  function parseUrlConfig(config, id) {
     if (typeof config != 'object') {
       config = {
         url: config,
@@ -273,7 +270,7 @@ IconPlugin._applyConfig = function(config) {
       : null;
   }
 
-  function parseCssClassNameBasedConfig(config, id) {
+  function parseCssClassConfig(config, id) {
     if (typeof config != 'object') {
       config = {
         className: config,
@@ -282,6 +279,18 @@ IconPlugin._applyConfig = function(config) {
     }
     config.className = config.className || config.cssClass || config.class;
     return config.id && config.className
+      ? config
+      : null;
+  }
+
+  function parseSvgIconSizeConfig(config) {
+    if (typeof config != 'object') {
+      config = {
+        iconSize: config
+      }
+    }
+    config.iconSize = config.iconSize || config.size || config.svgIconSize;
+    return config.iconSize
       ? config
       : null;
   }

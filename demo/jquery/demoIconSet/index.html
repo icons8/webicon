@@ -12,7 +12,12 @@
       $('i8-icon').i8icon({
         iconSets: {
           symbol: 'assets/icon-sets/symbol/about,home.svg',
-          g: 'assets/icon-sets/group/about,home.svg'
+          g: 'assets/icon-sets/group/about,home.svg',
+          "g-no-size": {
+            url: 'assets/icon-sets/group/about,home-nosize.svg',
+            default: true,
+            iconSize: 48
+          }
         }
       });
     });
@@ -29,6 +34,7 @@
 
 <i8-icon icon="symbol:about"></i8-icon>
 <i8-icon icon="g:home"></i8-icon>
+<i8-icon icon="about"></i8-icon>
 
 </body>
 </html>
