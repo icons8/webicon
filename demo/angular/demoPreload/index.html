@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="demo-icon">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
+  <script type="text/javascript" src="/dist/angular-i8-icon.js"></script>
+
+  <script type="text/javascript">
+    angular
+      .module('demo-icon', ['i8.icon'])
+      .config([
+        '$i8IconProvider',
+        function($i8IconProvider) {
+          $i8IconProvider
+            .svgSet('symbol', 'assets/icon-sets/symbol/about,home.svg')
+            .defaultSvgSetUrl('assets/icon-sets/group/about,home.svg')
+            .icon('clock', 'assets/icons/clock.svg')
+            .preload()
+            .icon('calendar', 'assets/icons/calendar.svg')
+          ;
+        }
+      ])
+    ;
+  </script>
+
+  <style type="text/css">
+    .i8-svg-icon {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+
+</head>
+<body>
+
+<i8-icon icon="home"></i8-icon>
+<i8-icon icon="clock"></i8-icon>
+
+</body>
+</html>

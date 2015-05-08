@@ -16,7 +16,8 @@ ready(function(di) {
 
   options = {
     iconIdResolver: iconIdFilter,
-    iconIdParser: iconIdFilter
+    iconIdParser: iconIdFilter,
+    preloadable: false
   };
 
   config.categories

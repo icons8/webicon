@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <script type="text/javascript" src="/dist/jquery-i8-icon.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      $('i8-icon').i8icon({
+        iconSets: {
+          symbol: 'assets/icon-sets/symbol/about,home.svg'
+        },
+        defaultSvgSetUrl: 'assets/icon-sets/group/about,home.svg',
+        icons: {
+          clock: 'assets/icons/clock.svg',
+          calendar: 'assets/icons/calendar.svg'
+        },
+        preload: true
+      });
+    });
+  </script>
+
+  <style type="text/css">
+    .i8-svg-icon {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+<i8-icon icon="home"></i8-icon>
+<i8-icon icon="clock"></i8-icon>
+
+</body>
+</html>

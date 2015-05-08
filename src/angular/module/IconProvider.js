@@ -11,6 +11,13 @@
  */
 
 function IconProvider() {
+  var
+    lazyPreload = false;
+
+  this.preload = function() {
+    lazyPreload = true;
+    return this;
+  };
 
   this.$get = ['$injector', function($injector) {
     var
@@ -25,6 +32,12 @@ function IconProvider() {
     };
     iconService.preload = function() {
       iconManager.preload();
+    };
+
+    iconService.$checkLazyPreload = function() {
+      if (lazyPreload) {
+        this.preload();
+      }
     };
 
     return iconService;

@@ -10,6 +10,7 @@ di('AbstractRemoteResourceScope', function(di) {
     AbstractScope.call(this, id, options);
 
     this._urlResolver = parseUrlResolver(urlConfig);
+    this._preloadable = this.options.preloadable || typeof this.options.preloadable == 'undefined';
     this._cache = null;
     this._resource = null;
   }
@@ -17,7 +18,9 @@ di('AbstractRemoteResourceScope', function(di) {
   return inherit(AbstractRemoteResourceScope, AbstractScope, {
 
     preload: function() {
-      return this._getResource();
+      return this._preloadable
+        ? this._getResource()
+        : true;
     },
 
     _resolveUrl: function(url) {
@@ -86,6 +89,7 @@ di('AbstractRemoteResourceScope', function(di) {
         _params = urlConfig.params;
       }
 
+      url = String(url || '');
       if (url.slice(0, 2) === '//') {
         url = window.document.location.protocol + url;
       }

@@ -31,7 +31,7 @@ di('publicApi', function(di) {
       return this;
     },
 
-    defaultSvgIconSetUrl: function(url, options) {
+    defaultSvgSetUrl: function(url, options) {
       iconManager
         .addSvgIconSet(url, url, options)
         .setDefaultIconSet(url);
@@ -56,7 +56,8 @@ di('publicApi', function(di) {
   };
 
   api.iconSet = api.svgSet;
-  api.defaultIconSetUrl = api.defaultSvgIconSetUrl;
+  api.defaultIconSetUrl = api.defaultSvgSetUrl;
+  api.defaultSvgIconSetUrl = api.defaultSvgSetUrl;
   api.alias = api.sourceAlias;
   api.default = api.defaultSource;
 

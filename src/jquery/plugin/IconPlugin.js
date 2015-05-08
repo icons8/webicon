@@ -72,13 +72,9 @@ IconPlugin._applyConfig = function(config) {
 
   parseConfigs(
     config.svgSets,
-    config["svg-sets"],
     config.svgSet,
-    config["svg-set"],
     config.iconSets,
-    config["icon-sets"],
     config.iconSet,
-    config["icon-set"],
     parseUrlBasedConfig).forEach(addConfigDecorator('svgSet'));
 
   parseConfigs(
@@ -126,11 +122,10 @@ IconPlugin._applyConfig = function(config) {
   });
 
   parseConfigs(
+    config.defaultSvgSetUrl,
     config.defaultSvgIconSetUrl,
     config.defaultIconSetUrl,
-    config["default-svg-icon-set-url"],
-    config["default-icon-set-url"],
-    function (config) {
+    function(config) {
       if (typeof config != 'object') {
         config = {
           url: config
@@ -142,16 +137,15 @@ IconPlugin._applyConfig = function(config) {
         : null;
     }
   ).forEach(function(config) {
-      if (!iconManager.hasIconSet(config.id)) {
-        publicApi.defaultSvgIconSize(config.id, config.url);
+      if (!iconManager.hasIconSet(config.url)) {
+        publicApi.defaultSvgSetUrl(config.url);
       }
     });
 
   parseConfigs(
     config.alias,
     config.sourceAlias,
-    config["source-alias"],
-    function (config, id) {
+    function(config, id) {
       if (typeof config != 'object') {
         config = {
           alias: config,
@@ -172,8 +166,7 @@ IconPlugin._applyConfig = function(config) {
   parseConfigs(
     config.default,
     config.defaultSource,
-    config["default-source"],
-    function (config) {
+    function(config) {
       if (typeof config != 'object') {
         config = {
           id: config
@@ -189,8 +182,7 @@ IconPlugin._applyConfig = function(config) {
 
   parseConfigs(
     config.defaultSvgIconSize,
-    config["default-svg-icon-size"],
-    function (config) {
+    function(config) {
       if (typeof config != 'object') {
         config = {
           size: config
@@ -206,6 +198,10 @@ IconPlugin._applyConfig = function(config) {
         publicApi.defaultSvgIconSize(config.id, config.url);
       }
     });
+
+  if (config.preload) {
+    publicApi.preload();
+  }
 
 
   function parseConfigs(/*...configs, configParserFn*/) {
