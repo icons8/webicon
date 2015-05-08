@@ -1,6 +1,5 @@
 $(function() {
-  $(document).i8icons(function(icons) {
-    icons
-      .defaultSource('fa')
+  $(document).i8icons({
+    defaultSource: 'fa'
   })
 });
