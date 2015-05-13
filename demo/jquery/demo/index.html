@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body>
+<div i8-icon="fci:checkmark"></div>
+<span i8-icon="clock"></span>
+<div data-i8-icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
+<i8-icon icon="calendar"></i8-icon>
+<span class="i8-icon i8-icon-md-action:3d-rotation" data-alt=""></span>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
+<script type="text/javascript" src="/dist/jquery-i8-icon.js"></script>
+
+<script>
+  $(function() {
+    $(document).i8icons({
+      svgSet: {
+        "flat-color-icons": '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg'
+      },
+      alias: {
+        fci: "flat-color-icons"
+      },
+      icon: {
+        clock: '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg'
+      }
+    });
+  });
+</script>
+</body>
+</html>

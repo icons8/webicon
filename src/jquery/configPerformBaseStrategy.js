@@ -123,17 +123,17 @@ di('configPerformBaseStrategy', function(injector) {
       function(config, id) {
         if (typeof config != 'object') {
           config = {
-            alias: config,
-            id: id
+            alias: id,
+            id: config
           }
         }
         config.alias = config.alias || config.sourceAlias;
-        return config.url
+        return config.alias
           ? config
           : null;
       }
     ).forEach(function(config) {
-        if (!iconManager.hasIconSet(config.id)) {
+        if (!iconManager.hasIconSet(config.alias)) {
           publicApi.sourceAlias(config.id, config.alias);
         }
       });

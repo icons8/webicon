@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+</head>
+<body ng-app="app">
+
+<i8-icon icon="fci:checkmark"></i8-icon>
+<div i8-icon="clock"></div>
+<i8-icon data-icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></i8-icon>
+<span data-i8-icon="calendar"></span>
+<i8-icon icon="md-action:3d-rotation" alt=""></i8-icon>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
+<script type="text/javascript" src="/dist/angular-i8-icon.js"></script>
+
+<script>
+  angular
+    .module('app', ['i8.icon'])
+    .config(function($i8IconProvider) {
+      $i8IconProvider
+        .svgSet('flat-color-icons', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg')
+        .alias('flat-color-icons', 'fci')
+        .icon('clock', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg')
+    });
+</script>
+
+</body>
+</html>
