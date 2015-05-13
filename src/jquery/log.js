@@ -2,30 +2,31 @@
 
 di('log', function(injector) {
   var
-    noop = function() {},
-    log = {},
-    logDebug = getConsoleWriteDelegate('debug');
+    log = {};
 
   ['log', 'info', 'warn', 'error'].forEach(function(type) {
     log[type] = getConsoleWriteDelegate(type);
   });
-
-  log.debug = function() {
-    if (!log.debugEnabled) {
-      return noop;
-    }
-    return logDebug.apply(null, Array.prototype.slice.call(arguments));
-  };
 
   return log;
 
   function getConsoleWriteDelegate(type) {
     return function() {
       var
-        console = window.console;
+        console = window.console,
+        args = Array.prototype.slice.call(arguments);
 
-      if (console) {
-        console[type].apply(console, Array.prototype.slice.call(arguments));
+      if (console[type].apply) {
+        console[type].apply(console, args);
+      }
+      else {
+        switch(args.length) {
+          case 0: console[type](); break;
+          default:
+            args.forEach(function(arg) {
+              console[type](arg);
+            });
+        }
       }
     }
   }
