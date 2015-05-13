@@ -1,7 +1,7 @@
 'use strict';
 
-di('materialDesignIconsConfig', function() {
-  return {
+var
+  materialDesignIconsConfig = {
     version: '1.0.1',
     categories: [
       'action',
@@ -21,4 +21,4 @@ di('materialDesignIconsConfig', function() {
       'toggle'
     ]
   };
-});
+

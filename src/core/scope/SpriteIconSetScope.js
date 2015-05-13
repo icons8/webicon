@@ -1,9 +1,9 @@
 'use strict';
 
-di('SpriteIconSetScope', function(di) {
+di('SpriteIconSetScope', function(injector) {
   var
-    AbstractCssClassIconSetScope = di('AbstractCssClassIconSetScope'),
-    inherit = di('inherit')
+    AbstractCssClassIconSetScope = injector('AbstractCssClassIconSetScope'),
+    inherit = injector('inherit')
     ;
 
   function SpriteIconSetScope(id, classResolver, options) {
@@ -14,7 +14,7 @@ di('SpriteIconSetScope', function(di) {
 
     getIcon: function(iconId, params) {
       var
-        SpriteIcon = di('SpriteIcon');
+        SpriteIcon = injector('SpriteIcon');
       return new SpriteIcon(this._resolveCssClass(this._parseIconId(iconId, params), params));
     }
 

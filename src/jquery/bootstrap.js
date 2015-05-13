@@ -1,11 +1,13 @@
 'use strict';
 
-function bootstrap() {
+ready(function bootstrap(injector) {
+  var
+    jQuery = injector('jQuery');
 
   jQuery(function() {
     var
       BOOTSTRAP_DELAY = 5,
-      timeout = di('timeout');
+      timeout = injector('timeout');
 
     if (IconsPlugin.bootstraped) {
       return;
@@ -20,4 +22,4 @@ function bootstrap() {
 
   });
 
-}
+});

@@ -1,17 +1,17 @@
 'use strict';
 
-di('SvgIcon', function(di) {
+di('SvgIcon', function(injector) {
   var
-    AbstractElementIcon = di('AbstractElementIcon'),
-    inherit = di('inherit')
+    AbstractElementIcon = injector('AbstractElementIcon'),
+    inherit = injector('inherit')
     ;
 
   function SvgIcon(element, options) {
     var
       SVG_ICON_CLASS = 'i8-svg-icon',
-      nodeWrapper = di('nodeWrapper'),
-      iconManager = di('iconManager'),
-      parseSvgOptions = di('parseSvgOptions'),
+      nodeWrapper = injector('nodeWrapper'),
+      iconManager = injector('iconManager'),
+      parseSvgOptions = injector('parseSvgOptions'),
       svgElement,
       svgNode,
       attributes,
@@ -91,7 +91,7 @@ di('SvgIcon', function(di) {
 
   SvgIcon.loadByUrl = function(url, options) {
     var
-      loadSvgByUrl = di('loadSvgByUrl');
+      loadSvgByUrl = injector('loadSvgByUrl');
 
     return loadSvgByUrl(url)
       .then(function(element) {

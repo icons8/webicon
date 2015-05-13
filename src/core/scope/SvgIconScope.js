@@ -1,9 +1,9 @@
 'use strict';
 
-di('SvgIconScope', function(di) {
+di('SvgIconScope', function(injector) {
   var
-    AbstractRemoteSvgResourceScope = di('AbstractRemoteSvgResourceScope'),
-    inherit = di('inherit')
+    AbstractRemoteSvgResourceScope = injector('AbstractRemoteSvgResourceScope'),
+    inherit = injector('inherit')
     ;
 
   function SvgIconScope(id, urlConfig, options) {
@@ -14,7 +14,7 @@ di('SvgIconScope', function(di) {
 
     _loadResource: function() {
       var
-        SvgIcon = di('SvgIcon');
+        SvgIcon = injector('SvgIcon');
       return SvgIcon.loadByUrl(this._resolveUrl(), this.options);
     },
 

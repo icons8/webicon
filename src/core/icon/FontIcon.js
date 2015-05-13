@@ -1,9 +1,9 @@
 'use strict';
 
-di('FontIcon', function() {
+di('FontIcon', function(injector) {
   var
-    AbstractCssClassIcon = di('AbstractCssClassIcon'),
-    inherit = di('inherit')
+    AbstractCssClassIcon = injector('AbstractCssClassIcon'),
+    inherit = injector('inherit')
     ;
 
   function FontIcon(className) {

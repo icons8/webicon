@@ -1,9 +1,9 @@
 'use strict';
 
-di('ImageIconScope', function(di) {
+di('ImageIconScope', function(injector) {
   var
-    AbstractRemoteResourceScope = di('AbstractRemoteResourceScope'),
-    inherit = di('inherit')
+    AbstractRemoteResourceScope = injector('AbstractRemoteResourceScope'),
+    inherit = injector('inherit')
     ;
 
   function ImageIconScope(id, urlConfig, options) {
@@ -14,7 +14,7 @@ di('ImageIconScope', function(di) {
 
     _loadResource: function() {
       var
-        ImageIcon = di('ImageIcon');
+        ImageIcon = injector('ImageIcon');
       return ImageIcon.loadByUrl(this._resolveUrl());
     },
 

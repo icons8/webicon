@@ -1,9 +1,9 @@
 'use strict';
 
-di('AbstractRemoteResourceScope', function(di) {
+di('AbstractRemoteResourceScope', function(injector) {
   var
-    AbstractScope = di('AbstractScope'),
-    inherit = di('inherit')
+    AbstractScope = injector('AbstractScope'),
+    inherit = injector('inherit')
   ;
 
   function AbstractRemoteResourceScope(id, urlConfig, options) {
@@ -50,7 +50,7 @@ di('AbstractRemoteResourceScope', function(di) {
 
     _loadResource: function() {
       var
-        Promise = di('Promise');
+        Promise = injector('Promise');
       return Promise.reject();
     }
 
@@ -58,7 +58,7 @@ di('AbstractRemoteResourceScope', function(di) {
 
   function parseUrlResolver(urlConfig) {
     var
-      mergeObjects = di('mergeObjects'),
+      mergeObjects = injector('mergeObjects'),
       url,
       urlFn,
       params = null;

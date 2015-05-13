@@ -1,9 +1,9 @@
 'use strict';
 
-di('AbstractCssClassIconSetScope', function(di) {
+di('AbstractCssClassIconSetScope', function(injector) {
   var
-    AbstractScope = di('AbstractScope'),
-    inherit = di('inherit')
+    AbstractScope = injector('AbstractScope'),
+    inherit = injector('inherit')
     ;
 
   function AbstractCssClassIconSetScope(id, cssClassResolver, options) {

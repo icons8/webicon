@@ -1,6 +1,6 @@
 'use strict';
 
-di('buildUrlParams', function() {
+di('buildUrlParams', function(injector) {
 
   return function buildUrlParams(params) {
     var

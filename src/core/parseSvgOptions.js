@@ -1,6 +1,6 @@
 'use strict';
 
-di('parseSvgOptions', function() {
+di('parseSvgOptions', function(injector) {
 
   return function parseSvgOptions(options) {
     if (options) {

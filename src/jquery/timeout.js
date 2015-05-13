@@ -1,10 +1,10 @@
 'use strict';
 
-di('timeout', function(di) {
+di('timeout', function(injector) {
 
   function timeout(fn, delay) {
     var
-      Promise = di('Promise'),
+      Promise = injector('Promise'),
       promise,
       resolve;
 

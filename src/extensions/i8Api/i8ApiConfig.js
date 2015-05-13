@@ -1,9 +1,9 @@
 'use strict';
 
-di('i8ApiConfig', function() {
-  return {
+var
+  i8ApiConfig = {
     gateway: {
       url: '//api.icons8.com/api/iconsets/svg-symbol'
     }
   };
-});
+

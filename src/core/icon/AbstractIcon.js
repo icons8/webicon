@@ -1,6 +1,6 @@
 'use strict';
 
-di('AbstractIcon', function() {
+di('AbstractIcon', function(injector) {
 
   function AbstractIcon(iconClassName) {
     this.iconClassName = iconClassName;

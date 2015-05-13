@@ -1,8 +1,8 @@
 'use strict';
 
-ready(function(di) {
+extension(function(injector) {
   var
-    iconManager = di('iconManager');
+    iconManager = injector('iconManager');
 
   iconManager
     .addFontIconSet(

@@ -1,10 +1,10 @@
 'use strict';
 
-di('AbstractRemoteSvgResourceScope', function(di) {
+di('AbstractRemoteSvgResourceScope', function(injector) {
   var
-    AbstractRemoteResourceScope = di('AbstractRemoteResourceScope'),
-    inherit = di('inherit'),
-    parseSvgOptions = di('parseSvgOptions')
+    AbstractRemoteResourceScope = injector('AbstractRemoteResourceScope'),
+    inherit = injector('inherit'),
+    parseSvgOptions = injector('parseSvgOptions')
   ;
 
   function AbstractRemoteSvgResourceScope(id, urlConfig, options) {

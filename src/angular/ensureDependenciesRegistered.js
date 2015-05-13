@@ -1,6 +1,6 @@
 'use strict';
 
-di('ensureDependenciesRegistered', function(di) {
+di('ensureDependenciesRegistered', function(injector) {
   var
     registered = false;
 
@@ -9,11 +9,15 @@ di('ensureDependenciesRegistered', function(di) {
       return;
     }
 
-    di('log', function() {
+    injector('$injector', function() {
+      return $injector;
+    });
+
+    injector('log', function() {
       return $injector.get('$log');
     });
 
-    di('httpGet', function() {
+    injector('httpGet', function() {
       var
         $http = $injector.get('$http'),
         $templateCache = $injector.get('$templateCache')
@@ -31,7 +35,7 @@ di('ensureDependenciesRegistered', function(di) {
       }
     });
 
-    di('Promise', function() {
+    injector('Promise', function() {
       var
         $q = $injector.get('$q'),
         $rootScope = $injector.get('$rootScope');
@@ -73,7 +77,7 @@ di('ensureDependenciesRegistered', function(di) {
       return Promise;
     });
 
-    di('timeout', function() {
+    injector('timeout', function() {
       var
         $timeout = $injector.get('$timeout');
 

@@ -1,9 +1,9 @@
 'use strict';
 
-di('AbstractElementIcon', function() {
+di('AbstractElementIcon', function(injector) {
   var
-    AbstractIcon = di('AbstractIcon'),
-    inherit = di('inherit')
+    AbstractIcon = injector('AbstractIcon'),
+    inherit = injector('inherit')
     ;
 
   function AbstractElementIcon(iconClassName, element) {

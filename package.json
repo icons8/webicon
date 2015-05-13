@@ -27,7 +27,8 @@
     "karma-jasmine": "^0.3.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-opera-launcher": "^0.1.0",
-    "karma-mocha-reporter": "^1.0.2"
+    "karma-mocha-reporter": "^1.0.2",
+    "bluebird": "^2.9.25"
   },
   "scripts": {
     "dev": "./node_modules/.bin/gulp",

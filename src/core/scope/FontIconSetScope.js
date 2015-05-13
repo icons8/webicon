@@ -1,9 +1,9 @@
 'use strict';
 
-di('FontIconSetScope', function(di) {
+di('FontIconSetScope', function(injector) {
   var
-    AbstractCssClassIconSetScope = di('AbstractCssClassIconSetScope'),
-    inherit = di('inherit')
+    AbstractCssClassIconSetScope = injector('AbstractCssClassIconSetScope'),
+    inherit = injector('inherit')
     ;
 
   function FontIconSetScope(id, cssClassResolver, options) {
@@ -14,7 +14,7 @@ di('FontIconSetScope', function(di) {
 
     getIcon: function(iconId, params) {
       var
-        FontIcon = di('FontIcon');
+        FontIcon = injector('FontIcon');
       return new FontIcon(this._resolveCssClass(this._parseIconId(iconId, params), params));
     }
 

@@ -1,6 +1,6 @@
 'use strict';
 
-di('iconManager', function(di) {
+di('iconManager', function(injector) {
 
   var
     CHECK_URL_REGEX = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/i,
@@ -45,22 +45,22 @@ di('iconManager', function(di) {
 
     addSvgIcon: function(id, urlConfig, options) {
       var
-        SvgIconScope = di('SvgIconScope');
+        SvgIconScope = injector('SvgIconScope');
       this._getSingleIconsCollection().add(new SvgIconScope(id, urlConfig, options));
       return this;
     },
 
     addImageIcon: function(id, urlConfig, options) {
       var
-        ImageIconScope = di('ImageIconScope');
+        ImageIconScope = injector('ImageIconScope');
       this._getSingleIconsCollection().add(new ImageIconScope(id, urlConfig, options));
       return this;
     },
 
     addSvgIconSet: function(id, urlConfig, options) {
       var
-        SvgCumulativeIconSetScope = di('SvgCumulativeIconSetScope'),
-        SvgIconSetScope = di('SvgIconSetScope'),
+        SvgCumulativeIconSetScope = injector('SvgCumulativeIconSetScope'),
+        SvgIconSetScope = injector('SvgIconSetScope'),
         ScopeConstructor;
 
       options = options || {};
@@ -76,14 +76,14 @@ di('iconManager', function(di) {
 
     addFontIconSet: function(id, cssClassConfig, options) {
       var
-        FontIconSetScope = di('FontIconSetScope');
+        FontIconSetScope = injector('FontIconSetScope');
       this._getCollection(id).add(new FontIconSetScope(id, cssClassConfig, options));
       return this;
     },
 
     addSpriteIconSet: function(id, cssClassConfig, options) {
       var
-        SpriteIconSetScope = di('SpriteIconSetScope');
+        SpriteIconSetScope = injector('SpriteIconSetScope');
       this._getCollection(id).add(new SpriteIconSetScope(id, cssClassConfig, options));
       return this;
     },
@@ -190,7 +190,7 @@ di('iconManager', function(di) {
 
     _getCollection: function(id) {
       var
-        ScopeCollection = di('ScopeCollection');
+        ScopeCollection = injector('ScopeCollection');
       if (!this._collections.hasOwnProperty(id)) {
         this._collections[id] = new ScopeCollection();
       }
@@ -206,8 +206,8 @@ di('iconManager', function(di) {
 
   function announceIconNotFound(iconId, iconSetId) {
     var
-      log = di('log'),
-      Promise = di('Promise'),
+      log = injector('log'),
+      Promise = injector('Promise'),
       errorMessage = 'icon "' + iconId + '" not found';
 
     if (iconSetId) {

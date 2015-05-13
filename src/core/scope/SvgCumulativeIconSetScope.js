@@ -1,9 +1,9 @@
 'use strict';
 
-di('SvgCumulativeIconSetScope', function(di) {
+di('SvgCumulativeIconSetScope', function(injector) {
   var
-    AbstractRemoteSvgResourceScope = di('AbstractRemoteSvgResourceScope'),
-    inherit = di('inherit')
+    AbstractRemoteSvgResourceScope = injector('AbstractRemoteSvgResourceScope'),
+    inherit = injector('inherit')
     ;
 
   function SvgCumulativeIconSetScope(id, urlConfig, options) {
@@ -21,7 +21,7 @@ di('SvgCumulativeIconSetScope', function(di) {
 
     _loadResource: function() {
       var
-        SvgIconSet = di('SvgIconSet');
+        SvgIconSet = injector('SvgIconSet');
       return SvgIconSet.loadByUrl(this._resolveUrl(this.waitIconIds), this.options);
     },
 
@@ -31,8 +31,8 @@ di('SvgCumulativeIconSetScope', function(di) {
 
     getIcon: function(iconId, params) {
       var
-        Promise = di('Promise'),
-        timeout = di('timeout'),
+        Promise = injector('Promise'),
+        timeout = injector('timeout'),
         self = this;
 
       iconId = this._parseIconId(iconId, params);

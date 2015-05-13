@@ -1,8 +1,9 @@
 'use strict';
 
-di('publicApi', function(di) {
+di('publicApi', function(injector) {
   var 
-    iconManager = di('iconManager'),
+    iconManager = injector('iconManager'),
+    ready = injector('ready'),
     api;
 
   api = {
@@ -51,7 +52,9 @@ di('publicApi', function(di) {
     preload: function() {
       iconManager.preload();
       return this;
-    }
+    },
+
+    extension: ready
 
   };
 

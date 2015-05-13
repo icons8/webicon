@@ -1,13 +1,14 @@
 'use strict';
 
-di('httpGet', function(di) {
-
-  var cache = {};
+di('httpGet', function(injector) {
+  var
+    cache = {};
 
   return function httpGet(url, params) {
     var
-      Promise = di('Promise'),
-      buildUrlParams = di('buildUrlParams'),
+      jQuery = injector('jQuery'),
+      Promise = injector('Promise'),
+      buildUrlParams = injector('buildUrlParams'),
       urlBuilder = [url],
       compiledUrl,
       query,

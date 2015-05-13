@@ -6,12 +6,22 @@
  * @description
  * Icon
  */
-angular.module('i8.icon', [])
-  .provider('$i8Icon', IconProvider)
-  .directive('i8Icon', IconDirective)
-;
 
-angular.module('i8.icon')
+angular.module('i8.icon', [])
+  .config([
+    '$provide',
+    '$compileProvider',
+    function($provide, $compileProvider) {
+      var
+        injector = createInjector(function(injector) {
+          injector('angular', function() {
+            return angular;
+          })
+        });
+      $provide.provider('$i8Icon', injector('IconProvider'));
+      $compileProvider.directive('i8Icon', injector('IconDirective'));
+    }
+  ])
   .run([
     '$i8Icon',
     function($i8Icon) {
@@ -19,5 +29,3 @@ angular.module('i8.icon')
     }
   ])
 ;
-
-ready();

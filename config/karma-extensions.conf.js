@@ -5,21 +5,26 @@ module.exports = function(config) {
     tests;
 
   tests = [
-    'test/jquery/**/*.spec.js'
+    'test/extensions/**/*.spec.js'
   ];
 
   dependencies = [
     'node_modules/jasmine-ajax/lib/mock-ajax.js',
-    'node_modules/jquery/dist/jquery.js'
+    'node_modules/jquery/dist/jquery.js',
+    'node_modules/angular/angular.js',
+    'node_modules/angular-mocks/angular-mocks.js'
   ];
 
-  if (process.env.KARMA_TEST_JQUERY_CORE) {
+  if (process.env.KARMA_TEST_EXTENSIONS_SEPARATED) {
     dependencies.push(
-      'dist/jquery-i8-icon-core.js'
+      'dist/angular-i8-icon-core.js',
+      'dist/jquery-i8-icon-core.js',
+      'dist/i8-icon-extensions.js'
     )
   }
   else {
     dependencies.push(
+      'dist/angular-i8-icon.js',
       'dist/jquery-i8-icon.js'
     )
   }

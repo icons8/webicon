@@ -1,9 +1,10 @@
 'use strict';
 
-di('mergeObjects', function() {
+di('mergeObjects', function(injector) {
 
   return function mergeObjects(/* to, from [, from[, ...]]*/) {
     var
+      jQuery = injector('jQuery'),
       args = Array.prototype.slice.call(arguments);
 
     switch(args.length) {

@@ -1,6 +1,6 @@
 'use strict';
 
-di('inherit', function() {
+di('inherit', function(injector) {
 
   return function inherit(Constructor, Parent, methods, properties) {
     Constructor.prototype = Object.create(Parent.prototype, properties || {});

@@ -1,13 +1,13 @@
 'use strict';
 
-di('loadSvgByUrl', function(di) {
+di('loadSvgByUrl', function(injector) {
 
   return function loadSvgByUrl(urlConfig) {
     var
-      httpGet = di('httpGet'),
-      log = di('log'),
-      Promise = di('Promise'),
-      el = di('nodeWrapper'),
+      httpGet = injector('httpGet'),
+      log = injector('log'),
+      Promise = injector('Promise'),
+      el = injector('nodeWrapper'),
       url = urlConfig,
       params = null
       ;

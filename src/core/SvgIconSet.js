@@ -1,13 +1,13 @@
 'use strict';
 
-di('SvgIconSet', function(di) {
+di('SvgIconSet', function(injector) {
 
   function SvgIconSet(element, options) {
     var
-      log = di('log'),
-      parseSvgOptions = di('parseSvgOptions'),
-      SvgIcon = di('SvgIcon'),
-      nodeWrapper = di('nodeWrapper'),
+      log = injector('log'),
+      parseSvgOptions = injector('parseSvgOptions'),
+      SvgIcon = injector('SvgIcon'),
+      nodeWrapper = injector('nodeWrapper'),
       index,
       nodes,
       node,
@@ -33,7 +33,7 @@ di('SvgIconSet', function(di) {
       nodes = element[0].querySelectorAll('[id]');
       for(index = 0; index < nodes.length; index++) {
         node = nodes[index];
-        this.icons[iconIdResolver(node.getAttribute('id'))] = new SvgIcon(nodeWrapper(node), {
+        this.icons[iconIdResolver(node.getAttribute('id'))] = new SvgIcon(nodeWrapper(node.cloneNode(true)), {
           iconSize: iconSize,
           viewBox: viewBox
         });
@@ -49,7 +49,7 @@ di('SvgIconSet', function(di) {
 
   SvgIconSet.loadByUrl = function(url, options) {
     var
-      loadSvgByUrl = di('loadSvgByUrl');
+      loadSvgByUrl = injector('loadSvgByUrl');
 
     return loadSvgByUrl(url)
       .then(function(element) {

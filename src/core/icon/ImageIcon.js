@@ -1,9 +1,9 @@
 'use strict';
 
-di('ImageIcon', function(di) {
+di('ImageIcon', function(injector) {
   var
-    AbstractElementIcon = di('AbstractElementIcon'),
-    inherit = di('inherit')
+    AbstractElementIcon = injector('AbstractElementIcon'),
+    inherit = injector('inherit')
     ;
 
   function ImageIcon(element) {
@@ -25,9 +25,9 @@ di('ImageIcon', function(di) {
 
   ImageIcon.loadByUrl = function(urlConfig) {
     var
-      buildUrlParams = di('buildUrlParams'),
-      nodeWrapper = di('nodeWrapper'),
-      Promise = di('Promise'),
+      buildUrlParams = injector('buildUrlParams'),
+      nodeWrapper = injector('nodeWrapper'),
+      Promise = injector('Promise'),
       url = urlConfig,
       query,
       element

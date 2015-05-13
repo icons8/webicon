@@ -14,7 +14,8 @@ var
   sourcemaps = require('gulp-sourcemaps'),
   del = require('del'),
   yargs = require('yargs'),
-  karma = require('karma').server;
+  karma = require('karma').server,
+  Promise = require('bluebird');
 
 var
   argv = yargs
@@ -36,37 +37,103 @@ function getTestBrowsers() {
     : ['PhantomJS'];
 }
 
-function getCommonPattern(i8ApiExcluded) {
+function getCorePattern() {
   var
     pattern = [
-      'core/**/*([!.]).js',
-      'extensions/**/*([!.]).js'
+      'core/**/!(*.debug.js)*.js'
     ];
   if (isDebug()) {
     pattern.push(
-      'core/**/*.debug.js',
-      'extensions/**/*.debug.js'
-    )
-  }
-  if (i8ApiExcluded) {
-    pattern.push(
-      '!extensions/i8Api/**/*.js'
+      'core/**/*.debug.js'
     )
   }
   return pattern;
 }
 
+function getCoreAngularPattern(patterns) {
+  return [].concat(
+    'angular/module/module.prefix',
+    getCorePattern(),
+    'angular/*.js',
+    'angular/module/!(module.js)*.js',
+    patterns || [],
+    'angular/module/module.js',
+    'angular/module/module.suffix'
+  );
+}
+
+function getCoreJqueryPattern(patterns) {
+  return [].concat(
+    'jquery/plugin/plugin.prefix',
+    getCorePattern(),
+    'jquery/*.js',
+    'jquery/plugin/!(plugin.js)*.js',
+    patterns || [],
+    'jquery/plugin/plugin.js',
+    'jquery/plugin/plugin.suffix'
+  );
+}
+
+function getExtensionPattern(separate) {
+  var
+    pattern = [];
+
+  if (separate) {
+    pattern.push(
+      'extensions/extensions.prefix'
+    );
+  }
+  pattern.push(
+    'extensions/**/!(extensions-*.js|extension.js|*.debug.js)*.js'
+  );
+  if (isDebug()) {
+    pattern.push(
+      'extensions/**/*.debug.js'
+    )
+  }
+  pattern.push(
+    'extensions/**/extension.js'
+  );
+  if (separate) {
+    pattern.push(
+      'extensions/extensions-separated.js',
+      'extensions/extensions.suffix'
+    );
+  }
+  else {
+    pattern.push(
+      'extensions/extensions-embedded.js'
+    );
+  }
+  return pattern;
+}
+
+gulp.task('extensions', function() {
+  var
+    stream,
+    pattern = getExtensionPattern(true);
+
+  stream = gulp.src(pattern, { cwd: 'src' })
+    .pipe(plumber())
+    .pipe(concat('i8-icon-extensions.js'))
+    .pipe(gulp.dest('.', { cwd: 'dist' }));
+
+  if (!isDebug()) {
+    stream = stream
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest('.', { cwd: 'dist' }))
+  }
+
+  return stream;
+});
+
 gulp.task('angular-module', function() {
   var
     stream,
-    pattern = [].concat(
-      'angular/module/module.prefix',
-      getCommonPattern(),
-      'angular/*.js',
-      'angular/module/*.js',
-      'angular/module/module.js',
-      'angular/module/module.suffix'
-    );
+    pattern = getCoreAngularPattern(getExtensionPattern());
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
@@ -88,14 +155,7 @@ gulp.task('angular-module', function() {
 gulp.task('angular-module-core', function() {
   var
     stream,
-    pattern = [].concat(
-      'angular/module/module.prefix',
-      getCommonPattern(true),
-      'angular/*.js',
-      'angular/module/*.js',
-      'angular/module/module.js',
-      'angular/module/module.suffix'
-    );
+    pattern = getCoreAngularPattern();
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
@@ -117,14 +177,7 @@ gulp.task('angular-module-core', function() {
 gulp.task('jquery-plugin', function() {
   var
     stream,
-    pattern = [].concat(
-      'jquery/plugin/plugin.prefix',
-      getCommonPattern(),
-      'jquery/*.js',
-      'jquery/plugin/*.js',
-      'jquery/plugin/plugin.js',
-      'jquery/plugin/plugin.suffix'
-    );
+    pattern = getCoreJqueryPattern(getExtensionPattern());
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
@@ -146,14 +199,7 @@ gulp.task('jquery-plugin', function() {
 gulp.task('jquery-plugin-core', function() {
   var
     stream,
-    pattern = [].concat(
-      'jquery/plugin/plugin.prefix',
-      getCommonPattern(true),
-      'jquery/*.js',
-      'jquery/plugin/*.js',
-      'jquery/plugin/plugin.js',
-      'jquery/plugin/plugin.suffix'
-    );
+    pattern = getCoreJqueryPattern();
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
@@ -173,7 +219,7 @@ gulp.task('jquery-plugin-core', function() {
 });
 
 gulp.task('scripts', function(done) {
-  runSequence(['angular-module', 'angular-module-core', 'jquery-plugin', 'jquery-plugin-core'], done);
+  runSequence(['angular-module', 'angular-module-core', 'jquery-plugin', 'jquery-plugin-core', 'extensions'], done);
 });
 
 gulp.task('test-jquery', function(done) {
@@ -205,24 +251,121 @@ gulp.task('test-angular', function(done) {
   });
 });
 
-gulp.task('test-angular-with-jquery', function(done) {
+gulp.task('test-extensions', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-extensions.conf.js'
+    };
+
+  karma.start(karmaConfig, function() {
+    done();
+  });
+
+});
+
+gulp.task('test-angular-extra', function(done) {
   var
     karmaConfig = {
       singleRun: true,
       autoWatch: false,
       browsers: getTestBrowsers(),
       configFile: __dirname + '/config/karma-angular.conf.js'
+    },
+    start = function() {
+      return new Promise(function(resolve) {
+        karma.start(karmaConfig, function() {
+          resolve();
+        });
+      });
     };
 
-  process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = true;
-  karma.start(karmaConfig, function() {
-    process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = undefined;
-    done();
-  });
+  Promise.resolve()
+    .then(function() {
+      process.env.KARMA_TEST_ANGULAR_CORE = true;
+      return start();
+    })
+    .then(function() {
+      process.env.KARMA_TEST_ANGULAR_CORE = undefined;
+      process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = true;
+      return start();
+    })
+    .then(function() {
+      process.env.KARMA_TEST_ANGULAR_CORE = true;
+      return start();
+    })
+    .then(function() {
+      process.env.KARMA_TEST_ANGULAR_CORE = undefined;
+      process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = undefined;
+      done();
+    })
+  ;
+
 });
 
+gulp.task('test-jquery-extra', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-jquery.conf.js'
+    },
+    start = function() {
+      return new Promise(function(resolve) {
+        karma.start(karmaConfig, function() {
+          resolve();
+        });
+      });
+    };
+
+  Promise.resolve()
+    .then(function() {
+      process.env.KARMA_TEST_JQUERY_CORE = true;
+      return start();
+    })
+    .then(function() {
+      process.env.KARMA_TEST_JQUERY_CORE = undefined;
+      done();
+    })
+  ;
+
+});
+
+gulp.task('test-extensions-extra', function(done) {
+  var
+    karmaConfig = {
+      singleRun: true,
+      autoWatch: false,
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-extensions.conf.js'
+    },
+    start = function() {
+      return new Promise(function(resolve) {
+        karma.start(karmaConfig, function() {
+          resolve();
+        });
+      });
+    };
+
+  Promise.resolve()
+    .then(function() {
+      process.env.KARMA_TEST_EXTENSIONS_SEPARATED = true;
+      return start();
+    })
+    .then(function() {
+      process.env.KARMA_TEST_EXTENSIONS_SEPARATED = undefined;
+      done();
+    })
+  ;
+
+});
+
+
 gulp.task('test', function(done) {
-  runSequence('test-jquery', 'test-angular', 'test-angular-with-jquery', done);
+  runSequence('test-jquery', 'test-jquery-extra', 'test-angular', 'test-angular-extra', 'test-extensions', 'test-extensions-extra', done);
 });
 
 gulp.task('styles', function() {

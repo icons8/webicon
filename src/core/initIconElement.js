@@ -1,6 +1,6 @@
 'use strict';
 
-di('initIconElement', function() {
+di('initIconElement', function(injector) {
 
   return function initIconElement(element, alt, icon) {
     var

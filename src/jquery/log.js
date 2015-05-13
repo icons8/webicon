@@ -1,6 +1,6 @@
 'use strict';
 
-di('log', function() {
+di('log', function(injector) {
   var
     noop = function() {},
     log = {},

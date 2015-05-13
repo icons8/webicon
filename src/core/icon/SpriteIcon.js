@@ -1,9 +1,9 @@
 'use strict';
 
-di('SpriteIcon', function() {
+di('SpriteIcon', function(injector) {
   var
-    AbstractCssClassIcon = di('AbstractCssClassIcon'),
-    inherit = di('inherit')
+    AbstractCssClassIcon = injector('AbstractCssClassIcon'),
+    inherit = injector('inherit')
     ;
 
   function SpriteIcon(className) {

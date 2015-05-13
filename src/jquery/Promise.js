@@ -1,6 +1,8 @@
 'use strict';
 
-di('Promise', function() {
+di('Promise', function(injector) {
+  var
+    jQuery = injector('jQuery');
 
   if (window.Promise) {
     return window.Promise;

@@ -2,16 +2,15 @@
 
 function ready(fn) {
   var
-    functions;
+    listeners;
 
-  functions = ready.functions = ready.functions || [];
+  listeners = ready.listeners = ready.listeners || [];
 
-  if (fn) {
-    functions.push(fn);
+  if (typeof fn == 'function') {
+    listeners.push(fn);
   }
-  else {
-    functions.forEach(function(fn) {
-      fn(di);
-    });
+  else if (fn) {
+    console.error('Ready listener not a function');
   }
+
 }

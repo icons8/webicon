@@ -1,32 +1,7 @@
 'use strict';
 
-ready(function(di) {
-  var
-    iconManager = di('iconManager'),
-    config = di('materialDesignIconsConfig'),
-    iconIdFilter,
-    options;
+extension(function(injector) {
 
-  iconIdFilter = function(id) {
-    return String(id || '')
-      .replace(/_/g, '-')
-      .replace(/^ic-/, '')
-      .replace(/-\d+px$/, '');
-  };
-
-  options = {
-    iconIdResolver: iconIdFilter,
-    iconIdParser: iconIdFilter,
-    preloadable: false
-  };
-
-  config.categories
-    .forEach(function(category) {
-      iconManager.addSvgIconSet(
-        'md-' + category,
-        '//cdn.rawgit.com/google/material-design-icons/' + config.version + '/sprites/svg-sprite/svg-sprite-' + category + '.svg',
-        options
-      )
-    });
+  materialDesignIconsExtension(injector, materialDesignIconsConfig);
 
 });

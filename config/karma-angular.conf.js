@@ -10,13 +10,23 @@ module.exports = function(config) {
 
   dependencies = [
     'node_modules/angular/angular.js',
-    'node_modules/angular-mocks/angular-mocks.js',
-    'dist/angular-i8-icon.js'
+    'node_modules/angular-mocks/angular-mocks.js'
   ];
 
   if (process.env.KARMA_TEST_ANGULAR_WITH_JQUERY) {
     dependencies.unshift(
       'node_modules/jquery/dist/jquery.js'
+    )
+  }
+
+  if (process.env.KARMA_TEST_ANGULAR_CORE) {
+    dependencies.push(
+      'dist/angular-i8-icon-core.js'
+    )
+  }
+  else {
+    dependencies.push(
+      'dist/angular-i8-icon.js'
     )
   }
 

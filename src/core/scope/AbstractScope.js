@@ -1,6 +1,6 @@
 'use strict';
 
-di('AbstractScope', function() {
+di('AbstractScope', function(injector) {
 
   function AbstractScope(id, options) {
     options = options && typeof options == 'object'
