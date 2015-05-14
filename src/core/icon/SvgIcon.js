@@ -18,6 +18,8 @@ di('SvgIcon', function(injector) {
       styles,
       defaultAttributes,
       index,
+      width,
+      height,
       node,
       iconSize;
 
@@ -67,8 +69,17 @@ di('SvgIcon', function(injector) {
       height: '100%',
       width: '100%',
       preserveAspectRatio: 'xMidYMid meet',
-      viewBox: node.getAttribute('viewBox') || options.viewBox || ('0 0 ' + iconSize + ' ' + iconSize)
+      viewBox: node.getAttribute('viewBox') || options.viewBox
     };
+
+    if (!attributes.viewBox) {
+      width = node.getAttribute('width');
+      height = node.getAttribute('height');
+      if (width !== null && height !== null ) {
+        attributes.viewBox = '0 0 ' + parseFloat(width) + ' ' + parseFloat(height);
+      }
+    }
+    attributes.viewBox = attributes.viewBox || '0 0 ' + iconSize + ' ' + iconSize;
 
     Object.keys(attributes)
       .forEach(function(name) {
