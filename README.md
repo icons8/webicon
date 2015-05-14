@@ -42,7 +42,6 @@ Simply include the scripts and stylesheet in your main HTML file, in the order s
 ### Simple demo for AngularJS version
 ```html
 <body ng-app="app">
-
   <i8-icon icon="fci:checkmark"></i8-icon>
   <i8-icon icon="clock"></i8-icon>
   <i8-icon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></i8-icon>
@@ -62,14 +61,12 @@ Simply include the scripts and stylesheet in your main HTML file, in the order s
           .icon('clock', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg')
       });
   </script>
-
 </body>
 ```
 
 ### Simple demo for jQuery version
 ```html
 <body>
-
   <div data-i8-icon="fci:checkmark"></div>
   <div data-i8-icon="clock"></div>
   <div data-i8-icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
@@ -86,7 +83,7 @@ Simply include the scripts and stylesheet in your main HTML file, in the order s
           "flat-color-icons": '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg'
         },
         alias: {
-          fci: "flat-color-icons"
+          fci: 'flat-color-icons'
         },
         icon: {
           clock: '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg'
@@ -94,7 +91,6 @@ Simply include the scripts and stylesheet in your main HTML file, in the order s
       });
     });
   </script>
-  
 </body>
 ```
 
