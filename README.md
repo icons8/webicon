@@ -67,11 +67,11 @@ Simply include the scripts and stylesheet in your main HTML file, in the order s
 ### Simple demo for jQuery version
 ```html
 <body>
-  <div data-i8-icon="fci:checkmark"></div>
-  <div data-i8-icon="clock"></div>
-  <div data-i8-icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
-  <div data-i8-icon="calendar"></div>
-  <div data-i8-icon="md-action:3d-rotation" data-alt=""></div>
+  <div data-i8icon="fci:checkmark"></div>
+  <div data-i8icon="clock"></div>
+  <div data-i8icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
+  <div data-i8icon="calendar"></div>
+  <div data-i8icon="md-action:3d-rotation" data-alt=""></div>
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
   <script type="text/javascript" src="/bower_components/i8-icon/jquery-i8-icon.js"></script>
