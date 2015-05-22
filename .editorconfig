@@ -9,10 +9,3 @@ indent_size = 2
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-
-[dropdown-toggle.js]
-trim_trailing_whitespace = false
-insert_final_newline = false
-
-[htmlparser.js]
-insert_final_newline = false
