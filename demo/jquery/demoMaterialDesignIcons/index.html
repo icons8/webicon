@@ -5,7 +5,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
-  <script type="text/javascript" src="/dist/jquery-i8-icon.js"></script>
+  <script type="text/javascript" src="/dist/jquery-webicon.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      $(document).i8icons({
+        alias: {
+          md: 'material-icons'
+        }
+      });
+    });
+  </script>
+
 
   <style type="text/css">
     .i8-svg-icon {
@@ -16,9 +27,9 @@
 </head>
 <body>
 
-<i8-icon icon="md-action:3d-rotation"></i8-icon>
-<i8-icon icon="md-image:add-to-photos" data-alt=""></i8-icon>
-<i8-icon icon="md-action:perm_camera_mic" alt=""></i8-icon>
+<i8-icon icon="md:3d-rotation"></i8-icon>
+<i8-icon icon="md:add-to-photos" data-alt=""></i8-icon>
+<i8-icon icon="md:perm_camera_mic" alt=""></i8-icon>
 
 </body>
 </html>

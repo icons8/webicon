@@ -7,15 +7,15 @@ var
   rename = require('gulp-rename'),
   connect = require('gulp-connect'),
   runSequence = require('run-sequence'),
-  SVGSpriter = require('svg-sprite'),
+  cheerio = require('cheerio'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   plumber = require('gulp-plumber'),
+  merge = require('merge-stream'),
   sourcemaps = require('gulp-sourcemaps'),
   del = require('del'),
   yargs = require('yargs'),
-  karma = require('karma').server,
-  Promise = require('bluebird');
+  karma = require('karma').server;
 
 var
   argv = yargs
@@ -74,35 +74,52 @@ function getCoreJqueryPattern(patterns) {
   );
 }
 
-function getExtensionPattern(separate) {
+function getExtensionPattern(list, separated) {
   var
-    pattern = [];
+    pattern = [],
+    listPattern;
 
-  if (separate) {
+  list = list || [];
+  if (!Array.isArray(list)) {
+    list = [list];
+  }
+
+  switch(list.length) {
+    case 0:
+      listPattern = '*';
+      break;
+    case 1:
+      listPattern = list[0];
+      break;
+    default:
+      listPattern = '{' + list.join(',') + '}';
+  }
+
+  if (separated) {
     pattern.push(
-      'extensions/extensions.prefix'
+      'extensions/extension.prefix'
     );
   }
   pattern.push(
-    'extensions/**/!(extensions-*.js|extension.js|*.debug.js)*.js'
+    'extensions/' + listPattern + '/!(extension.js|*.debug.js)*.js'
   );
   if (isDebug()) {
     pattern.push(
-      'extensions/**/*.debug.js'
+      'extensions/' + listPattern + '/*.debug.js'
     )
   }
   pattern.push(
-    'extensions/**/extension.js'
+    'extensions/' + listPattern + '/extension.js'
   );
-  if (separate) {
+  if (separated) {
     pattern.push(
-      'extensions/extensions-separated.js',
-      'extensions/extensions.suffix'
+      'extensions/extension-separated.js',
+      'extensions/extension.suffix'
     );
   }
   else {
     pattern.push(
-      'extensions/extensions-embedded.js'
+      'extensions/extension-embedded.js'
     );
   }
   return pattern;
@@ -110,34 +127,52 @@ function getExtensionPattern(separate) {
 
 gulp.task('extensions', function() {
   var
-    stream,
-    pattern = getExtensionPattern(true);
+    extensions,
+    tasks;
 
-  stream = gulp.src(pattern, { cwd: 'src' })
-    .pipe(plumber())
-    .pipe(concat('i8-icon-extensions.js'))
-    .pipe(gulp.dest('.', { cwd: 'dist' }));
+  extensions = [
+    'fontawesome',
+    'glyphicons',
+    'icons8',
+    'welovesvg'
+  ];
 
-  if (!isDebug()) {
-    stream = stream
-      .pipe(rename({ suffix: ".min" }))
-      .pipe(sourcemaps.init())
-      .pipe(uglify())
-      .pipe(sourcemaps.write('.'))
-      .pipe(gulp.dest('.', { cwd: 'dist' }))
-  }
+  tasks = extensions.map(function(name) {
+    var
+      stream,
+      pattern;
 
-  return stream;
+    pattern = getExtensionPattern([name], true);
+
+    stream = gulp.src(pattern, { cwd: 'src' })
+      .pipe(plumber())
+      .pipe(concat(name + '.js'))
+      .pipe(gulp.dest('./extensions', { cwd: 'dist' }));
+
+    if (!isDebug()) {
+      stream = stream
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(sourcemaps.init())
+        .pipe(uglify())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./extensions', { cwd: 'dist' }))
+    }
+
+    return stream;
+
+  });
+
+  return merge(tasks);
 });
 
 gulp.task('angular-module', function() {
   var
     stream,
-    pattern = getCoreAngularPattern(getExtensionPattern());
+    pattern = getCoreAngularPattern(getExtensionPattern(['icons8', 'welovesvg']));
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('angular-i8-icon.js'))
+    .pipe(concat('angular-webicon.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -159,7 +194,7 @@ gulp.task('angular-module-core', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('angular-i8-icon-core.js'))
+    .pipe(concat('angular-webicon-core.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -177,11 +212,11 @@ gulp.task('angular-module-core', function() {
 gulp.task('jquery-plugin', function() {
   var
     stream,
-    pattern = getCoreJqueryPattern(getExtensionPattern());
+    pattern = getCoreJqueryPattern(getExtensionPattern(['icons8', 'welovesvg']));
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('jquery-i8-icon.js'))
+    .pipe(concat('jquery-webicon.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -203,7 +238,7 @@ gulp.task('jquery-plugin-core', function() {
 
   stream = gulp.src(pattern, { cwd: 'src' })
     .pipe(plumber())
-    .pipe(concat('jquery-i8-icon-core.js'))
+    .pipe(concat('jquery-webicon-core.js'))
     .pipe(gulp.dest('.', { cwd: 'dist' }));
 
   if (!isDebug()) {
@@ -222,13 +257,11 @@ gulp.task('scripts', function(done) {
   runSequence(['angular-module', 'angular-module-core', 'jquery-plugin', 'jquery-plugin-core', 'extensions'], done);
 });
 
-gulp.task('test-jquery', function(done) {
+gulp.task('test-core-jquery', function(done) {
   var
     karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
       browsers: getTestBrowsers(),
-      configFile: __dirname + '/config/karma-jquery.conf.js'
+      configFile: __dirname + '/config/karma-core-jquery.conf.js'
     };
 
   karma.start(karmaConfig, function() {
@@ -237,13 +270,11 @@ gulp.task('test-jquery', function(done) {
 
 });
 
-gulp.task('test-angular', function(done) {
+gulp.task('test-core-angular', function(done) {
   var
     karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
       browsers: getTestBrowsers(),
-      configFile: __dirname + '/config/karma-angular.conf.js'
+      configFile: __dirname + '/config/karma-core-angular.conf.js'
     };
 
   karma.start(karmaConfig, function() {
@@ -251,11 +282,22 @@ gulp.task('test-angular', function(done) {
   });
 });
 
+gulp.task('test-regular', function(done) {
+  var
+    karmaConfig = {
+      browsers: getTestBrowsers(),
+      configFile: __dirname + '/config/karma-regular.conf.js'
+    };
+
+  karma.start(karmaConfig, function() {
+    done();
+  });
+
+});
+
 gulp.task('test-extensions', function(done) {
   var
     karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
       browsers: getTestBrowsers(),
       configFile: __dirname + '/config/karma-extensions.conf.js'
     };
@@ -266,106 +308,9 @@ gulp.task('test-extensions', function(done) {
 
 });
 
-gulp.task('test-angular-extra', function(done) {
-  var
-    karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
-      browsers: getTestBrowsers(),
-      configFile: __dirname + '/config/karma-angular.conf.js'
-    },
-    start = function() {
-      return new Promise(function(resolve) {
-        karma.start(karmaConfig, function() {
-          resolve();
-        });
-      });
-    };
-
-  Promise.resolve()
-    .then(function() {
-      process.env.KARMA_TEST_ANGULAR_CORE = true;
-      return start();
-    })
-    .then(function() {
-      process.env.KARMA_TEST_ANGULAR_CORE = undefined;
-      process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = true;
-      return start();
-    })
-    .then(function() {
-      process.env.KARMA_TEST_ANGULAR_CORE = true;
-      return start();
-    })
-    .then(function() {
-      process.env.KARMA_TEST_ANGULAR_CORE = undefined;
-      process.env.KARMA_TEST_ANGULAR_WITH_JQUERY = undefined;
-      done();
-    })
-  ;
-
-});
-
-gulp.task('test-jquery-extra', function(done) {
-  var
-    karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
-      browsers: getTestBrowsers(),
-      configFile: __dirname + '/config/karma-jquery.conf.js'
-    },
-    start = function() {
-      return new Promise(function(resolve) {
-        karma.start(karmaConfig, function() {
-          resolve();
-        });
-      });
-    };
-
-  Promise.resolve()
-    .then(function() {
-      process.env.KARMA_TEST_JQUERY_CORE = true;
-      return start();
-    })
-    .then(function() {
-      process.env.KARMA_TEST_JQUERY_CORE = undefined;
-      done();
-    })
-  ;
-
-});
-
-gulp.task('test-extensions-extra', function(done) {
-  var
-    karmaConfig = {
-      singleRun: true,
-      autoWatch: false,
-      browsers: getTestBrowsers(),
-      configFile: __dirname + '/config/karma-extensions.conf.js'
-    },
-    start = function() {
-      return new Promise(function(resolve) {
-        karma.start(karmaConfig, function() {
-          resolve();
-        });
-      });
-    };
-
-  Promise.resolve()
-    .then(function() {
-      process.env.KARMA_TEST_EXTENSIONS_SEPARATED = true;
-      return start();
-    })
-    .then(function() {
-      process.env.KARMA_TEST_EXTENSIONS_SEPARATED = undefined;
-      done();
-    })
-  ;
-
-});
-
 
 gulp.task('test', function(done) {
-  runSequence('test-jquery', 'test-jquery-extra', 'test-angular', 'test-angular-extra', 'test-extensions', 'test-extensions-extra', done);
+  runSequence('test-core-jquery', 'test-core-angular', 'test-regular', 'test-extensions', done);
 });
 
 gulp.task('styles', function() {
@@ -400,70 +345,76 @@ gulp.task('demo-server', function() {
       function(req, res, next) {
         var
           url = '/icon-sets',
-          iconsAssetsPath = 'assets/icons/svg',
+          assetsPath = 'assets',
+          flatColorIconSetPath = 'flat_color.svg',
+          win8IconSetPath = 'win8.svg',
           icons,
-          mode,
-          spriterConfig,
-          spriter;
+          flatColorIconSetContext,
+          win8IconSetContext,
+          resultIconSetContext,
+          y,
+          viewBoxParts;
 
         if (req._parsedUrl.pathname.toLowerCase() === url) {
           icons = (req.query.icons || req.query.i || '').split(/[,|;]/g);
-          mode = (req.query.mode || req.query.m || 'symbol').split(/[,|;]/g);
-          spriterConfig = {
-            mode: {},
-            transform: []
-          };
-          mode.forEach(function(m) {
-            spriterConfig.mode[m] = true;
-          });
-          mode = mode[0];
-          spriter = new SVGSpriter(spriterConfig);
 
-          icons.forEach(function(name) {
+          flatColorIconSetContext = cheerio.load(
+            fs.readFileSync(path.join(assetsPath, flatColorIconSetPath), {encoding: 'utf8'}),
+            { xmlMode: true }
+          );
+          win8IconSetContext = cheerio.load(
+            fs.readFileSync(path.join(assetsPath, win8IconSetPath), {encoding: 'utf8'}),
+            { xmlMode: true }
+          );
+          resultIconSetContext = cheerio.load(
+            '<svg xmlns="http://www.w3.org/2000/svg"></svg>',
+            { xmlMode: true }
+          );
+
+          y = 0;
+          icons.forEach(function(iconName) {
             var
               parts,
-              prefixIconName,
-              iconName,
-              filename,
-              virtualIconPath;
+              platformIconName,
+              shortIconName,
+              iconElement = null;
 
-            parts = name.split('-');
-            iconName = parts.slice(1).join('-');
-            prefixIconName = parts.slice(0, 1);
-            filename = path.join(iconsAssetsPath, iconName + '.svg');
+            parts = iconName.split('-');
+            shortIconName = parts.slice(1).join('-');
+            platformIconName = parts.slice(0, 1)[0];
 
-            parts = path.resolve(filename).split(path.sep);
-            virtualIconPath = parts.slice(0, -1).concat(prefixIconName + '-' + parts.slice(-1)).join(path.sep);
-            if (fs.existsSync(filename)) {
-              spriter.add(
-                virtualIconPath,
-                null,
-                fs.readFileSync(filename, {encoding: 'utf-8'})
+            switch(platformIconName) {
+              case 'color':
+                iconElement = flatColorIconSetContext('[id="' + shortIconName + '"]').eq(0);
+                break;
+              case 'win8':
+                iconElement = win8IconSetContext('[id="' + shortIconName + '"]').eq(0);
+                break;
+            }
+
+            if (iconElement && iconElement.length == 1) {
+              viewBoxParts = iconElement.attr('viewBox').split(/\s+/);
+              iconElement
+                .attr('id', iconName)
+                .attr('width', viewBoxParts[2])
+                .attr('height', viewBoxParts[3])
+                .attr('x', 0)
+                .attr('y', y);
+
+              y += parseFloat(viewBoxParts[3]);
+              resultIconSetContext.root().children('svg').append(iconElement);
+            }
+            else {
+              resultIconSetContext.root().children('svg').append(
+                '<svg id="' + iconName + '" />'
               );
             }
           });
 
-          spriter.compile(function(error, result, data){
-            if (error) {
-              res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-              res.statusCode = 500;
-              res.end(error + '');
-              return;
-            }
-            try {
-              res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
-              res.statusCode = 200;
-              res.end(result[mode].sprite.contents.toString('utf8'));
-            }
-            catch(e) {
-              res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-              res.statusCode = 500;
-              res.end(e + '');
-            }
+          res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+          res.statusCode = 200;
+          res.end(resultIconSetContext.html());
 
-          });
-
-          return;
         }
         next();
       }

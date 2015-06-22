@@ -5,29 +5,19 @@ module.exports = function(config) {
     tests;
 
   tests = [
-    'test/extensions/**/*.spec.js'
+    'test/angular/extensions/**/*.spec.js',
+    'test/jquery/extensions/**/*.spec.js'
   ];
 
   dependencies = [
     'node_modules/jasmine-ajax/lib/mock-ajax.js',
     'node_modules/jquery/dist/jquery.js',
     'node_modules/angular/angular.js',
-    'node_modules/angular-mocks/angular-mocks.js'
+    'node_modules/angular-mocks/angular-mocks.js',
+    'dist/angular-webicon-core.js',
+    'dist/jquery-webicon-core.js',
+    'dist/extensions/!(*.min.js)*.js'
   ];
-
-  if (process.env.KARMA_TEST_EXTENSIONS_SEPARATED) {
-    dependencies.push(
-      'dist/angular-i8-icon-core.js',
-      'dist/jquery-i8-icon-core.js',
-      'dist/i8-icon-extensions.js'
-    )
-  }
-  else {
-    dependencies.push(
-      'dist/angular-i8-icon.js',
-      'dist/jquery-i8-icon.js'
-    )
-  }
 
   config.set({
 
@@ -40,7 +30,7 @@ module.exports = function(config) {
     colors: true,
 
     autoWatch: false,
-    singleRun: false,
+    singleRun: true,
 
     // Start these browsers, currently available:
     // - Chrome
