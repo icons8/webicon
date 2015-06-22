@@ -36,7 +36,7 @@ bower update
 
 ## Using the i8-icon library
 
-Simply include the scripts and stylesheet in your main HTML file, in the order shown in the example below. Note that npm will install the files under `/node_modules/i8-icon/` and bower will install them under `/bower_components/i8-icon/`.
+Simply include the scripts and stylesheet in your main HTML file in the order shown in the example below. Note that npm will install the files under `/node_modules/i8-icon/` and bower will install them under `/bower_components/i8-icon/`.
 
 
 ### Simple demo for AngularJS version
