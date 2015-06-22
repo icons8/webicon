@@ -42,6 +42,7 @@ var
       }
     },
     aliases: {
+      "color-icons": 'flat-color-icons',
       "glyphicons": 'glyphicons-halflings',
       "ion": 'ionicons',
       "lsf": 'ligaturesymbols',

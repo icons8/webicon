@@ -2,13 +2,13 @@
 describe('icon', function() {
   var
     element,
-    $i8IconProvider,
+    $webiconProvider,
     $compile,
     $templateCache,
     $scope;
 
-  beforeEach(module('i8.icon', function(_$i8IconProvider_) {
-    $i8IconProvider = _$i8IconProvider_;
+  beforeEach(module('webicon', function(_$webiconProvider_) {
+    $webiconProvider = _$webiconProvider_;
   }));
 
   function make(html) {
@@ -30,7 +30,7 @@ describe('icon', function() {
   describe('svg format', function() {
 
     beforeEach(inject(function() {
-      $i8IconProvider
+      $webiconProvider
         .icon('clock', 'assets/icons/clock.svg')
       ;
 
@@ -38,7 +38,7 @@ describe('icon', function() {
     }));
 
     it('should load icon', inject(function() {
-      element = make('<i8-icon icon="clock"></i8-icon>');
+      element = make('<webicon icon="clock"></webicon>');
       expect(element.html()).toContain('<g id="clock-icon"></g>');
     }));
 

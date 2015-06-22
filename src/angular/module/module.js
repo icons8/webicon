@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc module
- * @name i8.icon
+ * @name webicon
  * @description
  * Icon
  */
 
-angular.module('i8.icon', [])
+angular.module('webicon', [])
   .config([
     '$provide',
     '$compileProvider',
@@ -18,14 +18,14 @@ angular.module('i8.icon', [])
             return angular;
           })
         });
-      $provide.provider('$i8Icon', injector('IconProvider'));
-      $compileProvider.directive('i8Icon', injector('IconDirective'));
+      $provide.provider('$webicon', injector('IconProvider'));
+      $compileProvider.directive('webicon', injector('IconDirective'));
     }
   ])
   .run([
-    '$i8Icon',
-    function($i8Icon) {
-      $i8Icon.$checkLazyPreload();
+    '$webicon',
+    function($webicon) {
+      $webicon.$checkLazyPreload();
     }
   ])
 ;

@@ -7,8 +7,8 @@ var
     })
   });
 
-jQuery.fn.i8icon = injector('IconPlugin');
-jQuery.fn.i8icon.extension = injector('ready');
+jQuery.fn.webicon = injector('IconPlugin');
+jQuery.fn.webicon.extension = injector('ready');
 
-jQuery.fn.i8icons = injector('IconsPlugin');
-jQuery.fn.i8icons.extension = injector('ready');
+jQuery.fn.webicons = injector('IconsPlugin');
+jQuery.fn.webicons.extension = injector('ready');

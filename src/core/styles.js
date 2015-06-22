@@ -7,7 +7,7 @@ ready(function(injector) {
     styleEl,
     styleContent;
 
-  styleContent = '<style type="text/css">@charset "UTF-8";i8-icon,i8icon,[i8-icon],[i8icon],[data-i8-icon],[data-i8icon],.i8icon,.i8-icon{display:inline-block;}.i8-svg-icon svg{fill:currentColor;}</style>';
+  styleContent = '<style type="text/css">@charset "UTF-8";webicon,[webicon],[data-webicon],.webicon,.webicon{display:inline-block;}.svg-webicon svg{fill:currentColor;}</style>';
 
   head = nodeWrapper(window.document).find('head');
   styleEl = head.find('style')[0];

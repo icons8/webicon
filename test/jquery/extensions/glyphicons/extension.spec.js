@@ -4,7 +4,7 @@ describe('jquery extensions glyphicons', function() {
     element,
     options;
 
-  jQuery.fn.i8icons.cancelBootstrap();
+  jQuery.fn.webicons.cancelBootstrap();
 
   beforeEach(function() {
     jasmine.Ajax.install();
@@ -18,12 +18,12 @@ describe('jquery extensions glyphicons', function() {
     var
       element;
     element = jQuery(html);
-    element.i8icons(opts || options);
+    element.webicons(opts || options);
     return element;
   }
 
   it('should work', function() {
-    element = make('<i8-icon icon="gi:home"></i8-icon>');
+    element = make('<webicon icon="gi:home"></webicon>');
     expect(element.attr('class')).toContain('glyphicon glyphicon-home');
   });
 

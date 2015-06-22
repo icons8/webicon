@@ -1,8 +1,9 @@
 {
-  "name": "i8-icon",
+  "name": "webicon",
+  "description": "Icon library",
   "version": "0.9.4",
   "repository": {
-    "url": "git://github.com/icons8/i8-icon.git"
+    "url": "git://github.com/icons8/webicon.git"
   },
   "devDependencies": {
     "gulp": "^3.6.2",
@@ -32,12 +33,7 @@
   },
   "scripts": {
     "dev": "./node_modules/.bin/gulp",
-    "dev-no-debug": "./node_modules/.bin/gulp --no-debug",
     "test": "./node_modules/.bin/gulp test",
-    "test-jquery": "./node_modules/.bin/gulp test-jquery",
-    "test-angular": "./node_modules/.bin/gulp test-angular",
-    "test-angular-with-query": "./node_modules/.bin/gulp test-angular-with-jquery",
-
     "build": "./node_modules/.bin/gulp build --no-debug"
   }
 }

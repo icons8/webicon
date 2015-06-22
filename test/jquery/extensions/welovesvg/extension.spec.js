@@ -4,7 +4,7 @@ describe('jquery extensions welovesvg', function() {
     element,
     options;
 
-  jQuery.fn.i8icons.cancelBootstrap();
+  jQuery.fn.webicons.cancelBootstrap();
 
   beforeEach(function() {
     jasmine.Ajax.install();
@@ -18,7 +18,7 @@ describe('jquery extensions welovesvg', function() {
     var
       element;
     element = jQuery(html);
-    element.i8icons(opts || options);
+    element.webicons(opts || options);
     return element;
   }
 
@@ -32,7 +32,7 @@ describe('jquery extensions welovesvg', function() {
     });
 
     it('should work', function() {
-      element = make('<i8-icon icon="material-icons:perm_camera-mic"></i8-icon>');
+      element = make('<webicon icon="material-icons:perm_camera-mic"></webicon>');
       expect(element.html()).toContain('<g icon-name="perm-camera-mic-icon"></g>');
     });
   });

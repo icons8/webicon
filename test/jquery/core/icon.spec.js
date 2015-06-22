@@ -4,7 +4,7 @@ describe('icon', function() {
     element,
     options;
 
-  jQuery.fn.i8icons.cancelBootstrap();
+  jQuery.fn.webicons.cancelBootstrap();
 
   beforeEach(function() {
     jasmine.Ajax.install();
@@ -18,7 +18,7 @@ describe('icon', function() {
     var
       element;
     element = jQuery(html);
-    element.i8icons(opts || options);
+    element.webicons(opts || options);
     return element;
   }
 
@@ -36,7 +36,7 @@ describe('icon', function() {
     });
 
     it('should load icon', function() {
-      element = make('<i8-icon icon="clock"></i8-icon>');
+      element = make('<webicon icon="clock"></webicon>');
       expect(element.html()).toContain('<g id="clock-icon"></g>');
     });
 

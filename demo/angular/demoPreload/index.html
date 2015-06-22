@@ -9,11 +9,11 @@
 
   <script type="text/javascript">
     angular
-      .module('demo-icon', ['i8.icon'])
+      .module('demo-icon', ['webicon'])
       .config([
-        '$i8IconProvider',
-        function($i8IconProvider) {
-          $i8IconProvider
+        '$webiconProvider',
+        function($webiconProvider) {
+          $webiconProvider
             .svgSet('symbol', 'assets/icon-sets/symbol/about,home.svg')
             .defaultSvgSetUrl('assets/icon-sets/group/about,home.svg')
             .icon('clock', 'assets/icons/clock.svg')
@@ -26,7 +26,7 @@
   </script>
 
   <style type="text/css">
-    .i8-svg-icon {
+    .svg-webicon {
       width: 100px;
       height: 100px;
     }
@@ -35,8 +35,8 @@
 </head>
 <body>
 
-<i8-icon icon="home"></i8-icon>
-<i8-icon icon="clock"></i8-icon>
+<webicon icon="home"></webicon>
+<webicon icon="clock"></webicon>
 
 </body>
 </html>

@@ -9,11 +9,11 @@
 
   <script type="text/javascript">
     angular
-      .module('demo-icon', ['i8.icon'])
+      .module('demo-icon', ['webicon'])
       .config([
-        '$i8IconProvider',
-        function($i8IconProvider) {
-          $i8IconProvider
+        '$webiconProvider',
+        function($webiconProvider) {
+          $webiconProvider
             .icon('dropbox', 'assets/icons/dropbox-copyrighted-filled.svg')
             .icon('java', 'assets/icons/java-coffee-cup-logo.svg')
           ;
@@ -23,7 +23,7 @@
   </script>
 
   <style type="text/css">
-    .i8-svg-icon {
+    .svg-webicon {
       width: 100px;
       height: 100px;
     }
@@ -33,12 +33,12 @@
     .orange {
       color: #f39c12;
     }
-    .i8-love {
-      -webkit-animation: i8-love 1s infinite;
-              animation: i8-love 1s infinite;
+    .icons8-love {
+      -webkit-animation: icons8-love 1s infinite;
+              animation: icons8-love 1s infinite;
     }
 
-    @-webkit-keyframes i8-love {
+    @-webkit-keyframes icons8-love {
       0%, 50%, 100% {
         color: #e74c3c;
       }
@@ -47,7 +47,7 @@
       }
     }
 
-    @keyframes i8-love {
+    @keyframes icons8-love {
       0%, 50%, 100% {
         color: #e74c3c;
       }
@@ -59,10 +59,10 @@
 </head>
 <body>
 
-<i8-icon icon="dropbox"></i8-icon>
-<i8-icon icon="assets/icons/github.svg" style="color: #2c3e50"></i8-icon>
-<i8-icon icon="java" ng-class="{ orange: true }"></i8-icon>
-<i8-icon icon="assets/icons/i-love-icons8.svg" class="i8-love"></i8-icon>
+<webicon icon="dropbox"></webicon>
+<webicon icon="assets/icons/github.svg" style="color: #2c3e50"></webicon>
+<webicon icon="java" ng-class="{ orange: true }"></webicon>
+<webicon icon="assets/icons/i-love-icons8.svg" class="icons8-love"></webicon>
 
 </body>
 </html>

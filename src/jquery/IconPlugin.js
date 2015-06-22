@@ -26,9 +26,9 @@ di('IconPlugin', function(injector) {
 
     return this.each(function() {
       var
-        I8_ICON_DATA_KEY = '__I8_ICON_DATA',
+        WEBICON_DATA_KEY = '__WEBICON_DATA',
         element = jQuery(this),
-        instance = element.data(I8_ICON_DATA_KEY),
+        instance = element.data(WEBICON_DATA_KEY),
         options = {
           icon: config.icon + ''
         };
@@ -37,7 +37,7 @@ di('IconPlugin', function(injector) {
         instance.refresh(options);
       }
       else {
-        element.data(I8_ICON_DATA_KEY, new IconController(element, options));
+        element.data(WEBICON_DATA_KEY, new IconController(element, options));
       }
     });
   }

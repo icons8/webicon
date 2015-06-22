@@ -6,14 +6,14 @@ di('IconsPlugin', function(injector) {
     var
       configPerformer = injector('configPerformer'),
       elements = this,
-      selector = 'i8-icon,i8icon,[i8-icon],[i8icon],[data-i8-icon],[data-i8icon],.i8icon,.i8-icon',
+      selector = 'webicon,[webicon],[data-webicon],.webicon',
       optionsApplied = false;
 
     if (elements.is(selector)) {
-      elements.i8icon(options);
+      elements.webicon(options);
       optionsApplied = true;
     }
-    elements.find(selector).i8icon(
+    elements.find(selector).webicon(
       optionsApplied
         ? null
         : options

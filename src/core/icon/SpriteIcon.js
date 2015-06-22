@@ -8,7 +8,7 @@ di('SpriteIcon', function(injector) {
 
   function SpriteIcon(className) {
     var
-      SPRITE_ICON_CLASS = 'i8-sprite-icon';
+      SPRITE_ICON_CLASS = 'sprite-webicon';
 
     AbstractCssClassIcon.call(this, SPRITE_ICON_CLASS, className);
   }

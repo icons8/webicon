@@ -6,20 +6,20 @@
 </head>
 <body ng-app="app">
 
-<i8-icon icon="fci:checkmark"></i8-icon>
-<i8-icon icon="clock"></i8-icon>
-<i8-icon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></i8-icon>
-<i8-icon icon="calendar"></i8-icon>
-<i8-icon icon="material-icons:3d-rotation" alt=""></i8-icon>
+<webicon icon="fci:checkmark"></webicon>
+<webicon icon="clock"></webicon>
+<webicon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></webicon>
+<webicon icon="calendar"></webicon>
+<webicon icon="material-icons:3d-rotation" alt=""></webicon>
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
 <script type="text/javascript" src="/dist/angular-webicon.js"></script>
 
 <script>
   angular
-    .module('app', ['i8.icon'])
-    .config(function($i8IconProvider) {
-      $i8IconProvider
+    .module('app', ['webicon'])
+    .config(function($webiconProvider) {
+      $webiconProvider
         .svgSet('flat-color-icons', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg')
         .alias('flat-color-icons', 'fci')
         .icon('clock', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg')

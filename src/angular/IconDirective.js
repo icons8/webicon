@@ -4,15 +4,15 @@ di('IconDirective', function(injector) {
 
   /**
    * @ngdoc directive
-   * @name i8Icon
-   * @module i8.icon
+   * @name webicon
+   * @module webicon
    *
    * @restrict EA
    *
    * @description
    */
 
-  function IconDirective($i8Icon) {
+  function IconDirective($webicon) {
     return {
       restrict: 'EA',
       scope: true,
@@ -21,7 +21,7 @@ di('IconDirective', function(injector) {
           initIconElement = injector('initIconElement'),
           altAttrName = attrs.$normalize(attrs.$attr.alt || ''),
           alt,
-          attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.i8Icon || ''),
+          attrName =  attrs.$normalize(attrs.$attr.icon || attrs.$attr.webicon || ''),
           cleaner = null
           ;
 
@@ -36,7 +36,7 @@ di('IconDirective', function(injector) {
             cleaner && cleaner();
             cleaner = null;
             if (icon) {
-              $i8Icon(icon).then(function(icon) {
+              $webicon(icon).then(function(icon) {
                 cleaner = icon.render(element);
               });
             }
@@ -48,7 +48,7 @@ di('IconDirective', function(injector) {
   }
 
   IconDirective.$inject = [
-    '$i8Icon'
+    '$webicon'
   ];
 
   return IconDirective;

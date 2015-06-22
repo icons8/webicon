@@ -8,7 +8,7 @@ di('FontIcon', function(injector) {
 
   function FontIcon(className) {
     var
-      FONT_ICON_CLASS = 'i8-font-icon';
+      FONT_ICON_CLASS = 'font-webicon';
 
     AbstractCssClassIcon.call(this, FONT_ICON_CLASS, className);
   }

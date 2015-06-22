@@ -12,7 +12,7 @@
 
   <script type="text/javascript">
     angular
-      .module('demo-icon', ['i8.icon'])
+      .module('demo-icon', ['webicon'])
       .run(['$rootScope', '$timeout', function($rootScope, $timeout) {
         $rootScope.qqIcon = 'fa:qq';
         $timeout(function() {
@@ -24,9 +24,9 @@
 </head>
 <body>
 
-<i8-icon icon="{{qqIcon}} spin 2x"></i8-icon>
-<i8-icon icon="fa:heart 4x" style="color: red;"></i8-icon>
-<i8-icon icon="fa:home 3x"></i8-icon>
+<webicon icon="{{qqIcon}} spin 2x"></webicon>
+<webicon icon="fa:heart 4x" style="color: red;"></webicon>
+<webicon icon="fa:home 3x"></webicon>
 
 </body>
 </html>

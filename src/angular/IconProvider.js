@@ -4,8 +4,8 @@ di('IconProvider', function(injector) {
 
   /**
    * @ngdoc service
-   * @name $i8IconProvider
-   * @module i8.icon
+   * @name $webiconProvider
+   * @module webicon
    *
    * @description
    *

@@ -8,7 +8,7 @@ di('SvgIcon', function(injector) {
 
   function SvgIcon(element, options) {
     var
-      SVG_ICON_CLASS = 'i8-svg-icon',
+      SVG_ICON_CLASS = 'svg-webicon',
       nodeWrapper = injector('nodeWrapper'),
       iconManager = injector('iconManager'),
       parseSvgOptions = injector('parseSvgOptions'),

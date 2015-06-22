@@ -1,0 +1,19 @@
+{
+  "name": "webicon",
+  "version": "0.9.4",
+  "main": [
+    "build/angular-webicon.js",
+    "build/jquery-webicon.js"
+  ],
+  "ignore": [
+    "assets",
+    "config",
+    "demo",
+    "dist",
+    "src",
+    "test",
+    "gulpfile.js"
+  ],
+  "dependencies": {
+  }
+}

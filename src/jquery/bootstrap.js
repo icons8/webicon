@@ -18,7 +18,7 @@ ready(function bootstrap(injector) {
       if (IconsPlugin.bootstraped) {
         return;
       }
-      jQuery(window.document).i8icons();
+      jQuery(window.document).webicons();
     });
 
   });

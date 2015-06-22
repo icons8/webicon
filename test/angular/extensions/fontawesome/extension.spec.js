@@ -2,13 +2,13 @@
 describe('angular extensions fontawesome', function() {
   var
     element,
-    $i8IconProvider,
+    $webiconProvider,
     $compile,
     $templateCache,
     $scope;
 
-  beforeEach(module('i8.icon', function(_$i8IconProvider_) {
-    $i8IconProvider = _$i8IconProvider_;
+  beforeEach(module('webicon', function(_$webiconProvider_) {
+    $webiconProvider = _$webiconProvider_;
   }));
 
   function make(html) {
@@ -26,7 +26,7 @@ describe('angular extensions fontawesome', function() {
   }));
 
   it('should work', function() {
-    element = make('<i8-icon icon="fa:home spin 2x"></i8-icon>');
+    element = make('<webicon icon="fa:home spin 2x"></webicon>');
     expect(element.attr('class')).toContain('fa-home fa-spin fa-2x');
   });
 

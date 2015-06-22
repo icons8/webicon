@@ -2,9 +2,9 @@
 
 @charset "UTF-8";
 
-i8-icon, i8icon, [i8-icon], [i8icon], [data-i8-icon], [data-i8icon], .i8icon, .i8-icon {
+webicon, [webicon], [data-webicon], .webicon {
   display: inline-block;
 }
-.i8-svg-icon svg {
+.svg-webicon svg {
   fill: currentColor;
 }

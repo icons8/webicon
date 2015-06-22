@@ -1,13 +1,13 @@
 'use strict';
 
-if (typeof jQuery != 'undefined' && jQuery.fn.i8icon) {
-  jQuery.fn.i8icon.extension(extensionBinder);
+if (typeof jQuery != 'undefined' && jQuery.fn.webicon) {
+  jQuery.fn.webicon.extension(extensionBinder);
 }
-if (typeof angular != 'undefined' && angular.module('i8.icon')) {
-  angular.module('i8.icon').config([
-    '$i8IconProvider',
-    function($i8IconProvider) {
-      $i8IconProvider.extension(extensionBinder)
+if (typeof angular != 'undefined' && angular.module('webicon')) {
+  angular.module('webicon').config([
+    '$webiconProvider',
+    function($webiconProvider) {
+      $webiconProvider.extension(extensionBinder)
     }
   ])
 }

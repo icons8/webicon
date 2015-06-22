@@ -8,7 +8,7 @@ di('ImageIcon', function(injector) {
 
   function ImageIcon(element) {
     var
-      IMAGE_ICON_CLASS = 'i8-image-icon';
+      IMAGE_ICON_CLASS = 'image-webicon';
 
     element.attr({
       width: '100%',

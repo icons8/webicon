@@ -31,15 +31,11 @@ di('IconController', function(injector) {
     _getIconId: function() {
       var
         element = this._element,
-        index,
-        prefixes,
-        prefix,
-        id = null;
+        id;
 
-      prefixes = ['', 'i8-', 'i8', 'i8:'];
-      for (index = 0; !id && index < prefixes.length; index++) {
-        prefix = prefixes[index];
-        id = element.attr(prefix + 'icon') || element.data(prefix + 'icon');
+      id = element.attr('webicon') || element.data('webicon');
+      if (!id && element[0].tagName.toLowerCase() == 'webicon') {
+        id = element.attr('icon') || element.data('icon');
       }
 
       if (!id) {
@@ -50,7 +46,7 @@ di('IconController', function(injector) {
             var
               match,
               parts;
-            match = /^i8[-:]?icon[-:]([^;|,]+)[;|,]?(.*)$/i.exec(className);
+            match = /^webicon[-:]([^;|,]+)[;|,]?(.*)$/i.exec(className);
             if (!match || !match[1]) {
               return null;
             }

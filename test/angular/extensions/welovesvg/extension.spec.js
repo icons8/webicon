@@ -2,13 +2,13 @@
 describe('angular extensions welovesvg', function() {
   var
     element,
-    $i8IconProvider,
+    $webiconProvider,
     $compile,
     $templateCache,
     $scope;
 
-  beforeEach(module('i8.icon', function(_$i8IconProvider_) {
-    $i8IconProvider = _$i8IconProvider_;
+  beforeEach(module('webicon', function(_$webiconProvider_) {
+    $webiconProvider = _$webiconProvider_;
   }));
 
   function make(html) {
@@ -34,7 +34,7 @@ describe('angular extensions welovesvg', function() {
     });
 
     it('should work', function() {
-      element = make('<i8-icon icon="material-icons:perm_camera-mic"></i8-icon>');
+      element = make('<webicon icon="material-icons:perm_camera-mic"></webicon>');
       expect(element.html()).toContain('<g icon-name="perm-camera-mic-icon"></g>');
     });
   });

@@ -1,61 +1,62 @@
-# Icon library by Icons8
+# Icon library
 
 **Insert the icons in 30 seconds using the new Icon Sets technology.**
 
-## Installing i8-icon
+## Installing webicon
 
 You can install this package locally either with `npm`, `bower`, or `jspm`.
 
 ### npm
 
 ```shell
-npm install i8-icon
+npm install webicon
 ```
 
-Now you can use `require('i8-icon/angular-i8-icon')` or `require('i8-icon/jquery-i8-icon')` when installing with npm or jsmp and using Browserify or Webpack.
+Now you can use `require('webicon/angular-webicon')` or `require('webicon/jquery-webicon')` when installing with npm or jsmp and using Browserify or Webpack.
 
 ### bower
 
 ```shell
 # To get the latest stable version, use bower from the command line.
-bower install i8-icon
+bower install webicon
 
 # To get the most recent, last committed-to-master version use:
-bower install i8-icon#master 
+bower install webicon#master 
 
 # To save the bower settings for future use:
-bower install i8-icon --save
+bower install webicon --save
 
 # Later, you can use easily update with:
 bower update
 ```
 
-> Please note that i8-icon requires **AngularJS 1.1.x** or higher for use as Angular module.
-> Please note that i8-icon requires **jQuery 1.8.x** or higher for use as jQuery plugin.
+> Please note that webicon requires **AngularJS 1.1.x** or higher for use as Angular module.
+> Please note that webicon requires **jQuery 1.8.x** or higher for use as jQuery plugin.
 
 
-## Using the i8-icon library
+## Using the webicon library
 
-Simply include the scripts and stylesheet in your main HTML file in the order shown in the example below. Note that npm will install the files under `/node_modules/i8-icon/` and bower will install them under `/bower_components/i8-icon/`.
+Simply include the scripts and stylesheet in your main HTML file in the order shown in the example below. Note that npm will install the files under `/node_modules/webicon/` and bower will install them under `/bower_components/webicon/`.
 
 
 ### Simple demo for AngularJS version
 ```html
 <body ng-app="app">
-  <i8-icon icon="fci:checkmark"></i8-icon>
-  <i8-icon icon="clock"></i8-icon>
-  <i8-icon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></i8-icon>
-  <i8-icon icon="calendar"></i8-icon>
-  <i8-icon icon="md-action:3d-rotation" alt=""></i8-icon>
+  <webicon icon="material-icons:3d-rotation" alt=""></webicon>
+  <webicon icon="font-awesome:home" alt="home"></webicon>
+  <webicon icon="fci:checkmark"></webicon>
+  <webicon icon="clock"></webicon>
+  <webicon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></webicon>
+  <webicon icon="calendar"></webicon>  
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
-  <script type="text/javascript" src="/bower_components/i8-icon/angular-i8-icon.js"></script>
+  <script type="text/javascript" src="/bower_components/webicon/angular-webicon.js"></script>
 
   <script>
     angular
-      .module('app', ['i8.icon'])
-      .config(function($i8IconProvider) {
-        $i8IconProvider
+      .module('app', ['webicon'])
+      .config(function($webiconProvider) {
+        $webiconProvider
           .svgSet('flat-color-icons', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg')
           .alias('flat-color-icons', 'fci')
           .icon('clock', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg')
@@ -67,18 +68,19 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
 ### Simple demo for jQuery version
 ```html
 <body>
-  <div data-i8icon="fci:checkmark"></div>
-  <div data-i8icon="clock"></div>
-  <div data-i8icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
-  <div data-i8icon="calendar"></div>
-  <div data-i8icon="md-action:3d-rotation" data-alt=""></div>
+  <div data-webicon="material-icons:3d-rotation" data-alt=""></div>
+  <div data-webicon="font-awesome:home" data-alt="home"></div>
+  <div data-webicon="fci:checkmark"></div>
+  <div data-webicon="clock"></div>
+  <div data-webicon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
+  <div data-webicon="calendar"></div>  
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
-  <script type="text/javascript" src="/bower_components/i8-icon/jquery-i8-icon.js"></script>
+  <script type="text/javascript" src="/bower_components/webicon/jquery-webicon.js"></script>
 
   <script>
     $(function() {
-      $(document).i8icons({
+      $(document).webicons({
         svgSet: {
           "flat-color-icons": '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg'
         },
@@ -94,7 +96,7 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
 </body>
 ```
 
-More demo [here](https://icons8.github.io/i8-icon/)
+More demo [here](https://icons8.github.io/webicon/)
 
 ## Features
 

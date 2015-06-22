@@ -2,13 +2,13 @@
 describe('angular extensions glyphicons', function() {
   var
     element,
-    $i8IconProvider,
+    $webiconProvider,
     $compile,
     $templateCache,
     $scope;
 
-  beforeEach(module('i8.icon', function(_$i8IconProvider_) {
-    $i8IconProvider = _$i8IconProvider_;
+  beforeEach(module('webicon', function(_$webiconProvider_) {
+    $webiconProvider = _$webiconProvider_;
   }));
 
   function make(html) {
@@ -26,7 +26,7 @@ describe('angular extensions glyphicons', function() {
   }));
 
   it('should work', function() {
-    element = make('<i8-icon icon="gi:home"></i8-icon>');
+    element = make('<webicon icon="gi:home"></webicon>');
     expect(element.attr('class')).toContain('glyphicon glyphicon-home');
   });
 

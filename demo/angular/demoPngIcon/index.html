@@ -9,11 +9,11 @@
 
   <script type="text/javascript">
     angular
-      .module('demo-icon', ['i8.icon'])
+      .module('demo-icon', ['webicon'])
       .config([
-        '$i8IconProvider',
-        function($i8IconProvider) {
-          $i8IconProvider
+        '$webiconProvider',
+        function($webiconProvider) {
+          $webiconProvider
             .icon('clock', 'assets/icons/clock.png')
             .icon('calendar', 'assets/icons/calendar.png')
           ;
@@ -23,7 +23,7 @@
   </script>
 
   <style type="text/css">
-    .i8-image-icon {
+    .image-webicon {
       width: 100px;
       height: 100px;
     }
@@ -32,9 +32,9 @@
 </head>
 <body>
 
-<i8-icon icon="calendar"></i8-icon>
-<i8-icon icon="assets/icons/icons8_cup.png"></i8-icon>
-<i8-icon icon="clock"></i8-icon>
+<webicon icon="calendar"></webicon>
+<webicon icon="assets/icons/icons8_cup.png"></webicon>
+<webicon icon="clock"></webicon>
 
 </body>
 </html>

@@ -4,7 +4,7 @@ di('initIconElement', function(injector) {
 
   return function initIconElement(element, alt, icon) {
     var
-      ICON_CLASS = 'i8-icon',
+      ICON_CLASS = 'webicon',
       pieces
       ;
 
