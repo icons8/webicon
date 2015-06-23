@@ -1,7 +1,7 @@
 mixin example(name, title)
   section.c-example(scope ng-init="active = 'jquery'")
     .b-title
-      h2= title || name
+      h2!= title || name
 
     ul.nav.nav-tabs.b-tabs
       li.pull-right(ng-click="active = 'angular'" ng-class="{active: active == 'angular'}")
