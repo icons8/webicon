@@ -1,1 +1,1 @@
-angular.module('app', ['i8.icon']);
+angular.module('app', ['webicon']);

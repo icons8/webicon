@@ -1,5 +1,5 @@
 $(function() {
-  $(document).i8icons({
+  $(document).webicons({
     iconSets: {
       symbol: 'assets/icon-sets/symbol.svg',
       g: 'assets/icon-sets/group.svg'

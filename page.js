@@ -3,7 +3,7 @@
 hljs.initHighlightingOnLoad();
 
 angular
-  .module('demo', ['i8.icon'])
+  .module('demo', ['webicon'])
 
   .directive('scope', [
     function() {

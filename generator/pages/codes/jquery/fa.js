@@ -1,5 +1,5 @@
 $(function() {
-  $(document).i8icons({
+  $(document).webicons({
     defaultSource: 'fa'
   })
 });

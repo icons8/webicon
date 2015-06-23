@@ -1,5 +1,5 @@
 $(function() {
-  $(document).i8icons({
+  $(document).webicons({
     defaultSvgSetUrl: 'assets/icon-sets/colorless.svg'
   })
 });

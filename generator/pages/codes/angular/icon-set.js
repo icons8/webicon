@@ -1,6 +1,6 @@
-angular.module('app', ['i8.icon'])
-  .config(function($i8IconProvider) {
-    $i8IconProvider
+angular.module('app', ['webicon'])
+  .config(function($webiconProvider) {
+    $webiconProvider
       .svgSet('symbol', 'assets/icon-sets/symbol.svg')
       .svgSet('g', 'assets/icon-sets/group.svg')
   });

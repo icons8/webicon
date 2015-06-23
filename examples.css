@@ -1,16 +1,16 @@
-.normal-icon .i8-icon {
+.normal-icon .webicon {
   width: 40px;
   height: 40px;
   display: inline-block;
   margin-right: 10px; }
-  .normal-icon .i8-icon:last-child {
+  .normal-icon .webicon:last-child {
     margin-right: 0; }
 
-.font-icon .i8-icon {
+.font-icon .webicon {
   font-size: 40px;
   line-height: 1;
   display: inline-block;
   margin-right: 10px;
   vertical-align: middle; }
-  .font-icon .i8-icon:last-child {
+  .font-icon .webicon:last-child {
     margin-right: 0; }
