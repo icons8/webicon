@@ -26,7 +26,7 @@ di('SvgCumulativeIconSetScope', function(injector) {
     },
 
     preload: function() {
-      return true;
+      return null;
     },
 
     getIcon: function(iconId, params) {

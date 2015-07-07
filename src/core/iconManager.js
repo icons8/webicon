@@ -109,14 +109,49 @@ di('iconManager', function(injector) {
       return this._defaultSvgIconSize;
     },
 
-    preload: function() {
+    preload: function(names) {
       var
-        collections = this._collections;
+        collections = this._collections,
+        namesSet = {},
+        useSetOfNames = false,
+        forceAll = false,
+        promise,
+        promises = [],
+        iconSetPromisesMap = {},
+        Promise = injector('Promise');
+
+      if (names && typeof names == 'object') {
+        (
+          Array.isArray(names)
+            ? names
+            : Object.keys(names)
+        )
+          .forEach(function(name) {
+            namesSet[String(name).toLowerCase()] = true;
+          });
+        useSetOfNames = true;
+      }
+      else if (names) {
+        forceAll = true;
+      }
 
       Object.keys(collections).forEach(function(id) {
-        collections[id].preload();
+        var
+          value;
+        value = collections[id].preload(
+          forceAll || (useSetOfNames && namesSet.getHasOwnProperty(String(id).toLowerCase()))
+        );
+        if (value && typeof value == 'object' && typeof value.then == 'function') {
+          promises.push(value);
+          if (id != SINGLE_ICONS_COLLECTION_ID) {
+            iconSetPromisesMap[id] = value;
+          }
+        }
       });
 
+      promise = Promise.all(promises);
+      promise.iconSets = iconSetPromisesMap;
+      return promise;
     },
 
     getIcon: function(id, params) {

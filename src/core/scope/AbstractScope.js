@@ -17,7 +17,7 @@ di('AbstractScope', function(injector) {
   AbstractScope.prototype = {
 
     preload: function() {
-      return true;
+      return null;
     },
 
     hasIcon: function() {

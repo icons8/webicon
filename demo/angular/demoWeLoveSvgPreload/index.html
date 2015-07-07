@@ -14,14 +14,11 @@
         '$webiconProvider',
         function($webiconProvider) {
           $webiconProvider
-            .svgSet('symbol', 'assets/icon-sets/symbol/about,home.svg')
-            .defaultSvgSetUrl('assets/icon-sets/group/about,home.svg')
-            .icon('clock', 'assets/icons/clock.svg')
-            .preload(['$preloadPromise', '$rootScope', function($preloadPromise, $rootScope) {
+            .preload(true, ['$preloadPromise', '$preloadIconSetPromises', '$rootScope', function($preloadPromise, $preloadIconSetPromises, $rootScope) {
               var
                 promises,
                 resolved = {};
-              promises = $preloadPromise.iconSets;
+              promises = $preloadIconSetPromises;
               Object.keys(promises).forEach(function(key) {
                 resolved[key] = false;
                 promises[key].then(function() {
@@ -29,35 +26,31 @@
                 });
               });
               $rootScope.resolved = resolved;
+
+              $rootScope.all = false;
+              $preloadPromise.then(function() {
+                $rootScope.all = true;
+              });
             }])
-            .icon('calendar', 'assets/icons/calendar.svg')
           ;
         }
       ])
     ;
   </script>
 
-  <style type="text/css">
-    .svg-webicon {
-      width: 100px;
-      height: 100px;
-    }
-  </style>
-
 </head>
 <body>
 
-<div>
-  Status:
-  <div ng-repeat="(name, status) in resolved track by name">
-    "{{name}}":
-    <span ng-show="status">Loaded</span>
-    <span ng-hide="status">Loading</span>
-  </div>
+<div ng-repeat="(name, status) in resolved track by name">
+  "{{name}}":
+  <span ng-show="status">Loaded</span>
+  <span ng-hide="status">Loading</span>
 </div>
 
-<webicon icon="home"></webicon>
-<webicon icon="clock"></webicon>
+<div ng-show="all">
+  <b>Bingo!!!</b>
+</div>
+
 
 </body>
 </html>

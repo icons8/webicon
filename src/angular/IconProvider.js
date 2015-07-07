@@ -13,10 +13,12 @@ di('IconProvider', function(injector) {
 
   function IconProvider() {
     var
-      lazyPreload = false;
+      lazyPreload = [];
 
     this.preload = function() {
-      lazyPreload = true;
+      lazyPreload.push(
+        Array.prototype.slice.call(arguments)
+      );
       return this;
     };
 
@@ -31,13 +33,36 @@ di('IconProvider', function(injector) {
       iconService = function(id) {
         return iconManager.getIcon(id);
       };
-      iconService.preload = function() {
-        iconManager.preload();
+      iconService.preload = function(names, fn) {
+        var
+          promise;
+
+        if (typeof names == 'function' || (Array.isArray(names) && typeof names.slice(-1)[0] == 'function')) {
+          fn = names;
+          names = null;
+        }
+
+        promise = iconManager.preload(names);
+        if (fn) {
+          $injector.invoke(fn, null, {
+            $preloadPromise: promise,
+            $preloadIconSetPromises: promise.iconSets
+          });
+        }
+        return promise;
       };
 
       iconService.$checkLazyPreload = function() {
-        if (lazyPreload) {
-          this.preload();
+        var
+          self = this;
+
+        if (lazyPreload.length) {
+          lazyPreload.forEach(function(args) {
+            self.preload.apply(
+              self,
+              args
+            );
+          });
         }
       };
 

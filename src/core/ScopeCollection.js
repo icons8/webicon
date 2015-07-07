@@ -21,23 +21,35 @@ di('ScopeCollection', function(injector) {
       }
     },
 
-    preload: function() {
+    preload: function(force) {
       var
-        Promise = injector('Promise');
+        Promise = injector('Promise'),
+        promises = [];
 
-      return Promise.all(
-        this.collection.map(function(item) {
-          return Promise.resolve(item.preload())
-            .then(null, function() {
-              return false;
+      this.collection.forEach(function(item) {
+        var
+          value;
+        value = item.preload(force);
+        if (value && typeof value == 'object' && typeof value.then == 'function') {
+          promises.push(value);
+        }
+      });
+
+      if (promises.length > 0) {
+        return Promise.all(
+          promises.map(function(promise) {
+            return promise.then(null, function() {
+              return null;
             })
-        })
-      )
-        .then(function() {
-          return true;
-        }, function() {
-          return false;
-        });
+          })
+        )
+          .then(function() {
+            return null;
+          });
+      }
+      else {
+        return null;
+      }
     },
 
     getIconScope: function(iconId, params) {

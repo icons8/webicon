@@ -17,10 +17,10 @@ di('AbstractRemoteResourceScope', function(injector) {
 
   return inherit(AbstractRemoteResourceScope, AbstractScope, {
 
-    preload: function() {
-      return this._preloadable
+    preload: function(force) {
+      return this._preloadable || force
         ? this._getResource()
-        : true;
+        : null;
     },
 
     _resolveUrl: function(url) {

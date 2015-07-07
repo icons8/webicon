@@ -49,8 +49,18 @@ di('publicApi', function(injector) {
       return this;
     },
 
-    preload: function() {
-      iconManager.preload();
+    preload: function(names, fn) {
+      var
+        promise;
+
+      if (typeof names == 'function') {
+        fn = names;
+        names = null;
+      }
+
+      promise = iconManager.preload(names);
+      fn && fn(promise);
+
       return this;
     },
 
