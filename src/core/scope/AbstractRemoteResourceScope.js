@@ -36,7 +36,7 @@ di('AbstractRemoteResourceScope', function(injector) {
         return this._cache;
       }
       promise = this._cache = this._loadResource();
-      promise.then(null,
+      promise.then(
         function(resource) {
           self._resource = resource;
         },
