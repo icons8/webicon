@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright (c) 2015 VisualPharm LLC. http://icons8.com
+Copyright (c) 2015 VisualPharm LLC. https://icons8.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
