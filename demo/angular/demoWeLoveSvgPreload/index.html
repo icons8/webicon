@@ -14,7 +14,7 @@
         '$webiconProvider',
         function($webiconProvider) {
           $webiconProvider
-            .preload(true, ['$promise', '$rootScope', function($promise, $rootScope) {
+            .preload(['flat-color-icons', 'font-awesome', 'material-icons'], ['$promise', '$rootScope', function($promise, $rootScope) {
               var
                 promises,
                 resolved = {},

@@ -140,7 +140,7 @@ di('iconManager', function(injector) {
         var
           value;
         value = collections[id].preload(
-          forceAll || (useSetOfNames && namesSet.getHasOwnProperty(String(id).toLowerCase()))
+          forceAll || (useSetOfNames && namesSet.hasOwnProperty(String(id).toLowerCase()))
         );
         if (value && typeof value == 'object' && typeof value.then == 'function') {
           promises.push(value);
