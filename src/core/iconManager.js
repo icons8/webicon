@@ -111,6 +111,7 @@ di('iconManager', function(injector) {
 
     preload: function(names) {
       var
+        self = this,
         collections = this._collections,
         namesSet = {},
         useSetOfNames = false,
@@ -144,7 +145,10 @@ di('iconManager', function(injector) {
         if (value && typeof value == 'object' && typeof value.then == 'function') {
           promises.push(value);
           if (id != SINGLE_ICONS_COLLECTION_ID) {
-            iconSetPromisesMap[id] = value;
+            iconSetPromisesMap[id] = value
+              .then(function() {
+                return self._getCollection(id);
+              });
           }
         }
       });

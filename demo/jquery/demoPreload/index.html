@@ -18,7 +18,24 @@
           clock: 'assets/icons/clock.svg',
           calendar: 'assets/icons/calendar.svg'
         },
-        preload: true
+        preload: function(promise) {
+          var
+            promises;
+
+          promises = promise.iconSets;
+          Object.keys(promises).forEach(function(key) {
+            var
+              node,
+              state;
+            node = $('#report').append(
+              '<div>"'+key+'": <span>Loading</span></div>'
+            );
+            state = node.find('span');
+            promises[key].then(function() {
+              state.text('Loaded');
+            })
+          });
+        }
       });
     });
   </script>
@@ -31,6 +48,9 @@
   </style>
 </head>
 <body>
+
+<div id="report">
+</div>
 
 <webicon icon="home"></webicon>
 <webicon icon="clock"></webicon>

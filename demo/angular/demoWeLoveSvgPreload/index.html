@@ -14,22 +14,26 @@
         '$webiconProvider',
         function($webiconProvider) {
           $webiconProvider
-            .preload(true, ['$preloadPromise', '$preloadIconSetPromises', '$rootScope', function($preloadPromise, $preloadIconSetPromises, $rootScope) {
+            .preload(true, ['$promise', '$rootScope', function($promise, $rootScope) {
               var
                 promises,
-                resolved = {};
-              promises = $preloadIconSetPromises;
+                resolved = {},
+                time;
+
+              time = Date.now();
+              promises = $promise.iconSets;
               Object.keys(promises).forEach(function(key) {
                 resolved[key] = false;
-                promises[key].then(function() {
+                promises[key].then(function(v) {
                   resolved[key] = true;
                 });
               });
               $rootScope.resolved = resolved;
 
               $rootScope.all = false;
-              $preloadPromise.then(function() {
+              $promise.then(function() {
                 $rootScope.all = true;
+                $rootScope.time = (Date.now() - time)/1000;
               });
             }])
           ;
@@ -48,7 +52,7 @@
 </div>
 
 <div ng-show="all">
-  <b>Bingo!!!</b>
+  <b>Bingo!!! {{time}}s</b>
 </div>
 
 

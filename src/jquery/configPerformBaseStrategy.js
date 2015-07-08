@@ -110,7 +110,8 @@ di('configPerformBaseStrategy', function(injector) {
           ? config
           : null;
       }
-    ).forEach(function(config) {
+    )
+      .forEach(function(config) {
         if (!iconManager.hasIconSet(config.url)) {
           parseSvgIconSizeConfig(config);
           publicApi.defaultSvgSetUrl(config.url, config);
@@ -132,7 +133,8 @@ di('configPerformBaseStrategy', function(injector) {
           ? config
           : null;
       }
-    ).forEach(function(config) {
+    )
+      .forEach(function(config) {
         if (!iconManager.hasIconSet(config.alias)) {
           publicApi.sourceAlias(config.id, config.alias);
         }
@@ -151,19 +153,24 @@ di('configPerformBaseStrategy', function(injector) {
           ? config
           : null;
       }
-    ).forEach(function(config) {
+    )
+      .forEach(function(config) {
         publicApi.defaultSource(config.id);
       });
 
     parseConfigs(
       config.defaultSvgIconSize,
       parseSvgIconSizeConfig
-    ).forEach(function(config) {
+    )
+      .forEach(function(config) {
         publicApi.defaultSvgIconSize(config.iconSize);
       });
 
     if (config.preload) {
-      publicApi.preload();
+      publicApi.preload.apply(
+        publicApi,
+        parsePreloadConfig(config.preload)
+      );
     }
   };
 
@@ -260,6 +267,37 @@ di('configPerformBaseStrategy', function(injector) {
     return config.iconSize
       ? config
       : null;
+  }
+
+  function parsePreloadConfig(config) {
+    if (typeof config == 'function') {
+      return [config];
+    }
+    else if (config && typeof config == 'object') {
+      if (Array.isArray(config)) {
+        return [config];
+      }
+      if (Object.keys(config).length > 0
+        && !config.hasOwnProperty('force')
+        && !config.hasOwnProperty('names')
+        && !config.hasOwnProperty('fn')
+      ) {
+        return [config];
+      }
+
+      return [
+        config.force || config.names || undefined,
+        config.fn || undefined
+      ]
+        .filter(function(value) {
+          return typeof value != 'undefined';
+        })
+    }
+    else {
+      return config
+        ? [true]
+        : [];
+    }
   }
 
 });

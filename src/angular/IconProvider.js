@@ -45,8 +45,7 @@ di('IconProvider', function(injector) {
         promise = iconManager.preload(names);
         if (fn) {
           $injector.invoke(fn, null, {
-            $preloadPromise: promise,
-            $preloadIconSetPromises: promise.iconSets
+            $promise: promise
           });
         }
         return promise;

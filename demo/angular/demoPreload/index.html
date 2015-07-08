@@ -17,11 +17,11 @@
             .svgSet('symbol', 'assets/icon-sets/symbol/about,home.svg')
             .defaultSvgSetUrl('assets/icon-sets/group/about,home.svg')
             .icon('clock', 'assets/icons/clock.svg')
-            .preload(['$preloadPromise', '$rootScope', function($preloadPromise, $rootScope) {
+            .preload(['$promise', '$rootScope', function($promise, $rootScope) {
               var
                 promises,
                 resolved = {};
-              promises = $preloadPromise.iconSets;
+              promises = $promise.iconSets;
               Object.keys(promises).forEach(function(key) {
                 resolved[key] = false;
                 promises[key].then(function() {
