@@ -121,6 +121,9 @@ di('iconManager', function(injector) {
         iconSetPromisesMap = {},
         Promise = injector('Promise');
 
+      if (['string', 'number'].indexOf(typeof names) != -1) {
+        names = [names];
+      }
       if (names && typeof names == 'object') {
         (
           Array.isArray(names)
