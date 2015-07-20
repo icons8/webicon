@@ -52,27 +52,24 @@ function weLoveSvgExtension(di, config) {
   }
 
   svgSets = config.svgSets;
-  Object.keys(svgSets.libs || {}).forEach(function(name) {
+  svgSets.libs.forEach(function(name) {
     var
       lib,
-      version,
       filename;
 
-    lib = name;
-    filename = name + '.svg';
-
-    if (typeof svgSets.libs[name] == 'string') {
-      version = svgSets.libs[name];
+    if (typeof name == 'object') {
+      lib = name.lib;
+      filename = name.filename || (name.name || lib) + '.svg';
+      name = name.name || lib;
     }
     else {
-      lib = svgSets.libs[name].lib || lib;
-      version = svgSets.libs[name].version || 'latest';
-      filename = svgSets.libs[name].filename || filename;
+      lib = name;
+      filename = name + '.svg';
     }
 
     addSvgIconSet(
       name,
-      [svgSets.url, lib, version, filename].join('/')
+      [svgSets.url, lib, filename].join('/')
     );
   });
 

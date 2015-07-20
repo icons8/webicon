@@ -28,7 +28,7 @@ describe('angular extensions welovesvg', function() {
   describe('Material Design Icons', function() {
     beforeEach(function() {
       $templateCache.put(
-        window.location.protocol + '//cdn.rawgit.com/icons8/welovesvg/c10018bec3184a8b72a3d6485904c1eba4dc876f/libs/material-design-icons/1.0.2/material-design-icons-24px.svg',
+        window.location.protocol + '//cdn.rawgit.com/icons8/welovesvg/6adb9a7/libs/material-design-icons/material-design-icons-24px.svg',
         '<svg><svg viewBox="0 0 24 24" id="perm-camera-mic"><g icon-name="perm-camera-mic-icon"></g></svg></svg>'
       )
     });
