@@ -25,7 +25,7 @@ describe('jquery extensions welovesvg', function() {
   describe('Material Design Icons', function() {
     beforeEach(function() {
       jasmine.Ajax.stubRequest(
-        window.location.protocol + '//cdn.rawgit.com/icons8/welovesvg/6adb9a7/libs/material-design-icons/material-design-icons-24px.svg'
+        window.location.protocol + '//cdn.rawgit.com/icons8/welovesvg/78f7305/libs/material-icons/material-icons.svg'
       ).andReturn({
           responseText: '<svg><svg viewBox="0 0 24 24" id="perm-camera-mic"><g icon-name="perm-camera-mic-icon"></g></svg></svg>'
         });
