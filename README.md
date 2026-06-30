@@ -46,7 +46,7 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
   <webicon icon="font-awesome:home" alt="home"></webicon>
   <webicon icon="fci:checkmark"></webicon>
   <webicon icon="clock"></webicon>
-  <webicon icon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></webicon>
+  <webicon icon="//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/svg/search.svg"></webicon>
   <webicon icon="calendar"></webicon>  
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.js"></script>
@@ -57,9 +57,9 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
       .module('app', ['webicon'])
       .config(function($webiconProvider) {
         $webiconProvider
-          .svgSet('flat-color-icons', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg')
+          .svgSet('flat-color-icons', '//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/icon-set/icons.svg')
           .alias('flat-color-icons', 'fci')
-          .icon('clock', '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg')
+          .icon('clock', '//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/svg/clock.svg')
       });
   </script>
 </body>
@@ -72,7 +72,7 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
   <div data-webicon="font-awesome:home" data-alt="home"></div>
   <div data-webicon="fci:checkmark"></div>
   <div data-webicon="clock"></div>
-  <div data-webicon="//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/search.svg"></div>
+  <div data-webicon="//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/svg/search.svg"></div>
   <div data-webicon="calendar"></div>  
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.js"></script>
@@ -82,13 +82,13 @@ Simply include the scripts and stylesheet in your main HTML file in the order sh
     $(function() {
       $(document).webicons({
         svgSet: {
-          "flat-color-icons": '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/icon-set/icons.svg'
+          "flat-color-icons": '//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/icon-set/icons.svg'
         },
         alias: {
           fci: 'flat-color-icons'
         },
         icon: {
-          clock: '//cdn.rawgit.com/icons8/flat-color-icons/v1.0.2/svg/clock.svg'
+          clock: '//cdn.jsdelivr.net/gh/icons8/flat-color-icons@v1.0.2/svg/clock.svg'
         }
       });
     });
@@ -103,3 +103,10 @@ More demo [here](https://icons8.github.io/webicon/)
 - Available all Icons8 [open source icons](https://github.com/icons8/flat-color-icons) via our api as default source.
 - The icons are stored on our CDN server (which is free forever).
 - You insert the icons right into your code.
+
+## Powered by Icons8
+
+Webicon pulls from the open icon sets by [Icons8](https://icons8.com) — and there's a lot more to pull from:
+
+- **[Icons](https://icons8.com/icons)** — 1,500,000+ icons in 132 styles, recolorable, served as SVG & PNG
+- **[Illustrations](https://icons8.com/illustrations)** — 108,000+ illustrations in 338 styles (flat, 3D, hand-drawn, animated). SVG & PNG
